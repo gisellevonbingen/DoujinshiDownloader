@@ -43,9 +43,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         private int _Count = 0;
         public int Count { get { return this._Count; } }
-
         private int _Index = 0;
         public int Index { get { return this._Index; } }
+        private GalleryAgent _Agent = null;
+        public GalleryAgent Agent { get { return this._Agent; } }
 
         private int NextIndex = 0;
 
@@ -192,6 +193,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             var viewURLs = this.ViewURLs = agent.GetGalleryImageViewURLs(galleryURL);
             this._Count = viewURLs.Count;
             this._Index = 0;
+            this._Agent = agent;
         }
 
         private void Download()
@@ -283,7 +285,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             var request = this.Request;
             var method = request.DownloadMethod;
-            var agent = method.CreateAgent();
+            var agent = this.Agent;
 
             var buffer = new byte[16 * 1024];
 
