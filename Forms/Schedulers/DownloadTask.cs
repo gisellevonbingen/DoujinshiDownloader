@@ -68,7 +68,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                 if (state != require)
                 {
-                    throw new TaskInvalidStateException($"Task state is alray [{state}]");
+                    throw new TaskInvalidStateException($"Task state is already [{state}]");
                 }
 
             }

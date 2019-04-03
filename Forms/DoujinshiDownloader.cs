@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Giselle.Commons;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms;
+using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Resources;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
@@ -96,10 +97,14 @@ namespace Giselle.DoujinshiDownloader
         {
             var file = this.DumpCrashMessage(exception);
 
-            using (var form = new CrashReportForm(file, exception))
+            ControlUtils.InvokeIfNeed(this.MainForm, () =>
             {
-                form.ShowDialog();
-            }
+                using (var form = new CrashReportForm(file, exception))
+                {
+                    form.ShowDialog();
+                }
+
+            });
 
         }
 
