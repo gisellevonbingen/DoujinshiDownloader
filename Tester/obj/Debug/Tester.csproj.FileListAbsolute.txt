@@ -1,0 +1,7 @@
+C:\Develop\Workspace\DoujinshiDownloader\src\Tester\bin\Debug\Tester.exe.config
+C:\Develop\Workspace\DoujinshiDownloader\src\Tester\bin\Debug\Tester.exe
+C:\Develop\Workspace\DoujinshiDownloader\src\Tester\bin\Debug\Tester.pdb
+C:\Develop\Workspace\DoujinshiDownloader\src\Tester\obj\Debug\Tester.csprojAssemblyReference.cache
+C:\Develop\Workspace\DoujinshiDownloader\src\Tester\obj\Debug\Tester.csproj.CoreCompileInputs.cache
+C:\Develop\Workspace\DoujinshiDownloader\src\Tester\obj\Debug\Tester.exe
+C:\Develop\Workspace\DoujinshiDownloader\src\Tester\obj\Debug\Tester.pdb

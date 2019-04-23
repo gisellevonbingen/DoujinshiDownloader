@@ -1,0 +1,16 @@
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\bin\Debug\Giselle.DoujinshiDownloader.Library.dll
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\bin\Debug\Giselle.DoujinshiDownloader.Library.pdb
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\bin\Debug\Giselle.Commons.dll
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\bin\Debug\HtmlAgilityPack.dll
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\bin\Debug\Newtonsoft.Json.dll
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\bin\Debug\Giselle.Commons.pdb
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\bin\Debug\HtmlAgilityPack.pdb
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\bin\Debug\HtmlAgilityPack.xml
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\bin\Debug\Newtonsoft.Json.pdb
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\obj\Debug\Library.csprojAssemblyReference.cache
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\obj\Debug\Giselle.DoujinshiDownloader.Properties.Resources.resources
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\obj\Debug\Library.csproj.GenerateResource.cache
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\obj\Debug\Library.csproj.CoreCompileInputs.cache
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\obj\Debug\Library.csproj.CopyComplete
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\obj\Debug\Giselle.DoujinshiDownloader.Library.dll
+C:\Develop\Workspace\DoujinshiDownloader\src\Library\obj\Debug\Giselle.DoujinshiDownloader.Library.pdb
