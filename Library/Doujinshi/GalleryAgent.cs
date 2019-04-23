@@ -31,11 +31,16 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return requeset;
         }
 
-        public abstract string GetGalleryTitle(string url, GalleryDownloadParameter downloadParameter);
+        public abstract string GetGalleryTitle(string url, DownloadAgentParameter agentParameter);
 
         public abstract List<string> GetGalleryImageViewURLs(string url);
 
-        public abstract RequestParameter GetGalleryImageDownloadRequest(string url, GalleryDownloadParameter downloadParameter);
+        public virtual DownloadGalleryParameter CreateGalleryParameter(string url)
+        {
+            return new DownloadGalleryParameter { Referer = url };
+        }
+
+        public abstract RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter, DownloadAgentParameter agentParameter);
 
         public void Download(RequestParameter parameter, string localDirectory, byte[] buffer)
         {

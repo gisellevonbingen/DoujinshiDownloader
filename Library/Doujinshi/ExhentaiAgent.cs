@@ -60,7 +60,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override string GetGalleryTitle(string url, GalleryDownloadParameter downloadParameter)
+        public override string GetGalleryTitle(string url, DownloadAgentParameter agentParameter)
         {
             var parameter = this.CreateRequestParameter();
             parameter.URL = url;
@@ -140,15 +140,16 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         }
 
 
-        public override RequestParameter GetGalleryImageDownloadRequest(string url, GalleryDownloadParameter downloadParameter)
+        public override RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter, DownloadAgentParameter agentParameter)
         {
-            var downloadURL = this.GetGalleryImageDownloadPath(url, downloadParameter as ExHentaiDownloadParameter);
+            var downloadURL = this.GetGalleryImageDownloadPath(url, agentParameter as ExHentaiDownloadParameter);
 
             if (downloadURL != null)
             {
                 var parameter = this.CreateRequestParameter();
                 parameter.URL = downloadURL;
                 parameter.Method = "GET";
+                parameter.Referer = galleryParameter.Referer;
                 return parameter;
             }
 

@@ -60,13 +60,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Doujinshi\DownloadGalleryParameter.cs" />
     <Compile Include="Doujinshi\DownloadInput.cs" />
     <Compile Include="Doujinshi\ExHentaiAccount.cs" />
     <Compile Include="Doujinshi\ExHentaiAccountException.cs" />
     <Compile Include="Doujinshi\ExHentaiAgent.cs" />
     <Compile Include="Doujinshi\ExHentaiDownloadParameter.cs" />
     <Compile Include="Doujinshi\GalleryAgent.cs" />
-    <Compile Include="Doujinshi\GalleryDownloadParameter.cs" />
+    <Compile Include="Doujinshi\DownloadAgentParameter.cs" />
     <Compile Include="Doujinshi\HitomiAgent.cs" />
     <Compile Include="Doujinshi\HitomiDownloadParameter.cs" />
     <Compile Include="Doujinshi\HitomiRemovedGalleryException.cs" />

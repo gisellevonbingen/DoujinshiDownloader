@@ -51,16 +51,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Library\Library.csproj">
-      <Project>{905e2871-4999-42bc-861c-9aca580ebd63}</Project>
-      <Name>DoujinshiLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Forms\Forms.csproj">
-      <Project>{db36a3ab-6223-447a-b19b-ca0a7ca67544}</Project>
-      <Name>Forms</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

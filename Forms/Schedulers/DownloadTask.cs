@@ -47,6 +47,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         public int Index { get { return this._Index; } }
         private GalleryAgent _Agent = null;
         public GalleryAgent Agent { get { return this._Agent; } }
+        private DownloadGalleryParameter _GalleryParameter = null;
+        public DownloadGalleryParameter GalleryParameter { get { return this._GalleryParameter; } }
 
         private int NextIndex = 0;
 
@@ -194,6 +196,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this._Count = viewURLs.Count;
             this._Index = 0;
             this._Agent = agent;
+            this._GalleryParameter = agent.CreateGalleryParameter(galleryURL);
         }
 
         private void Download()
@@ -255,9 +258,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     this.OnProgressing(new DownloadTaskProgressingEventArgs(index, url, DownloadResult.Downloading));
                     result = this.Download(url);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     result = DownloadResult.Exception;
+                    DoujinshiDownloader.Instance.ShowCrashMessageBox(e);
                 }
 
                 lock (this.IndexLock)
@@ -295,7 +299,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             {
                 try
                 {
-                    var downloadRequest = agent.GetGalleryImageDownloadRequest(pagePath, downloadParameter);
+                    var downloadRequest = agent.GetGalleryImageDownloadRequest(pagePath, this.GalleryParameter, downloadParameter);
 
                     if (downloadRequest == null)
                     {

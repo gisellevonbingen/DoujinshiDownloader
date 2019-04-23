@@ -20,7 +20,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return new HitomiAgent();
         }
 
-        public override GalleryDownloadParameter CreateDownloadParameter()
+        public override DownloadAgentParameter CreateDownloadParameter()
         {
             var parameter = new HitomiDownloadParameter();
             parameter.Removed = false;

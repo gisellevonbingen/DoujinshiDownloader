@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Web;
@@ -19,13 +20,19 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override RequestParameter GetGalleryImageDownloadRequest(string url, GalleryDownloadParameter downloadParameter)
+        public override RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter, DownloadAgentParameter agentParameter)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
             parameter.URL = url;
+            parameter.Referer = galleryParameter.Referer;
 
             return parameter;
+        }
+
+        public string GetRetval(string url)
+        {
+            return url;
         }
 
         public override List<string> GetGalleryImageViewURLs(string url)
@@ -38,6 +45,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
             parameter.URL = this.ToReaderURL(url);
+            parameter.Referer = url;
 
             using (var response = this.Explorer.Request(parameter))
             {
@@ -62,7 +70,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public string ToReaderURL(string url)
         {
-            return url.Replace("galleries", "reader");
+            return url.Replace("galleries", "reader") + "#1";
         }
 
         private string GetGalleryTitle(RequestParameter parameter)
@@ -127,7 +135,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return null;
         }
 
-        public override string GetGalleryTitle(string url, GalleryDownloadParameter downloadParameter)
+        public override string GetGalleryTitle(string url, DownloadAgentParameter downloadParameter)
         {
             var removed = (downloadParameter as HitomiDownloadParameter)?.Removed ?? false;
 

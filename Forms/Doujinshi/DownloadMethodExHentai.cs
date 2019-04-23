@@ -25,7 +25,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return agent;
         }
 
-        public override GalleryDownloadParameter CreateDownloadParameter()
+        public override DownloadAgentParameter CreateDownloadParameter()
         {
             var parameter = new ExHentaiDownloadParameter();
             parameter.Original = false;
