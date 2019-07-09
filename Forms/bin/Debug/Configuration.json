@@ -1,1 +1,1 @@
-{"Account":{"MemberId":"2061269","PassHash":"36e604594a4e64f619b75a7ed20dcae1"},"Timeout":60000,"ThreadCount":4,"RetryCount":2,"DownloadDirectory":"Downloads","DownloadCompleteAutoRemove":true}
+{"Account":{"MemberId":"2061269","PassHash":"36e604594a4e64f619b75a7ed20dcae1"},"Timeout":60000,"ThreadCount":4,"RetryCount":2,"DownloadDirectory":"Downloads","DownloadCompleteAutoRemove":true,"DownloadToArchive":true}

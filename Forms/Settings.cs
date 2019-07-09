@@ -19,6 +19,7 @@ namespace Giselle.DoujinshiDownloader
         public int RetryCount { get; set; } = 0;
         public string DownloadDirectory { get; set; } = null;
         public bool DownloadCompleteAutoRemove { get; set; } = false;
+        public bool DownloadToArchive { get; set; } = false;
 
         public Settings(string path)
         {
@@ -36,6 +37,7 @@ namespace Giselle.DoujinshiDownloader
 
             this.DownloadDirectory = ((string)jObject["DownloadDirectory"]) ?? "Downloads";
             this.DownloadCompleteAutoRemove = ((bool?)jObject["DownloadCompleteAutoRemove"]).GetValueOrDefault(false);
+            this.DownloadToArchive = ((bool?)jObject["DownloadToArchive"]).GetValueOrDefault(false);
 
             this.Save();
         }
@@ -50,6 +52,7 @@ namespace Giselle.DoujinshiDownloader
             jObject["RetryCount"] = this.RetryCount;
             jObject["DownloadDirectory"] = this.DownloadDirectory;
             jObject["DownloadCompleteAutoRemove"] = this.DownloadCompleteAutoRemove;
+            jObject["DownloadToArchive"] = this.DownloadToArchive;
 
             this.Write(jObject);
         }
