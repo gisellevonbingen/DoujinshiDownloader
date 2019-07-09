@@ -13,7 +13,7 @@ using Giselle.DoujinshiDownloader.Web;
 
 namespace Giselle.DoujinshiDownloader.Schedulers
 {
-    public class DownloadTask
+    public class DownloadTask : IDisposable
     {
         public DownloadRequest Request { get; }
         public DownloadProgress Progress { get; }
@@ -31,7 +31,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         private readonly object StateLock = new object();
 
         public Exception Exception { get; private set; }
-        public string DownloadDirectory { get; private set; }
+        public FileArchive DownloadFile { get; private set; }
 
         private List<string> ViewURLs = null;
 
@@ -54,6 +54,22 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this.Progress = new DownloadProgress(this);
             this.IndexLock = new object();
             this.DownloadThreads = new List<Thread>();
+        }
+
+        ~DownloadTask()
+        {
+            this.Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            this.Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            ObjectUtils.DisposeQuietly(this.DownloadFile);
         }
 
         private void RequireState(TaskState require)
@@ -168,6 +184,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                 DoujinshiDownloader.Instance.ShowCrashMessageBox(e);
             }
+            finally
+            {
+                this.Dispose();
+            }
 
         }
 
@@ -181,10 +201,20 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             var galleryURL = method.Site.ToURL(request.DownloadInput);
             var agent = method.CreateAgent();
 
-
-            var downloadDirectory = PathUtils.GetPath(settings.DownloadDirectory, PathUtils.FilterInvalids(request.Title));
+            var downloadToArchive = settings.DownloadToArchive;
+            var downloadDirectory = settings.DownloadDirectory;
             Directory.CreateDirectory(downloadDirectory);
-            this.DownloadDirectory = downloadDirectory;
+
+            var ffff = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.Title));
+
+            if (downloadToArchive == true)
+            {
+                this.DownloadFile = new FileArchiveZip(ffff + ".zip");
+            }
+            else
+            {
+                this.DownloadFile = new FileArchiveDirectory(ffff);
+            }
 
             var viewURLs = this.ViewURLs = agent.GetGalleryImageViewURLs(galleryURL);
             this._Count = viewURLs.Count;
@@ -252,6 +282,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     this.OnProgressing(new DownloadTaskProgressingEventArgs(index, url, DownloadResult.Downloading));
                     result = this.Download(url);
                 }
+                catch (ThreadAbortException)
+                {
+                    return;
+                }
                 catch (Exception e)
                 {
                     result = DownloadResult.Exception;
@@ -292,21 +326,42 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 var settings = dd.Settings;
                 var retryCount = settings.RetryCount;
                 var fileName = this.GetFileName(downloadRequest.URL);
-                var downloadPath = Path.Combine(this.DownloadDirectory, fileName);
                 var buffer = new byte[16 * 1024];
 
                 for (int k = 0; k < retryCount; k++)
                 {
                     try
                     {
-                        using (var localStream = new FileStream(downloadPath, FileMode.Create))
+                        using (var localStream = new MemoryStream())
                         {
-                            return this.Download(agent, downloadRequest, localStream, buffer);
+                            var result = this.Download(agent, downloadRequest, localStream, buffer);
+
+                            if (result == DownloadResult.Success)
+                            {
+                                lock (this.DownloadFile)
+                                {
+                                    localStream.Position = 0L;
+                                    this.DownloadFile.Write(fileName, localStream);
+                                }
+
+                            }
+
+                            return result;
                         }
 
                     }
-                    catch (Exception)
+                    catch (ThreadAbortException)
                     {
+                        return DownloadResult.Exception;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+
+                        if (k + 1 == retryCount)
+                        {
+                            throw new Exception(pagePath, e);
+                        }
 
                     }
 

@@ -75,7 +75,15 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                         foreach (var task in array)
                         {
-                            this.Execute(task);
+                            try
+                            {
+                                this.Execute(task);
+                            }
+                            finally
+                            {
+                                ObjectUtils.DisposeQuietly(task);
+                            }
+
                         }
 
                     }

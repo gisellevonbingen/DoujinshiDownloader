@@ -46,6 +46,9 @@
     <Reference Include="Giselle.Databases.SQLite">
       <HintPath>..\Libs\Giselle.Databases.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.1.0.145, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.1.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack.Core.1.1.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
       <Private>True</Private>
@@ -99,6 +102,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Resources\FontMatchFormat.cs" />
+    <Compile Include="Schedulers\FileArchive.cs" />
+    <Compile Include="Schedulers\FileArchiveDirectory.cs" />
+    <Compile Include="Schedulers\FileArchiveZip.cs" />
     <Compile Include="Schedulers\DownloadProgress.cs" />
     <Compile Include="Schedulers\DownloadRequest.cs" />
     <Compile Include="Schedulers\DownloadRequestEventArgs.cs" />

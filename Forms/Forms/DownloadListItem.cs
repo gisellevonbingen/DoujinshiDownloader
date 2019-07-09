@@ -183,16 +183,15 @@ namespace Giselle.DoujinshiDownloader.Forms
         private void OnOpenButtonClick(object sender, EventArgs e)
         {
             var task = this.Task;
-            var directory = task.DownloadDirectory;
+            var file = task.DownloadFile;
 
-            if (directory == null)
+            if (file == null)
             {
                 MessageBox.Show(this, "다운로드 폴더가 아직 생성되지 않았습니다.", "폴더 열기", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
             else
             {
-                Directory.CreateDirectory(directory);
-                ExplorerUtils.Open(directory);
+                ExplorerUtils.Open(file.FilePath);
             }
 
         }

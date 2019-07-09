@@ -13,7 +13,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         public DownloadInput DownloadInput { get; set; } = default;
         public DownloadMethod DownloadMethod { get; set; } = null;
         public string Title { get; set; } = null;
-        public bool Archive { get; set; } = false;
 
         public DownloadRequest()
         {
