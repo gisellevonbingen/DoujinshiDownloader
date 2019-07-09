@@ -15,11 +15,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 {
     public class DownloadTask
     {
-        private readonly DownloadRequest _Request = null;
-        public DownloadRequest Request { get { return this._Request; } }
-
-        private readonly DownloadProgress _Progress = null;
-        public DownloadProgress Progress { get { return this._Progress; } }
+        public DownloadRequest Request { get; }
+        public DownloadProgress Progress { get; }
 
         public event DownloadTaskProgressingEventHandler Progressed = null;
 
@@ -33,11 +30,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         public event EventHandler StateChanged = null;
         private readonly object StateLock = new object();
 
-        private Exception _Exception = null;
-        public Exception Exception { get { return this._Exception; } }
-
-        private string _DownloadDirectory = null;
-        public string DownloadDirectory { get { return this._DownloadDirectory; } }
+        public Exception Exception { get; private set; }
+        public string DownloadDirectory { get; private set; }
 
         private List<string> ViewURLs = null;
 
@@ -56,8 +50,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         public DownloadTask(DownloadRequest request)
         {
-            this._Request = request;
-            this._Progress = new DownloadProgress(this);
+            this.Request = request;
+            this.Progress = new DownloadProgress(this);
             this.IndexLock = new object();
             this.DownloadThreads = new List<Thread>();
         }
@@ -168,7 +162,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             {
                 lock (this.StateLock)
                 {
-                    this._Exception = e;
+                    this.Exception = e;
                     this.UpdateState(TaskState.Completed | TaskState.Excepted);
                 }
 
@@ -190,7 +184,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             var downloadDirectory = PathUtils.GetPath(settings.DownloadDirectory, PathUtils.FilterInvalids(request.Title));
             Directory.CreateDirectory(downloadDirectory);
-            this._DownloadDirectory = downloadDirectory;
+            this.DownloadDirectory = downloadDirectory;
 
             var viewURLs = this.ViewURLs = agent.GetGalleryImageViewURLs(galleryURL);
             this._Count = viewURLs.Count;
@@ -281,46 +275,77 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         private DownloadResult Download(string pagePath)
         {
-            var dd = DoujinshiDownloader.Instance;
-            var settings = dd.Settings;
-            var retryCount = settings.RetryCount;
-
-            var downloadDirectory = this.DownloadDirectory;
-
             var request = this.Request;
             var method = request.DownloadMethod;
             var agent = this.Agent;
 
-            var buffer = new byte[16 * 1024];
-
             var downloadParameter = method.CreateDownloadParameter();
+            var downloadRequest = agent.GetGalleryImageDownloadRequest(pagePath, this.GalleryParameter, downloadParameter);
 
-            for (int k = 0; k < retryCount; k++)
+            if (downloadRequest == null)
             {
-                try
+                return DownloadResult.RequestNotCreate;
+            }
+            else
+            {
+                var dd = DoujinshiDownloader.Instance;
+                var settings = dd.Settings;
+                var retryCount = settings.RetryCount;
+                var fileName = this.GetFileName(downloadRequest.URL);
+                var downloadPath = Path.Combine(this.DownloadDirectory, fileName);
+                var buffer = new byte[16 * 1024];
+
+                for (int k = 0; k < retryCount; k++)
                 {
-                    var downloadRequest = agent.GetGalleryImageDownloadRequest(pagePath, this.GalleryParameter, downloadParameter);
-
-                    if (downloadRequest == null)
+                    try
                     {
-                        return DownloadResult.RequestNotCreate;
+                        using (var localStream = new FileStream(downloadPath, FileMode.Create))
+                        {
+                            return this.Download(agent, downloadRequest, localStream, buffer);
+                        }
+
                     }
-                    else
+                    catch (Exception)
                     {
-                        agent.Download(downloadRequest, downloadDirectory, buffer);
 
-                        return DownloadResult.Success;
                     }
-
-                }
-                catch (Exception)
-                {
 
                 }
 
             }
 
             return DownloadResult.Exception;
+        }
+
+        private string GetFileName(string url)
+        {
+            var fileName = new Uri(url).LocalPath;
+            int slashIndex = fileName.LastIndexOf('/');
+
+            if (slashIndex > -1)
+            {
+                fileName = fileName.Substring(slashIndex + 1);
+            }
+
+            return fileName;
+        }
+
+        private DownloadResult Download(GalleryAgent agent, RequestParameter downloadRequest, Stream stream, byte[] buffer)
+        {
+            using (var response = agent.Explorer.Request(downloadRequest))
+            {
+                using (var responseStream = response.ReadToStream())
+                {
+                    for (int len = 0; (len = responseStream.Read(buffer, 0, buffer.Length)) > 0;)
+                    {
+                        stream.Write(buffer, 0, len);
+                    }
+
+                    return DownloadResult.Success;
+                }
+
+            }
+
         }
 
     }

@@ -12,15 +12,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public abstract class GalleryAgent
     {
-        private WebExplorer _Explorer = null;
-        protected WebExplorer Explorer { get { return this._Explorer; } }
-
-        private ProxySettings _Proxy = null;
-        public ProxySettings Proxy { get { return this._Proxy; } set { this._Proxy = value; } }
+        public WebExplorer Explorer { get; }
+        public ProxySettings Proxy { get; set; }
 
         public GalleryAgent()
         {
-            this._Explorer = new WebExplorer();
+            this.Explorer = new WebExplorer();
+            this.Proxy = null;
         }
 
         public virtual RequestParameter CreateRequestParameter()
@@ -41,50 +39,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         }
 
         public abstract RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter, DownloadAgentParameter agentParameter);
-
-        public void Download(RequestParameter parameter, string localDirectory, byte[] buffer)
-        {
-            SessionResponse response = null;
-            Stream responseStream = null;
-            Stream localStream = null;
-
-            try
-            {
-                response = this.Explorer.Request(parameter);
-                responseStream = response.ReadToStream();
-                long length = response.Impl.ContentLength;
-                long position = 0L;
-
-                string fileName = new Uri(parameter.URL).LocalPath;
-                int slashIndex = fileName.LastIndexOf('/');
-
-                if (slashIndex > -1)
-                {
-                    fileName = fileName.Substring(slashIndex + 1);
-                }
-
-                localStream = new FileStream(Path.Combine(localDirectory, fileName), FileMode.Create);
-
-                for (int len = 0; (len = responseStream.Read(buffer, 0, buffer.Length)) > 0;)
-                {
-                    localStream.Write(buffer, 0, len);
-                    position += len;
-                }
-
-            }
-            catch (WebException e)
-            {
-                throw new NetworkException("", e);
-            }
-            finally
-            {
-                ObjectUtils.CloseAndDisposeQuietly(localStream);
-                ObjectUtils.CloseAndDisposeQuietly(responseStream);
-                ObjectUtils.CloseAndDisposeQuietly(response);
-            }
-
-        }
-
     }
 
 }
