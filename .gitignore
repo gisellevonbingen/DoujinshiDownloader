@@ -2,3 +2,6 @@
 .svn
 .vs
 obj
+bin
+.gradle
+.vs
