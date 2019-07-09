@@ -10,18 +10,18 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 {
     public class DownloadRequest : IEquatable<DownloadRequest>
     {
-        private DownloadInput _DownloadInput = default(DownloadInput);
-        public DownloadInput DownloadInput { get { return this._DownloadInput; } set { this._DownloadInput = value; } }
-
-        private DownloadMethod _DownloadMethod = null;
-        public DownloadMethod DownloadMethod { get { return this._DownloadMethod; } set { this._DownloadMethod = value; } }
-
-        private string _Title = null;
-        public string Title { get { return this._Title; } set { this._Title = value; } }
+        public DownloadInput DownloadInput { get; set; } = default;
+        public DownloadMethod DownloadMethod { get; set; } = null;
+        public string Title { get; set; } = null;
 
         public DownloadRequest()
         {
 
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is DownloadRequest other ? this.Equals(other) : false;
         }
 
         public bool Equals(DownloadRequest other)
