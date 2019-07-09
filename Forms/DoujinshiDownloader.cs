@@ -18,33 +18,28 @@ namespace Giselle.DoujinshiDownloader
 {
     public class DoujinshiDownloader : IDisposable
     {
-        private static DoujinshiDownloader _Instance = null;
-        public static DoujinshiDownloader Instance { get { return _Instance; } }
+        public static DoujinshiDownloader Instance { get; private set; } = null;
 
         [STAThread]
         public static void Main(string[] args)
         {
-            var instance = _Instance = new DoujinshiDownloader();
+            var instance = Instance = new DoujinshiDownloader();
             instance.Run();
         }
 
-        private Settings _Settings = null;
-        public Settings Settings { get { return this._Settings; } }
+        public Settings Settings { get; }
+        public FontManager FontManager { get; }
+        public DownloadScheduler Scheduler { get; }
 
-        private FontManager _FontManager = null;
-        public FontManager FontManager { get { return this._FontManager; } }
-
-        private DownloadScheduler _Scheduler = null;
-        public DownloadScheduler Scheduler { get { return this._Scheduler; } }
-
-        private MainForm _MainForm = null;
-        public MainForm MainForm { get { return this._MainForm; } }
+        public MainForm MainForm { get; private set; }
 
         public DoujinshiDownloader()
         {
-            this._Settings = new Settings(PathUtils.GetPath("Configuration.json"));
-            this._FontManager = new FontManager();
-            this._Scheduler = new DownloadScheduler();
+            this.Settings = new Settings(PathUtils.GetPath("Configuration.json"));
+            this.FontManager = new FontManager();
+            this.Scheduler = new DownloadScheduler();
+
+            this.MainForm = null;
         }
 
         ~DoujinshiDownloader()
@@ -61,11 +56,8 @@ namespace Giselle.DoujinshiDownloader
         protected void Dispose(bool disposing)
         {
             ObjectUtils.DisposeQuietly(this.MainForm);
-
             ObjectUtils.DisposeQuietly(this.Scheduler);
-
             ObjectUtils.DisposeQuietly(this.FontManager);
-
         }
 
         private void Run()
@@ -79,7 +71,7 @@ namespace Giselle.DoujinshiDownloader
 
                 this.Scheduler.Start();
 
-                var form = this._MainForm = new MainForm();
+                var form = this.MainForm = new MainForm();
                 Application.Run(form);
             }
             catch (Exception e)

@@ -19,30 +19,27 @@ namespace Giselle.DoujinshiDownloader.Resources
             return a.Equals(b) == false;
         }
 
-        private float _Size;
-        public float Size { get { return this._Size; } }
-
-        private FontStyle _Style;
-        public FontStyle Style { get { return this._Style; } }
+        public float Size { get; }
+        public FontStyle Style { get; }
 
         public FontFormat(float size, FontStyle style)
         {
-            this._Size = size;
-            this._Style = style;
+            this.Size = size;
+            this.Style = style;
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return this.Equals((FontFormat)obj);
+            return obj is FontFamily other ? this.Equals(other) : false;
         }
 
         public bool Equals(FontFormat other)
         {
+            if (other.GetType().Equals(this.GetType()) == false)
+            {
+                return false;
+            }
+
             if (this.Size.Equals(other.Size) == false)
             {
                 return false;

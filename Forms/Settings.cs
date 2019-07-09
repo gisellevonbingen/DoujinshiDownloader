@@ -11,30 +11,18 @@ namespace Giselle.DoujinshiDownloader
 {
     public class Settings
     {
-        private readonly string _Path = null;
-        public string Path { get { return this._Path; } }
+        public string Path { get; }
 
-        private ExHentaiAccount _Account = null;
-        public ExHentaiAccount Account { get { return this._Account; } set { this._Account = value; } }
-
-        private int _Timeout = 0;
-        public int Timeout { get { return this._Timeout; } set { this._Timeout = value; } }
-
-        private int _ThreadCount = 0;
-        public int ThreadCount { get { return this._ThreadCount; } set { this._ThreadCount = value; } }
-
-        private int _RetryCount = 0;
-        public int RetryCount { get { return this._RetryCount; } set { this._RetryCount = value; } }
-
-        private string _DownloadDirectory = null;
-        public string DownloadDirectory { get { return this._DownloadDirectory; } set { this._DownloadDirectory = value; } }
-
-        private bool _DownloadCompleteAutoRemove = false;
-        public bool DownloadCompleteAutoRemove { get { return this._DownloadCompleteAutoRemove; } set { this._DownloadCompleteAutoRemove = value; } }
+        public ExHentaiAccount Account { get; set; } = null;
+        public int Timeout { get; set; } = 0;
+        public int ThreadCount { get; set; } = 0;
+        public int RetryCount { get; set; } = 0;
+        public string DownloadDirectory { get; set; } = null;
+        public bool DownloadCompleteAutoRemove { get; set; } = false;
 
         public Settings(string path)
         {
-            this._Path = path;
+            this.Path = path;
         }
 
         public void Load()
@@ -54,7 +42,7 @@ namespace Giselle.DoujinshiDownloader
 
         public void Save()
         {
-            JObject jObject = new JObject();
+            var jObject = new JObject();
 
             jObject["Account"] = this.Account.Serialize();
             jObject["Timeout"] = this.Timeout;

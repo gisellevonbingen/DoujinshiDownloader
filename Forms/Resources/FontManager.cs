@@ -11,8 +11,7 @@ namespace Giselle.DoujinshiDownloader.Resources
 {
     public class FontManager : IDisposable
     {
-        private static readonly string _FontFamily = "맑은 고딕";
-        public static string FontFamily { get { return _FontFamily; } }
+        public static string FontFamily { get; } = "맑은 고딕";
 
         private readonly Dictionary<FontFormat, Font> FontMap = new Dictionary<FontFormat, Font>();
 
