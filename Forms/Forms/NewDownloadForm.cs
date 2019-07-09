@@ -130,6 +130,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 request.DownloadInput = validation.DownloadInput;
                 request.DownloadMethod = selectedMethod;
                 request.Title = validation.Titles[selectedMethod];
+                request.Archive = DoujinshiDownloader.Instance.Settings.DownloadToArchive;
 
                 this.DialogResult = DialogResult.OK;
             }
