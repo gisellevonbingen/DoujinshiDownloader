@@ -37,18 +37,29 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.UpdateControlsBoundsPreferred();
         }
 
+        public void ShowWithActivate()
+        {
+            if (this.Visible == false)
+            {
+                this.Visible = true;
+            }
+
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+
+            this.Activate();
+        }
+
+
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
 
             if (m.Msg == NativeMethods.WM_ShowSingleInstance)
             {
-                if (this.Visible == false)
-                {
-                    this.Visible = true;
-                }
-
-                this.Activate();
+                this.ShowWithActivate();
             }
 
         }

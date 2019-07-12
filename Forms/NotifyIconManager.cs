@@ -62,7 +62,7 @@ namespace Giselle.DoujinshiDownloader
 
         private void OnMenuItemMainFormShowClick(object sender, EventArgs e)
         {
-            DoujinshiDownloader.Instance.MainForm.Visible = true;
+            DoujinshiDownloader.Instance.MainForm.ShowWithActivate();
         }
 
         private void OnMenuItemMainFormHideClick(object sender, EventArgs e)
