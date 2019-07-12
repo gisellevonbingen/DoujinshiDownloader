@@ -43,6 +43,11 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             if (m.Msg == NativeMethods.WM_ShowSingleInstance)
             {
+                if (this.Visible == false)
+                {
+                    this.Visible = true;
+                }
+
                 this.Activate();
             }
 
