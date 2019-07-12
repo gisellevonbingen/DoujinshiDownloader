@@ -77,7 +77,7 @@ namespace Giselle.DoujinshiDownloader
 
         private void OnImplDoubleClick(object sender, EventArgs e)
         {
-            DoujinshiDownloader.Instance.MainForm.Visible = true;
+            DoujinshiDownloader.Instance.MainForm.ShowWithActivate();
         }
 
         protected virtual void Dispose(bool disposing)
