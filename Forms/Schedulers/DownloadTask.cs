@@ -289,7 +289,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 catch (Exception e)
                 {
                     result = DownloadResult.Exception;
-                    DoujinshiDownloader.Instance.ShowCrashMessageBox(e);
+                    DoujinshiDownloader.Instance.DumpCrashMessage(e);
                 }
 
                 lock (this.IndexLock)

@@ -126,7 +126,7 @@ namespace Giselle.DoujinshiDownloader
             return directory;
         }
 
-        private string DumpCrashMessage(Exception exception)
+        public string DumpCrashMessage(Exception exception)
         {
             try
             {
