@@ -78,15 +78,12 @@ namespace Giselle.DoujinshiDownloader
 
                 this.Scheduler.Start();
 
-                var context = new ApplicationContext();
-
                 using (var mainForm = new MainForm())
                 {
-                    context.MainForm = mainForm;
                     this.MainForm = mainForm;
 
                     mainForm.VisibleChanged += (sender, e) => this.OnMainFormVisibleChanged(e);
-                    Application.Run(context);
+                    Application.Run(mainForm);
                 }
 
             }
