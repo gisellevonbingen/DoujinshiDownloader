@@ -356,7 +356,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e);
+                        DoujinshiDownloader.Instance.DumpCrashMessage(e);
 
                         if (k + 1 == retryCount)
                         {

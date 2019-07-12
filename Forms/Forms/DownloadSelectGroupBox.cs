@@ -180,22 +180,22 @@ namespace Giselle.DoujinshiDownloader.Forms
             }
             catch (NetworkException e)
             {
-                Console.WriteLine(e);
+                DoujinshiDownloader.Instance.DumpCrashMessage(e);
                 return ValidateResult.CreateByError("네트워크 에러");
             }
             catch (ExHentaiAccountException e)
             {
-                Console.WriteLine(e);
+                DoujinshiDownloader.Instance.DumpCrashMessage(e);
                 return ValidateResult.CreateByError("ExHentai 계정 에러");
             }
             catch (HitomiRemovedGalleryException e)
             {
-                Console.WriteLine(e);
+                DoujinshiDownloader.Instance.DumpCrashMessage(e);
                 return ValidateResult.CreateByError("갤러리가 삭제됨");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                DoujinshiDownloader.Instance.DumpCrashMessage(e);
                 return ValidateResult.CreateByError("제목을 가져올 수 없음");
             }
 
