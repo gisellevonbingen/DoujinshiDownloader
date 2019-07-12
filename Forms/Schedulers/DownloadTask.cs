@@ -18,7 +18,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         public DownloadRequest Request { get; }
         public DownloadProgress Progress { get; }
 
-        public event DownloadTaskProgressingEventHandler Progressed = null;
+        public event EventHandler<TaskProgressingEventArgs> Progressed = null;
 
         private readonly object OperationLock = new object();
 
@@ -279,7 +279,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                 try
                 {
-                    this.OnProgressing(new DownloadTaskProgressingEventArgs(index, url, DownloadResult.Downloading));
+                    this.OnProgressing(new TaskProgressingEventArgs(index, url, DownloadResult.Downloading));
                     result = this.Download(url);
                 }
                 catch (ThreadAbortException)
@@ -297,12 +297,12 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     this._Index++;
                 }
 
-                this.OnProgressing(new DownloadTaskProgressingEventArgs(index, url, result));
+                this.OnProgressing(new TaskProgressingEventArgs(index, url, result));
             }
 
         }
 
-        protected virtual void OnProgressing(DownloadTaskProgressingEventArgs e)
+        protected virtual void OnProgressing(TaskProgressingEventArgs e)
         {
             this.Progressed?.Invoke(this, e);
         }

@@ -25,7 +25,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this.Map = new Dictionary<int, DownloadResult>();
         }
 
-        private void OnTaskProgressed(object sender, DownloadTaskProgressingEventArgs e)
+        private void OnTaskProgressed(object sender, TaskProgressingEventArgs e)
         {
             var index = e.Index;
 

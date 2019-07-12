@@ -119,7 +119,7 @@
     <Compile Include="Schedulers\DownloadRequest.cs" />
     <Compile Include="Schedulers\DownloadRequestEventArgs.cs" />
     <Compile Include="Schedulers\DownloadResult.cs" />
-    <Compile Include="Schedulers\DownloadTaskProgressingEventArgs.cs" />
+    <Compile Include="Schedulers\TaskProgressingEventArgs.cs" />
     <Compile Include="Schedulers\DownloadScheduler.cs" />
     <Compile Include="Schedulers\DownloadTask.cs" />
     <Compile Include="Forms\DownloadListBox.cs">

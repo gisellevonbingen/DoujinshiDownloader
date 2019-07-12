@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Schedulers
 {
-    public delegate void DownloadTaskProgressingEventHandler(object sender, DownloadTaskProgressingEventArgs e);
-
-    public class DownloadTaskProgressingEventArgs : EventArgs
+    public class TaskProgressingEventArgs : EventArgs
     {
         private int _Index = 0;
         public int Index { get { return this._Index; } }
@@ -19,7 +17,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         private DownloadResult _Result = DownloadResult.Exception;
         public DownloadResult Result { get { return this._Result; } }
 
-        public DownloadTaskProgressingEventArgs(int index, string url, DownloadResult result)
+        public TaskProgressingEventArgs(int index, string url, DownloadResult result)
         {
             this._Index = index;
             this._URL = url;

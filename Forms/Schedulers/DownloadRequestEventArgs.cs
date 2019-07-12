@@ -7,8 +7,6 @@ using Giselle.DoujinshiDownloader.Doujinshi;
 
 namespace Giselle.DoujinshiDownloader.Schedulers
 {
-    public delegate void DownloadRequestEventHandler(object sender, DownloadRequestEventArgs e);
-
     public class DownloadRequestEventArgs : EventArgs
     {
         private DownloadRequest _Request = null;

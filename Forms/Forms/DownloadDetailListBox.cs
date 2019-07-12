@@ -101,7 +101,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             return map;
         }
 
-        private void OnTaskProgressed(object sender, DownloadTaskProgressingEventArgs _e)
+        private void OnTaskProgressed(object sender, TaskProgressingEventArgs _e)
         {
             ControlUtils.InvokeIfNeed(this, e => this.Items[e.Index].State = e.Result, _e);
         }

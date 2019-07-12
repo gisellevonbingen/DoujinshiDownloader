@@ -118,7 +118,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             ControlUtils.InvokeIfNeed(this, this.UpdateProgressBar);
         }
 
-        private void OnTaskProgressed(object sender, DownloadTaskProgressingEventArgs e)
+        private void OnTaskProgressed(object sender, TaskProgressingEventArgs e)
         {
             ControlUtils.InvokeIfNeed(this, this.UpdateProgressBar);
         }

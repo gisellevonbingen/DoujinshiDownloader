@@ -20,7 +20,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private Button NewDownloadButton = null;
 
-        public event DownloadRequestEventHandler DownloadRequested = null;
+        public event EventHandler<DownloadRequestEventArgs> DownloadRequested = null;
 
         public MainMenu()
         {
