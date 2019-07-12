@@ -18,61 +18,70 @@ namespace Giselle.DoujinshiDownloader
 {
     public class DoujinshiDownloader : IDisposable
     {
+        public static string FullName => "Giselle.DoujinshiDownloader";
+        public static string Name => "DoujinshiDownloader";
+
         public static DoujinshiDownloader Instance { get; private set; } = null;
 
         [STAThread]
         public static void Main(string[] args)
         {
-            var instance = Instance = new DoujinshiDownloader();
-            instance.Run();
+            using (var mutex = new Mutex(true, FullName, out var createdNew))
+            {
+                if (createdNew == true)
+                {
+                    var instance = Instance = new DoujinshiDownloader();
+                    instance.Run();
+                }
+                else
+                {
+                    NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_ShowSingleInstance, IntPtr.Zero, IntPtr.Zero);
+                }
+
+            }
+
         }
 
         public Settings Settings { get; }
         public FontManager FontManager { get; }
+        public NotifyIconManager NotifyIconManager { get; }
         public DownloadScheduler Scheduler { get; }
 
         public MainForm MainForm { get; private set; }
+        public event EventHandler MainFormVisibleChanged;
 
         public DoujinshiDownloader()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             this.Settings = new Settings(PathUtils.GetPath("Configuration.json"));
             this.FontManager = new FontManager();
+            this.NotifyIconManager = new NotifyIconManager(this);
             this.Scheduler = new DownloadScheduler();
 
             this.MainForm = null;
-        }
-
-        ~DoujinshiDownloader()
-        {
-            this.Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            ObjectUtils.DisposeQuietly(this.MainForm);
-            ObjectUtils.DisposeQuietly(this.Scheduler);
-            ObjectUtils.DisposeQuietly(this.FontManager);
         }
 
         private void Run()
         {
             try
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-
                 this.Settings.Load();
 
                 this.Scheduler.Start();
 
-                var form = this.MainForm = new MainForm();
-                Application.Run(form);
+                var context = new ApplicationContext();
+
+                using (var mainForm = new MainForm())
+                {
+                    context.MainForm = mainForm;
+                    this.MainForm = mainForm;
+
+                    mainForm.VisibleChanged += (sender, e) => this.OnMainFormVisibleChanged(e);
+                    Application.Run(context);
+                }
+
             }
             catch (Exception e)
             {
@@ -100,6 +109,11 @@ namespace Giselle.DoujinshiDownloader
 
         }
 
+        protected virtual void OnMainFormVisibleChanged(EventArgs e)
+        {
+            this.MainFormVisibleChanged?.Invoke(this, e);
+        }
+
         public string GetCrashReportsDirectory()
         {
             var directory = PathUtils.GetPath("CrashReports");
@@ -112,6 +126,7 @@ namespace Giselle.DoujinshiDownloader
         {
             try
             {
+                Console.WriteLine(exception);
                 var directory = this.GetCrashReportsDirectory();
 
                 var dateTime = DateTime.Now;
@@ -127,6 +142,51 @@ namespace Giselle.DoujinshiDownloader
                 return null;
             }
 
+        }
+
+        public void QueryQuit()
+        {
+            var dd = DoujinshiDownloader.Instance;
+            var scheduler = dd.Scheduler;
+            var tasks = scheduler.GetQueueCopy();
+
+            string text = null;
+
+            if (scheduler.Busy == true || tasks.Count > 0)
+            {
+                text = $"진행중인 다운로드가 있습니다.{Environment.NewLine}정말로 종료하시겠습니까?";
+            }
+            else
+            {
+                text = "프로그램을 종료하시겠습니까?";
+            }
+
+            var result = MessageBox.Show(text, "종료 확인", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+
+            if (result == DialogResult.OK)
+            {
+                ObjectUtils.DisposeQuietly(this);
+            }
+
+        }
+
+        ~DoujinshiDownloader()
+        {
+            this.Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            ObjectUtils.DisposeQuietly(this.MainForm);
+            ObjectUtils.DisposeQuietly(this.Scheduler);
+            ObjectUtils.DisposeQuietly(this.NotifyIconManager);
+            ObjectUtils.DisposeQuietly(this.FontManager);
         }
 
     }

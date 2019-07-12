@@ -19,7 +19,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.SuspendLayout();
 
-            this.Text = "동인지 다운로더";
+            this.Text = DoujinshiDownloader.Name;
             this.StartPosition = FormStartPosition.CenterScreen;
 
             var mainMenu = this.MainMenu = new MainMenu();
@@ -37,27 +37,25 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.UpdateControlsBoundsPreferred();
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+
+            if (m.Msg == NativeMethods.WM_ShowSingleInstance)
+            {
+                this.Activate();
+            }
+
+        }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
 
             if (e.CloseReason == CloseReason.UserClosing)
             {
-                var dd = DoujinshiDownloader.Instance;
-                var scheduler = dd.Scheduler;
-                var tasks = scheduler.GetQueueCopy();
-
-                if (scheduler.Busy == true || tasks.Count > 0)
-                {
-                    var result = MessageBox.Show(this, $"진행중인 다운로드가 있습니다.{Environment.NewLine}정말로 종료하시겠습니까?", "종료 확인", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-
-                    if (result == DialogResult.Cancel)
-                    {
-                        e.Cancel = true;
-                    }
-
-                }
-
+                e.Cancel = true;
+                this.Visible = false;
             }
 
         }

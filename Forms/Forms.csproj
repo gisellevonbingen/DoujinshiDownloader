@@ -101,6 +101,13 @@
     <Compile Include="Forms\SelectAllableTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="NotifyIconManager.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\FontMatchFormat.cs" />
     <Compile Include="Schedulers\FileArchive.cs" />
     <Compile Include="Schedulers\FileArchiveDirectory.cs" />
@@ -183,14 +190,9 @@
     <Compile Include="Utils\FileSizeUtils.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -201,6 +203,9 @@
       <Project>{905e2871-4999-42bc-861c-9aca580ebd63}</Project>
       <Name>Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NotifyIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
