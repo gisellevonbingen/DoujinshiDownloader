@@ -289,7 +289,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 catch (Exception e)
                 {
                     result = DownloadResult.Exception;
-                    DoujinshiDownloader.Instance.DumpCrashMessage(e);
+                    Console.WriteLine(e);
                 }
 
                 lock (this.IndexLock)
@@ -356,8 +356,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     }
                     catch (Exception e)
                     {
-                        DoujinshiDownloader.Instance.DumpCrashMessage(e);
-
                         if (k + 1 == retryCount)
                         {
                             throw new Exception(pagePath, e);
