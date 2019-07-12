@@ -134,7 +134,7 @@ namespace Giselle.DoujinshiDownloader
                 var directory = this.GetCrashReportsDirectory();
 
                 var dateTime = DateTime.Now;
-                var file = PathUtils.GetPath(directory, dateTime.ToString("yyyy_MM_dd HH_mm_ss_fff") + ".log");
+                var file = PathUtils.GetFilePathNotDuplicate(PathUtils.GetPath(directory, dateTime.ToString("yyyy_MM_dd HH_mm_ss_fff") + ".log"));
 
                 File.WriteAllText(file, string.Concat(exception));
 
