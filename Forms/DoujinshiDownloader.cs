@@ -55,6 +55,7 @@ namespace Giselle.DoujinshiDownloader
             Console.CancelKeyPress += this.OnConsoleCancelKeyPress;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            FormUtils.DefaultIcon = Properties.Resources.Icon;
 
             this.Settings = new Settings(PathUtils.GetPath("Configuration.json"));
             this.FontManager = new FontManager();
