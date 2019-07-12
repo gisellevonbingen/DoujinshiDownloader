@@ -52,6 +52,7 @@ namespace Giselle.DoujinshiDownloader
 
         public DoujinshiDownloader()
         {
+            Console.CancelKeyPress += this.OnConsoleCancelKeyPress;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -61,6 +62,11 @@ namespace Giselle.DoujinshiDownloader
             this.Scheduler = new DownloadScheduler();
 
             this.MainForm = null;
+        }
+
+        private void OnConsoleCancelKeyPress(object sender, ConsoleCancelEventArgs e)
+        {
+            ObjectUtils.DisposeQuietly(this);
         }
 
         private void Run()
