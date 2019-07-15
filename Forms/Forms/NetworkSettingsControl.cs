@@ -23,7 +23,6 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var dd = DoujinshiDownloader.Instance;
             var fm = dd.FontManager;
-            this.Font = fm[12, FontStyle.Regular];
 
             this.Text = "네트워크";
 
