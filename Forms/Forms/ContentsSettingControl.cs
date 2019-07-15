@@ -12,7 +12,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
-    public class ContentsSettingGroupBox : SettingControl
+    public class ContentsSettingControl : SettingControl
     {
         private CheckBox CompleteAutoRemoveCheckBox = null;
         private CheckBox DownloadToArchiveCheckBox = null;
@@ -20,7 +20,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         private Button DirectoryButton = null;
         private Label DirectoryCommentLabel = null;
 
-        public ContentsSettingGroupBox()
+        public ContentsSettingControl()
         {
             this.SuspendLayout();
 

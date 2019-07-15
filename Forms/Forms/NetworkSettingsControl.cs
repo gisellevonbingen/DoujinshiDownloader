@@ -11,13 +11,13 @@ using Giselle.DoujinshiDownloader.Utils;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
-    public class NetworkSettingsGroupBox : SettingControl
+    public class NetworkSettingsControl : SettingControl
     {
         private SettingTrackBar TimeoutControl = null;
         private SettingTrackBar ThreadCountControl = null;
         private SettingTrackBar RetryCountControl = null;
 
-        public NetworkSettingsGroupBox()
+        public NetworkSettingsControl()
         {
             this.SuspendLayout();
 

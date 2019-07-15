@@ -86,7 +86,7 @@
     <Compile Include="Doujinshi\DownloadMethodExHentaiOriginal.cs" />
     <Compile Include="Doujinshi\DownloadMethodHitomi.cs" />
     <Compile Include="Doujinshi\DownloadMethodHitomiRemoved.cs" />
-    <Compile Include="Forms\ContentsSettingGroupBox.cs">
+    <Compile Include="Forms\ContentsSettingControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\DownloadDetailForm.cs">
@@ -135,7 +135,7 @@
     <Compile Include="Forms\DownloadSelectGroupBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\ExHentaiAccountSettingsGroupBox.cs">
+    <Compile Include="Forms\ExHentaiAccountSettingsControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\LabeledComboBox.cs">
@@ -150,7 +150,7 @@
     <Compile Include="Forms\LabeledTrackBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\NetworkSettingsGroupBox.cs">
+    <Compile Include="Forms\NetworkSettingsControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\NewDownloadForm.cs">

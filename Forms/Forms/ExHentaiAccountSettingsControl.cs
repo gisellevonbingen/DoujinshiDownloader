@@ -14,7 +14,7 @@ using Giselle.DoujinshiDownloader.Forms.Utils;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
-    public class ExHentaiAccountSettingsGroupBox : SettingControl
+    public class ExHentaiAccountSettingsControl : SettingControl
     {
         private LabeledTextBox MemberIdControl = null;
         private LabeledTextBox PassHashControl = null;
@@ -24,7 +24,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         private readonly object ThreadLock = new object();
         private Thread VerifyThread = null;
 
-        public ExHentaiAccountSettingsGroupBox()
+        public ExHentaiAccountSettingsControl()
         {
             this.SuspendLayout();
 

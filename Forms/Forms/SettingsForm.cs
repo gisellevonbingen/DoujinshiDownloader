@@ -34,9 +34,9 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Controls.Add(this.ListBox);
 
             this.SettingControls = new List<SettingControl>();
-            this.SettingControls.Add(new ExHentaiAccountSettingsGroupBox());
-            this.SettingControls.Add(new NetworkSettingsGroupBox());
-            this.SettingControls.Add(new ContentsSettingGroupBox());
+            this.SettingControls.Add(new ExHentaiAccountSettingsControl());
+            this.SettingControls.Add(new NetworkSettingsControl());
+            this.SettingControls.Add(new ContentsSettingControl());
 
             foreach (var control in this.SettingControls)
             {
