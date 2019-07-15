@@ -11,7 +11,7 @@ using Giselle.DoujinshiDownloader.Utils;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
-    public class NetworkSettingsGroupBox : OptimizedGroupBox
+    public class NetworkSettingsGroupBox : SettingControl
     {
         private SettingTrackBar TimeoutControl = null;
         private SettingTrackBar ThreadCountControl = null;
@@ -25,7 +25,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var fm = dd.FontManager;
             this.Font = fm[12, FontStyle.Regular];
 
-            this.Text = "네트워크 설정";
+            this.Text = "네트워크";
 
             var timeoutControl = this.TimeoutControl = new SettingTrackBar();
             timeoutControl.TextLabel.Text = "타임아웃 (기본 값 : 60.0초)";
@@ -67,14 +67,19 @@ namespace Giselle.DoujinshiDownloader.Forms
             e.ValueToString = (e.Value / 1000.0D).ToString("F1");
         }
 
-        public void Bind(Settings settings)
+        public override (string name, Control control) Validate()
+        {
+            return (null, null);
+        }
+
+        public override void Bind(Settings settings)
         {
             this.TimeoutControl.TrackBar.Value = settings.Timeout;
             this.ThreadCountControl.TrackBar.Value = settings.ThreadCount;
             this.RetryCountControl.TrackBar.Value = settings.RetryCount;
         }
 
-        public void Apply(Settings settings)
+        public override void Apply(Settings settings)
         {
             settings.Timeout = this.TimeoutControl.TrackBar.Value;
             settings.ThreadCount = this.ThreadCountControl.TrackBar.Value;

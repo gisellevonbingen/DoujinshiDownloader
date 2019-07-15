@@ -13,9 +13,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 {
     public class SettingsForm : OptimizedForm
     {
-        private ExHentaiAccountSettingsGroupBox AccountSettingsGroupBox = null;
-        private NetworkSettingsGroupBox NetworkSettingsGroupBox = null;
-        private ContentsSettingGroupBox ContentsSettingGroupBox = null;
+        private ListBox ListBox;
+        private List<SettingControl> SettingControls;
 
         private Button SaveButton = null;
         private new Button CancelButton = null;
@@ -30,14 +29,22 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Text = "설정";
             this.StartPosition = FormStartPosition.CenterParent;
 
-            this.AccountSettingsGroupBox = new ExHentaiAccountSettingsGroupBox();
-            this.Controls.Add(this.AccountSettingsGroupBox);
+            this.ListBox = new ListBox();
+            this.ListBox.SelectedIndexChanged += this.OnListBoxSelectedIndexChanged;
+            this.Controls.Add(this.ListBox);
 
-            this.NetworkSettingsGroupBox = new NetworkSettingsGroupBox();
-            this.Controls.Add(this.NetworkSettingsGroupBox);
+            this.SettingControls = new List<SettingControl>();
+            this.SettingControls.Add(new ExHentaiAccountSettingsGroupBox());
+            this.SettingControls.Add(new NetworkSettingsGroupBox());
+            this.SettingControls.Add(new ContentsSettingGroupBox());
 
-            this.ContentsSettingGroupBox = new ContentsSettingGroupBox();
-            this.Controls.Add(this.ContentsSettingGroupBox);
+            foreach (var control in this.SettingControls)
+            {
+                control.Visible = false;
+                this.Controls.Add(control);
+            }
+
+            this.UpdateListBoxItems();
 
             var saveButton = this.SaveButton = new Button();
             saveButton.FlatStyle = FlatStyle.Flat;
@@ -55,9 +62,52 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.ResumeLayout(false);
 
-            this.ClientSize = new Size(500, 500);
-            this.Padding = new Padding(10, 6, 10, 10);
-            this.UpdateControlsBoundsPreferred();
+            this.ListBox.SelectedIndex = 0;
+
+            this.ClientSize = new Size(700, 500);
+
+        }
+
+        private void OnListBoxSelectedIndexChanged(object sender, EventArgs e)
+        {
+            var item = this.ListBox.SelectedItem as ListItemWrapper<SettingControl>;
+
+            if (item != null)
+            {
+                this.Select(item.Value);
+            }
+
+        }
+
+        private void UpdateListBoxItems()
+        {
+            var listBox = this.ListBox;
+            listBox.SuspendLayout();
+
+            var items = listBox.Items;
+            items.Clear();
+
+            foreach (var control in this.SettingControls)
+            {
+                items.Add(new ListItemWrapper<SettingControl>(control.Text, control));
+            }
+
+            listBox.ResumeLayout(false);
+        }
+
+        public void Select(SettingControl control)
+        {
+            foreach (var c in this.SettingControls)
+            {
+                var willVisible = c == control;
+
+                if (c.Visible != willVisible)
+                {
+                    c.Visible = willVisible;
+                }
+
+            }
+
         }
 
         protected override void OnShown(EventArgs e)
@@ -67,25 +117,36 @@ namespace Giselle.DoujinshiDownloader.Forms
             var dd = DoujinshiDownloader.Instance;
             var settings = dd.Settings;
 
-            this.AccountSettingsGroupBox.Bind(settings.Account);
-            this.NetworkSettingsGroupBox.Bind(settings);
-            this.ContentsSettingGroupBox.Bind(settings);
+            foreach (var control in this.SettingControls)
+            {
+                control.Bind(settings);
+            }
 
         }
 
         private void OnSaveButtonClick(object sender, EventArgs e)
         {
-            if (this.ContentsSettingGroupBox.Validate() == false)
+            foreach (var control in this.SettingControls)
             {
-                return;
+                var invalid = control.Validate();
+
+                if (invalid.control != null)
+                {
+                    this.Select(control);
+
+                    return;
+                }
+
             }
 
             var dd = DoujinshiDownloader.Instance;
             var settings = dd.Settings;
 
-            settings.Account = this.AccountSettingsGroupBox.Parse();
-            this.NetworkSettingsGroupBox.Apply(settings);
-            this.ContentsSettingGroupBox.Apply(settings);
+            foreach (var control in this.SettingControls)
+            {
+                control.Apply(settings);
+            }
+
             settings.Save();
 
             this.DialogResult = DialogResult.OK;
@@ -101,18 +162,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             var map = base.GetPreferredBounds(layoutBounds);
             int margin = 10;
 
-            var accountGroupBox = this.AccountSettingsGroupBox;
-            var accountGroupBoxSize = accountGroupBox.GetPreferredSize(new Size(layoutBounds.Width, 0));
-            var accountGroupBoxBounds = map[accountGroupBox] = new Rectangle(new Point(layoutBounds.Left, layoutBounds.Top), accountGroupBoxSize);
-
-            var networkGroupBox = this.NetworkSettingsGroupBox;
-            var networkGroupBoxSize = networkGroupBox.GetPreferredSize(new Size(layoutBounds.Width, 0));
-            var networkGroupBoxSizeBounds = map[networkGroupBox] = DrawingUtils2.PlaceByDirection(accountGroupBoxBounds, networkGroupBoxSize, PlaceDirection.Bottom, 6);
-
-            var contentsGroupBox = this.ContentsSettingGroupBox;
-            var contentsGroupBoxSize = contentsGroupBox.GetPreferredSize(new Size(layoutBounds.Width, 0));
-            var contentsGroupBoxSizeBounds = map[contentsGroupBox] = DrawingUtils2.PlaceByDirection(networkGroupBoxSizeBounds, contentsGroupBoxSize, PlaceDirection.Bottom, 6);
-
             var resultButtonSize = new Size((layoutBounds.Width - margin) / 2, 30);
 
             var saveButton = this.SaveButton;
@@ -121,6 +170,16 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var cancelButton = this.CancelButton;
             map[cancelButton] = DrawingUtils2.PlaceByDirection(saveButtonBounds, resultButtonSize, PlaceDirection.Left, margin);
+
+            var listBox = this.ListBox;
+            var listBoxBounds = map[listBox] = new Rectangle(layoutBounds.Left, layoutBounds.Top, 200, saveButtonBounds.Top - layoutBounds.Top);
+
+            var controlBounds = Rectangle.FromLTRB(listBoxBounds.Right + margin, listBoxBounds.Top, layoutBounds.Right, listBoxBounds.Bottom);
+
+            foreach (var control in this.SettingControls)
+            {
+                map[control] = controlBounds;
+            }
 
             return map;
         }

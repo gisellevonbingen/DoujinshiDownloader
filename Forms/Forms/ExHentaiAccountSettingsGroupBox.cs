@@ -14,7 +14,7 @@ using Giselle.DoujinshiDownloader.Forms.Utils;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
-    public class ExHentaiAccountSettingsGroupBox : OptimizedGroupBox
+    public class ExHentaiAccountSettingsGroupBox : SettingControl
     {
         private LabeledTextBox MemberIdControl = null;
         private LabeledTextBox PassHashControl = null;
@@ -32,7 +32,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var fm = dd.FontManager;
             this.Font = fm[12, FontStyle.Regular];
 
-            this.Text = "Exhentai계정 설정";
+            this.Text = "Exhentai계정";
 
             var memberIdControl = this.MemberIdControl = new LabeledTextBox();
             memberIdControl.Label.Text = "MemberId";
@@ -97,7 +97,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                     messageLabel.Text = "확인중입니다.";
                 });
 
-                result = agent.CheckAccount(this.Parse());
+                result = agent.CheckAccount(this.ParseAccount());
             }
             catch (Exception e)
             {
@@ -163,17 +163,28 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
-        public ExHentaiAccount Parse()
+        public override (string name, Control control) Validate()
         {
-            ExHentaiAccount account = new ExHentaiAccount();
+            return (null, null);
+        }
+
+        public ExHentaiAccount ParseAccount()
+        {
+            var account = new ExHentaiAccount();
             account.MemberId = this.MemberIdControl.TextBox.Text;
             account.PassHash = this.PassHashControl.TextBox.Text;
 
             return account;
         }
 
-        public void Bind(ExHentaiAccount account)
+        public override void Apply(Settings settings)
         {
+            settings.Account = this.ParseAccount();
+        }
+
+        public override void Bind(Settings settings)
+        {
+            var account = settings.Account;
             this.MemberIdControl.TextBox.Text = account.MemberId;
             this.PassHashControl.TextBox.Text = account.PassHash;
         }

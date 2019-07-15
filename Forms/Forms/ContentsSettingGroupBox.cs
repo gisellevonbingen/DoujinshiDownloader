@@ -12,7 +12,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
-    public class ContentsSettingGroupBox : OptimizedGroupBox
+    public class ContentsSettingGroupBox : SettingControl
     {
         private CheckBox CompleteAutoRemoveCheckBox = null;
         private CheckBox DownloadToArchiveCheckBox = null;
@@ -28,7 +28,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var fm = dd.FontManager;
             this.Font = fm[12, FontStyle.Regular];
 
-            this.Text = "다운로드 설정";
+            this.Text = "다운로드";
 
             var completeAutoRemoveCheckBox = this.CompleteAutoRemoveCheckBox = new CheckBox();
             completeAutoRemoveCheckBox.Text = "다운로드 완료 시 목록에서 자동으로 제거";
@@ -77,17 +77,14 @@ namespace Giselle.DoujinshiDownloader.Forms
             return validated;
         }
 
-        public bool Validate()
+        public override (string name, Control control) Validate()
         {
             if (this.IsValidate() == false)
             {
-                var message = this.DirectoryTextBox.Label.Text + "값이 잘못되었습니다.";
-                MessageBox.Show(this.FindForm(), message, "에러", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-
-                return false;
+                return (this.DirectoryTextBox.Label.Text, this.DirectoryTextBox.TextBox);
             }
 
-            return true;
+            return (null, null);
         }
 
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)
@@ -134,14 +131,14 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
-        public void Bind(Settings settings)
+        public override void Bind(Settings settings)
         {
             this.DirectoryTextBox.TextBox.Text = settings.DownloadDirectory;
             this.CompleteAutoRemoveCheckBox.Checked = settings.DownloadCompleteAutoRemove;
             this.DownloadToArchiveCheckBox.Checked = settings.DownloadToArchive;
         }
 
-        public void Apply(Settings settings)
+        public override void Apply(Settings settings)
         {
             settings.DownloadDirectory = this.DirectoryTextBox.TextBox.Text;
             settings.DownloadCompleteAutoRemove = this.CompleteAutoRemoveCheckBox.Checked;
