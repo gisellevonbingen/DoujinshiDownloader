@@ -103,9 +103,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 return false;
             }
 
-            int number = 0;
-
-            if (int.TryParse(numberToString, out number) == false)
+            if (int.TryParse(numberToString, out var number) == false)
             {
                 return false;
             }
@@ -116,11 +114,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return true;
         }
 
-        private int _Number;
-        public int Number { get { return this._Number; } set { this._Number = value; } }
-
-        private string _Key;
-        public string Key { get { return this._Key; } set { this._Key = value; } }
+        public int Number { get; set; }
+        public string Key { get; set; }
 
         public DownloadInput(int number) : this(number, null)
         {
@@ -129,22 +124,22 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public DownloadInput(int number, string key)
         {
-            _Number = number;
-            _Key = key;
+            this.Number = number;
+            this.Key = key;
         }
 
         public override string ToString()
         {
-            int number = this.Number;
-            string key = this.Key;
+            var number = this.Number;
+            var key = this.Key;
 
             if (key == null)
             {
-                return $"{{{number}}}";
+                return $"{number}";
             }
             else
             {
-                return $"{{{number}/{key}}}";
+                return $"{number}/{key}";
             }
 
         }
@@ -168,16 +163,16 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return this.Equals((DownloadInput)obj);
+            return obj is DownloadInput other ? this.Equals(other) : false;
         }
 
         public bool Equals(DownloadInput other)
         {
+            if (other.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             if (this.Number != other.Number)
             {
                 return false;
