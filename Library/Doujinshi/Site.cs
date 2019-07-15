@@ -11,25 +11,21 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
     {
         private static readonly List<Site> _Knowns = new List<Site>();
 
-        private static Site _Hitomi = null;
-        public static Site Hitomi { get { return _Hitomi; } }
+        public static Site Hitomi { get; }
 
-        private static Site _HitomiRemoved = null;
-        public static Site HitomiRemoved { get { return _HitomiRemoved; } }
+        public static Site HitomiRemoved { get; }
 
-        private static Site _E_Hentai = null;
-        public static Site E_Hentai { get { return _E_Hentai; } }
+        public static Site E_Hentai { get; }
 
-        private static Site _ExHentai = null;
-        public static Site ExHentai { get { return _ExHentai; } }
+        public static Site ExHentai { get; }
 
         static Site()
         {
             var knownSites = _Knowns = new List<Site>();
-            knownSites.Add(_Hitomi = new SiteHitomi());
-            knownSites.Add(_HitomiRemoved = new SiteHitomiRemoved());
-            knownSites.Add(_E_Hentai = new SiteE_Hentai());
-            knownSites.Add(_ExHentai = new SiteExHentai());
+            knownSites.Add(Hitomi = new SiteHitomi());
+            knownSites.Add(HitomiRemoved = new SiteHitomiRemoved());
+            knownSites.Add(E_Hentai = new SiteE_Hentai());
+            knownSites.Add(ExHentai = new SiteExHentai());
         }
 
         public static Site[] Knowns { get { return _Knowns.ToArray(); } }

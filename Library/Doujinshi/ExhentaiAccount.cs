@@ -9,11 +9,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class ExHentaiAccount
     {
-        private string _MemberId = null;
-        public string MemberId { get { return this._MemberId; } set { this._MemberId = value; } }
-
-        private string _PassHash = null;
-        public string PassHash { get { return this._PassHash; } set { this._PassHash = value; } }
+        public string MemberId { get; set; } = null;
+        public string PassHash { get; set; } = null;
 
         public ExHentaiAccount()
         {
@@ -33,8 +30,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public JToken Serialize()
         {
-            JObject jObj = new JObject();
-
+            var jObj = new JObject();
             jObj["MemberId"] = this.MemberId;
             jObj["PassHash"] = this.PassHash;
 

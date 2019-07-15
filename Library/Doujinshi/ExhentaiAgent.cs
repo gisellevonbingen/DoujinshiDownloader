@@ -15,8 +15,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class ExHentaiAgent : GalleryAgent
     {
-        private ExHentaiAccount _Account = null;
-        public ExHentaiAccount Account { get { return this._Account; } set { this._Account = value; } }
+        public ExHentaiAccount Account { get; set; } = null;
 
         public ExHentaiAgent()
         {

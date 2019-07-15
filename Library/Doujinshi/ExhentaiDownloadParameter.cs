@@ -8,8 +8,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class ExHentaiDownloadParameter : DownloadAgentParameter
     {
-        private bool _Original = false;
-        public bool Original { get { return this._Original; } set { this._Original = value; } }
+        public bool Original { get; set; } = false;
 
         public ExHentaiDownloadParameter()
         {
