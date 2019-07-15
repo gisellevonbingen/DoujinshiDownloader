@@ -14,6 +14,7 @@ namespace Giselle.DoujinshiDownloader.Forms
     public class SettingsForm : OptimizedForm
     {
         private ListBox ListBox;
+        private OptimizedControl SettingBox;
         private List<SettingControl> SettingControls;
 
         private Button SaveButton = null;
@@ -33,6 +34,10 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.ListBox.SelectedIndexChanged += this.OnListBoxSelectedIndexChanged;
             this.Controls.Add(this.ListBox);
 
+            this.SettingBox = new OptimizedControl();
+            this.SettingBox.Paint += this.OnSettingBoxPaint;
+            this.Controls.Add(this.SettingBox);
+
             this.SettingControls = new List<SettingControl>();
             this.SettingControls.Add(new ExHentaiAccountSettingsControl());
             this.SettingControls.Add(new NetworkSettingsControl());
@@ -41,7 +46,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             foreach (var control in this.SettingControls)
             {
                 control.Visible = false;
-                this.Controls.Add(control);
+                this.SettingBox.Controls.Add(control);
             }
 
             this.UpdateListBoxItems();
@@ -65,6 +70,24 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.ListBox.SelectedIndex = 0;
 
             this.ClientSize = new Size(700, 500);
+
+        }
+
+        private void OnSettingBoxPaint(object sender, PaintEventArgs e)
+        {
+            var settingBox = sender as OptimizedControl;
+            var g = e.Graphics;
+
+            using (var brush = new SolidBrush(Color.Black))
+            {
+                using (var pen = new Pen(brush, 1.0F))
+                {
+                    ControlPaint.DrawBorder(g, settingBox.ClientRectangle, Color.Black, ButtonBorderStyle.Solid);
+                    //pen.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
+                    //g.DrawRectangle(pen, settingBox.ClientRectangle);
+                }
+
+            }
 
         }
 
@@ -172,9 +195,12 @@ namespace Giselle.DoujinshiDownloader.Forms
             map[cancelButton] = DrawingUtils2.PlaceByDirection(saveButtonBounds, resultButtonSize, PlaceDirection.Left, margin);
 
             var listBox = this.ListBox;
-            var listBoxBounds = map[listBox] = new Rectangle(layoutBounds.Left, layoutBounds.Top, 200, saveButtonBounds.Top - layoutBounds.Top);
+            var listBoxBounds = map[listBox] = new Rectangle(layoutBounds.Left, layoutBounds.Top, 200, saveButtonBounds.Top - layoutBounds.Top - margin);
 
-            var controlBounds = Rectangle.FromLTRB(listBoxBounds.Right + margin, listBoxBounds.Top, layoutBounds.Right, listBoxBounds.Bottom);
+            var settingBox = this.SettingBox;
+            var settingBoxBounds = map[settingBox] = Rectangle.FromLTRB(listBoxBounds.Right + margin, listBoxBounds.Top, layoutBounds.Right, listBoxBounds.Bottom);
+
+            var controlBounds = Rectangle.FromLTRB(margin, margin, settingBoxBounds.Width - margin, settingBoxBounds.Height - margin);
 
             foreach (var control in this.SettingControls)
             {
