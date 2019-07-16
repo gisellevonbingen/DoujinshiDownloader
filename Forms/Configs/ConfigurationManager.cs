@@ -6,9 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Giselle.DoujinshiDownloader
+namespace Giselle.DoujinshiDownloader.Configs
 {
-
     public class ConfigurationManager
     {
         public string Path { get; }

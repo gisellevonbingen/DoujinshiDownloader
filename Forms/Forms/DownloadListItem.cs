@@ -170,7 +170,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 {
                     text += $" ({exceptionCount}개 파일 다운로드 실패)";
                 }
-                else if (DoujinshiDownloader.Instance.Config.Values.DownloadCompleteAutoRemove == true)
+                else if (DoujinshiDownloader.Instance.Config.Values.Content.DownloadCompleteAutoRemove == true)
                 {
                     this.OnRemoveRequest(new EventArgs());
                 }

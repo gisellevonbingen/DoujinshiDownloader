@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons.Drawing;
+using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Utils;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
@@ -132,16 +133,18 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public override void Bind(Configuration config)
         {
-            this.DirectoryTextBox.TextBox.Text = config.DownloadDirectory;
-            this.CompleteAutoRemoveCheckBox.Checked = config.DownloadCompleteAutoRemove;
-            this.DownloadToArchiveCheckBox.Checked = config.DownloadToArchive;
+            var content = config.Content;
+            this.DirectoryTextBox.TextBox.Text = content.DownloadDirectory;
+            this.CompleteAutoRemoveCheckBox.Checked = content.DownloadCompleteAutoRemove;
+            this.DownloadToArchiveCheckBox.Checked = content.DownloadToArchive;
         }
 
         public override void Apply(Configuration config)
         {
-            config.DownloadDirectory = this.DirectoryTextBox.TextBox.Text;
-            config.DownloadCompleteAutoRemove = this.CompleteAutoRemoveCheckBox.Checked;
-            config.DownloadToArchive = this.DownloadToArchiveCheckBox.Checked;
+            var content = config.Content;
+            content.DownloadDirectory = this.DirectoryTextBox.TextBox.Text;
+            content.DownloadCompleteAutoRemove = this.CompleteAutoRemoveCheckBox.Checked;
+            content.DownloadToArchive = this.DownloadToArchiveCheckBox.Checked;
         }
 
     }

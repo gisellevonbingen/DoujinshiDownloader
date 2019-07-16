@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons;
+using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms;
 using Giselle.DoujinshiDownloader.Forms.Utils;

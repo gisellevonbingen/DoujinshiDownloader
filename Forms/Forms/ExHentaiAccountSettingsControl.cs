@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons;
 using Giselle.Commons.Drawing;
+using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms.Utils;
 
@@ -178,14 +179,14 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public override void Bind(Configuration config)
         {
-            var account = config.Account;
-            this.MemberIdControl.TextBox.Text = account.MemberId;
-            this.PassHashControl.TextBox.Text = account.PassHash;
+            var exHentaiAccount = config.Agent.ExHentaiAccount;
+            this.MemberIdControl.TextBox.Text = exHentaiAccount.MemberId;
+            this.PassHashControl.TextBox.Text = exHentaiAccount.PassHash;
         }
 
         public override void Apply(Configuration config)
         {
-            config.Account = this.ParseAccount();
+            config.Agent.ExHentaiAccount = this.ParseAccount();
         }
 
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)

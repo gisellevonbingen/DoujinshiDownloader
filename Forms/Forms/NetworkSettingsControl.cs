@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons.Drawing;
+using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Utils;
 
@@ -73,16 +74,18 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public override void Bind(Configuration config)
         {
-            this.TimeoutControl.TrackBar.Value = config.Timeout;
-            this.ThreadCountControl.TrackBar.Value = config.ThreadCount;
-            this.RetryCountControl.TrackBar.Value = config.RetryCount;
+            var network = config.Network;
+            this.TimeoutControl.TrackBar.Value = network.Timeout;
+            this.ThreadCountControl.TrackBar.Value = network.ThreadCount;
+            this.RetryCountControl.TrackBar.Value = network.RetryCount;
         }
 
         public override void Apply(Configuration config)
         {
-            config.Timeout = this.TimeoutControl.TrackBar.Value;
-            config.ThreadCount = this.ThreadCountControl.TrackBar.Value;
-            config.RetryCount = this.RetryCountControl.TrackBar.Value;
+            var network = config.Network;
+            network.Timeout = this.TimeoutControl.TrackBar.Value;
+            network.ThreadCount = this.ThreadCountControl.TrackBar.Value;
+            network.RetryCount = this.RetryCountControl.TrackBar.Value;
         }
 
         protected override void UpdateControlsBoundsPreferred(Size size)

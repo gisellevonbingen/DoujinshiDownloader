@@ -201,8 +201,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             var galleryURL = method.Site.ToURL(request.DownloadInput);
             var agent = method.CreateAgent();
 
-            var downloadToArchive = config.DownloadToArchive;
-            var downloadDirectory = config.DownloadDirectory;
+            var downloadToArchive = config.Content.DownloadToArchive;
+            var downloadDirectory = config.Content.DownloadDirectory;
             Directory.CreateDirectory(downloadDirectory);
 
             var ffff = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.Title));
@@ -228,7 +228,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             var dd = DoujinshiDownloader.Instance;
             var config = dd.Config.Values;
 
-            var threadCount = config.ThreadCount;
+            var threadCount = config.Network.ThreadCount;
             var threads = this.DownloadThreads;
 
             lock (threads)
@@ -324,7 +324,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             {
                 var dd = DoujinshiDownloader.Instance;
                 var config = dd.Config.Values;
-                var retryCount = config.RetryCount;
+                var retryCount = config.Network.RetryCount;
                 var fileName = this.GetFileName(downloadRequest.URL);
                 var buffer = new byte[16 * 1024];
 

@@ -56,7 +56,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         private void OnDownloadDirectoryButtonClick(object sender, EventArgs e)
         {
             var config = DoujinshiDownloader.Instance.Config.Values;
-            var directory = PathUtils.GetPath(config.DownloadDirectory);
+            var directory = PathUtils.GetPath(config.Content.DownloadDirectory);
 
             Directory.CreateDirectory(directory);
             ExplorerUtils.Open(directory);
