@@ -130,18 +130,18 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
-        public override void Bind(Settings settings)
+        public override void Bind(Configuration config)
         {
-            this.DirectoryTextBox.TextBox.Text = settings.DownloadDirectory;
-            this.CompleteAutoRemoveCheckBox.Checked = settings.DownloadCompleteAutoRemove;
-            this.DownloadToArchiveCheckBox.Checked = settings.DownloadToArchive;
+            this.DirectoryTextBox.TextBox.Text = config.DownloadDirectory;
+            this.CompleteAutoRemoveCheckBox.Checked = config.DownloadCompleteAutoRemove;
+            this.DownloadToArchiveCheckBox.Checked = config.DownloadToArchive;
         }
 
-        public override void Apply(Settings settings)
+        public override void Apply(Configuration config)
         {
-            settings.DownloadDirectory = this.DirectoryTextBox.TextBox.Text;
-            settings.DownloadCompleteAutoRemove = this.CompleteAutoRemoveCheckBox.Checked;
-            settings.DownloadToArchive = this.DownloadToArchiveCheckBox.Checked;
+            config.DownloadDirectory = this.DirectoryTextBox.TextBox.Text;
+            config.DownloadCompleteAutoRemove = this.CompleteAutoRemoveCheckBox.Checked;
+            config.DownloadToArchive = this.DownloadToArchiveCheckBox.Checked;
         }
 
     }

@@ -138,11 +138,11 @@ namespace Giselle.DoujinshiDownloader.Forms
             base.OnShown(e);
 
             var dd = DoujinshiDownloader.Instance;
-            var settings = dd.Settings;
+            var config = dd.Config.Values;
 
             foreach (var control in this.SettingControls)
             {
-                control.Bind(settings);
+                control.Bind(config);
             }
 
         }
@@ -163,14 +163,14 @@ namespace Giselle.DoujinshiDownloader.Forms
             }
 
             var dd = DoujinshiDownloader.Instance;
-            var settings = dd.Settings;
+            var config = dd.Config;
 
             foreach (var control in this.SettingControls)
             {
-                control.Apply(settings);
+                control.Apply(config.Values);
             }
 
-            settings.Save();
+            config.Save();
 
             this.DialogResult = DialogResult.OK;
         }

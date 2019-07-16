@@ -42,7 +42,7 @@ namespace Giselle.DoujinshiDownloader
 
         }
 
-        public Settings Settings { get; }
+        public ConfigurationManager Config { get; }
         public FontManager FontManager { get; }
         public NotifyIconManager NotifyIconManager { get; }
         public DownloadScheduler Scheduler { get; }
@@ -57,7 +57,7 @@ namespace Giselle.DoujinshiDownloader
             Application.SetCompatibleTextRenderingDefault(false);
             FormUtils.DefaultIcon = Properties.Resources.Icon;
 
-            this.Settings = new Settings(PathUtils.GetPath("Configuration.json"));
+            this.Config = new ConfigurationManager(PathUtils.GetPath("Configuration.json"));
             this.FontManager = new FontManager();
             this.NotifyIconManager = new NotifyIconManager(this);
             this.Scheduler = new DownloadScheduler();
@@ -74,7 +74,7 @@ namespace Giselle.DoujinshiDownloader
         {
             try
             {
-                this.Settings.Load();
+                this.Config.Load();
 
                 this.Scheduler.Start();
 

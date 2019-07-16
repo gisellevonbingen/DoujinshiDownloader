@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationManager.cs" />
     <Compile Include="CrashReportForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,7 +170,7 @@
     <Compile Include="Forms\Utils\DrawingUtils2.cs" />
     <Compile Include="Schedulers\TaskInvalidStateException.cs" />
     <Compile Include="Schedulers\TaskState.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="DoujinshiDownloader.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>

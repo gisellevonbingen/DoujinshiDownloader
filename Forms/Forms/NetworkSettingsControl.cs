@@ -71,18 +71,18 @@ namespace Giselle.DoujinshiDownloader.Forms
             return (null, null);
         }
 
-        public override void Bind(Settings settings)
+        public override void Bind(Configuration config)
         {
-            this.TimeoutControl.TrackBar.Value = settings.Timeout;
-            this.ThreadCountControl.TrackBar.Value = settings.ThreadCount;
-            this.RetryCountControl.TrackBar.Value = settings.RetryCount;
+            this.TimeoutControl.TrackBar.Value = config.Timeout;
+            this.ThreadCountControl.TrackBar.Value = config.ThreadCount;
+            this.RetryCountControl.TrackBar.Value = config.RetryCount;
         }
 
-        public override void Apply(Settings settings)
+        public override void Apply(Configuration config)
         {
-            settings.Timeout = this.TimeoutControl.TrackBar.Value;
-            settings.ThreadCount = this.ThreadCountControl.TrackBar.Value;
-            settings.RetryCount = this.RetryCountControl.TrackBar.Value;
+            config.Timeout = this.TimeoutControl.TrackBar.Value;
+            config.ThreadCount = this.ThreadCountControl.TrackBar.Value;
+            config.RetryCount = this.RetryCountControl.TrackBar.Value;
         }
 
         protected override void UpdateControlsBoundsPreferred(Size size)

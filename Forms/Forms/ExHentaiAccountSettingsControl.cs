@@ -176,16 +176,16 @@ namespace Giselle.DoujinshiDownloader.Forms
             return account;
         }
 
-        public override void Apply(Settings settings)
+        public override void Bind(Configuration config)
         {
-            settings.Account = this.ParseAccount();
-        }
-
-        public override void Bind(Settings settings)
-        {
-            var account = settings.Account;
+            var account = config.Account;
             this.MemberIdControl.TextBox.Text = account.MemberId;
             this.PassHashControl.TextBox.Text = account.PassHash;
+        }
+
+        public override void Apply(Configuration config)
+        {
+            config.Account = this.ParseAccount();
         }
 
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)
