@@ -20,10 +20,9 @@ namespace Giselle.DoujinshiDownloader.Web
                 return false;
             }
 
-            string[] splited = s.Split(PortDelimiter);
-            ushort port = 0;
+            var splited = s.Split(PortDelimiter);
 
-            if (splited.Length == 2 && ushort.TryParse(splited[1], out port))
+            if (splited.Length == 2 && ushort.TryParse(splited[1], out var port))
             {
                 settings = new ProxySettings(splited[0], port);
                 return true;
@@ -36,11 +35,8 @@ namespace Giselle.DoujinshiDownloader.Web
 
         }
 
-        private string _Hostname = null;
-        public string Hostname { get { return this._Hostname; } set { this._Hostname = value; } }
-
-        private ushort _Port = 0;
-        public ushort Port { get { return this._Port; } set { this._Port = value; } }
+        public string Hostname { get; set; } = null;
+        public ushort Port { get; set; } = 0;
 
         public ProxySettings()
         {
@@ -49,8 +45,8 @@ namespace Giselle.DoujinshiDownloader.Web
 
         public ProxySettings(string hostname, ushort port)
         {
-            this._Hostname = hostname;
-            this._Port = port;
+            this.Hostname = hostname;
+            this.Port = port;
         }
 
         public ProxySettings(JToken jToken)
@@ -65,8 +61,7 @@ namespace Giselle.DoujinshiDownloader.Web
 
         public JToken Serialize()
         {
-            JObject jObj = new JObject();
-
+            var jObj = new JObject();
             jObj["Hostname"] = this.Hostname;
             jObj["Port"] = this.Port;
 
@@ -75,8 +70,8 @@ namespace Giselle.DoujinshiDownloader.Web
 
         public void Deserialize(JToken jToken)
         {
-            this.Hostname = jToken["Hostname"].Value<string>();
-            this.Port = jToken["Port"].Value<ushort>();
+            this.Hostname = jToken.Value<string>("Hostname");
+            this.Port = jToken.Value<ushort>("Port");
         }
 
     }
