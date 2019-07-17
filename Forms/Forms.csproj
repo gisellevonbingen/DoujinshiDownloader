@@ -129,6 +129,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\FontMatchFormat.cs" />
+    <Compile Include="Resources\LanguageResource.Designer.cs" />
     <Compile Include="Schedulers\FileArchive.cs" />
     <Compile Include="Schedulers\FileArchiveDirectory.cs" />
     <Compile Include="Schedulers\FileArchiveZip.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Utils\DirectoryUtils.cs" />
     <Compile Include="Utils\ExplorerUtils.cs" />
     <Compile Include="Utils\FormUtils.cs" />
+    <Compile Include="Utils\ObjectUtils2.cs" />
     <Compile Include="Utils\PathUtils.cs" />
     <Compile Include="Utils\StructEqualityComparer.cs" />
     <Compile Include="Utils\FileSizeUnit.cs" />
@@ -214,6 +216,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\LanguageResource.ko-KR.resx" />
+    <EmbeddedResource Include="Resources\LanguageResource.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

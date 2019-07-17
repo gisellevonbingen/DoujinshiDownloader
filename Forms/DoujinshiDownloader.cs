@@ -64,9 +64,12 @@ namespace Giselle.DoujinshiDownloader
 
         public DoujinshiDownloader(CommandLineOptions options)
         {
-            var culture = CultureInfo.CurrentUICulture;
+            var culture = options.Language.Execute(l => CultureInfo.GetCultureInfo(l)) ?? CultureInfo.CurrentUICulture;
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
+            LanguageResource.Culture = culture;
+
+            Console.WriteLine($"UI Language : {culture}");
 
             Console.CancelKeyPress += this.OnConsoleCancelKeyPress;
             Application.EnableVisualStyles();
