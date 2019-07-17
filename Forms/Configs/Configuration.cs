@@ -11,6 +11,7 @@ namespace Giselle.DoujinshiDownloader.Configs
 {
     public class Configuration
     {
+        public ProgramSettings Program { get; } = new ProgramSettings();
         public AgentSettings Agent { get; } = new AgentSettings();
         public NetworkSettings Network { get; } = new NetworkSettings();
         public ContentSettings Content { get; } = new ContentSettings();
@@ -38,6 +39,7 @@ namespace Giselle.DoujinshiDownloader.Configs
             }
             else
             {
+                this.Program.Read(jToken.Value<JObject>("Program") ?? new JObject());
                 this.Agent.Read(jToken.Value<JObject>("Agent") ?? new JObject());
                 this.Network.Read(jToken.Value<JObject>("Network") ?? new JObject());
                 this.Content.Read(jToken.Value<JObject>("Content") ?? new JObject());
@@ -49,6 +51,7 @@ namespace Giselle.DoujinshiDownloader.Configs
         {
             jToken["Version"] = 1;
 
+            this.Program.Write(jToken["Program"] = new JObject());
             this.Agent.Write(jToken["Agent"] = new JObject());
             this.Network.Write(jToken["Network"] = new JObject());
             this.Content.Write(jToken["Content"] = new JObject());

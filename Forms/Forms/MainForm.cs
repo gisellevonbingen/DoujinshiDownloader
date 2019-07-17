@@ -71,7 +71,17 @@ namespace Giselle.DoujinshiDownloader.Forms
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
-                this.Visible = false;
+                var program = DoujinshiDownloader.Instance.Config.Values.Program;
+
+                if (program.AllowBackground == true)
+                {
+                    this.Visible = false;
+                }
+                else
+                {
+                    DoujinshiDownloader.Instance.QueryQuit();
+                }
+
             }
 
         }

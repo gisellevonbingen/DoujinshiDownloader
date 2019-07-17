@@ -41,6 +41,18 @@ namespace Giselle.DoujinshiDownloader
             this.UpdateItemState(false);
         }
 
+        public void Show(string title, string message, ToolTipIcon icon)
+        {
+            var config = DoujinshiDownloader.Instance.Config.Values.Program;
+
+            if (config.AllowNotifyMessage == true)
+            {
+                var impl = this.Impl;
+                impl.ShowBalloonTip(1000, $"{DoujinshiDownloader.Name} - {title}", message, icon);
+            }
+
+        }
+
         public void UpdateItemState(bool visible)
         {
             this.MenuItemMainFormShow.Enabled = visible == false;
@@ -54,8 +66,7 @@ namespace Giselle.DoujinshiDownloader
 
             if (visible == false)
             {
-                var impl = this.Impl;
-                impl.ShowBalloonTip(1000, $"{DoujinshiDownloader.Name} - " + this.MenuItemMainFormHide.Text, "프로그램은 계속 실행 중 입니다", ToolTipIcon.Info);
+                this.Show(this.MenuItemMainFormHide.Text, "프로그램은 계속 실행 중 입니다", ToolTipIcon.Info);
             }
 
         }

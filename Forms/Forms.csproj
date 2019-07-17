@@ -82,6 +82,7 @@
     <Compile Include="Configs\AgentSettings.cs" />
     <Compile Include="Configs\ContentSettings.cs" />
     <Compile Include="Configs\NetworkSettings.cs" />
+    <Compile Include="Configs\ProgramSettings.cs" />
     <Compile Include="CrashReportForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +105,9 @@
     </Compile>
     <Compile Include="Forms\ListItemWrapper.cs" />
     <Compile Include="Forms\OptimizedProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\ProgramSettingsControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\SelectAllableTextBox.cs">
