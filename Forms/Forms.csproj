@@ -40,6 +40,9 @@
     <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=2.5.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.5.0\lib\net461\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="Giselle.Commons">
       <HintPath>..\Libs\Giselle.Commons.dll</HintPath>
     </Reference>
@@ -78,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandLineOptions.cs" />
     <Compile Include="Configs\ConfigurationManager.cs" />
     <Compile Include="Configs\AgentSettings.cs" />
     <Compile Include="Configs\ContentSettings.cs" />

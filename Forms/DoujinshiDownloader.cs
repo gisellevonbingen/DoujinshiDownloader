@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,16 +28,26 @@ namespace Giselle.DoujinshiDownloader
         [STAThread]
         public static void Main(string[] args)
         {
-            using (var mutex = new Mutex(true, FullName, out var createdNew))
+            var result = CommandLine.Parser.Default.ParseArguments<CommandLineOptions>(args);
+
+            if (result is CommandLine.NotParsed<CommandLineOptions>)
             {
-                if (createdNew == true)
+                return;
+            }
+            else if (result is CommandLine.Parsed<CommandLineOptions> parsed)
+            {
+                using (var mutex = new Mutex(true, FullName, out var createdNew))
                 {
-                    var instance = Instance = new DoujinshiDownloader();
-                    instance.Run();
-                }
-                else
-                {
-                    NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_ShowSingleInstance, IntPtr.Zero, IntPtr.Zero);
+                    if (createdNew == true)
+                    {
+                        var instance = Instance = new DoujinshiDownloader(parsed.Value);
+                        instance.Run();
+                    }
+                    else
+                    {
+                        NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_ShowSingleInstance, IntPtr.Zero, IntPtr.Zero);
+                    }
+
                 }
 
             }
@@ -51,8 +62,12 @@ namespace Giselle.DoujinshiDownloader
         public MainForm MainForm { get; private set; }
         public event EventHandler MainFormVisibleChanged;
 
-        public DoujinshiDownloader()
+        public DoujinshiDownloader(CommandLineOptions options)
         {
+            var culture = CultureInfo.CurrentUICulture;
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+
             Console.CancelKeyPress += this.OnConsoleCancelKeyPress;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
