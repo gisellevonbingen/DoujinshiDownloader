@@ -118,9 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Type" xml:space="preserve">
-    <value>en-US</value>
+    <value>ko-KR</value>
   </data>
   <data name="QuitDialog.Title" xml:space="preserve">
-    <value>Quit</value>
+    <value>프로그램 종료</value>
+  </data>
+  <data name="QuitDialog.Text.Busy" xml:space="preserve">
+    <value>진행중인 다운로드가 있습니다.
+정말로 종료하시겠습니까?</value>
+  </data>
+  <data name="QuitDialog.Text.Common" xml:space="preserve">
+    <value>프로그램을 종료하시겠습니까?</value>
   </data>
 </root>

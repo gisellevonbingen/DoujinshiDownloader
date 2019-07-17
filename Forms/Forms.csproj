@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{DB36A3AB-6223-447A-B19B-CA0A7CA67544}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Giselle.DoujinshiDownloader</RootNamespace>
     <AssemblyName>Giselle.DoujinshiDownloader.Forms</AssemblyName>
@@ -216,7 +216,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\LanguageResource.ko-KR.resx" />
+    <EmbeddedResource Include="Resources\LanguageResource.en-US.resx" />
     <EmbeddedResource Include="Resources\LanguageResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LanguageResource.Designer.cs</LastGenOutput>

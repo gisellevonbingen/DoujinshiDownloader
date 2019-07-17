@@ -184,11 +184,11 @@ namespace Giselle.DoujinshiDownloader
 
             if (scheduler.Busy == true || tasks.Count > 0)
             {
-                text = $"진행중인 다운로드가 있습니다.{Environment.NewLine}정말로 종료하시겠습니까?";
+                text = SR.Get("QuitDialog.Text.Busy");
             }
             else
             {
-                text = "프로그램을 종료하시겠습니까?";
+                text = SR.Get("QuitDialog.Text.Common");
             }
 
             var result = MessageBox.Show(text, SR.Get("QuitDialog.Title"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
