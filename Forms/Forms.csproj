@@ -82,6 +82,7 @@
     <Compile Include="Configs\AgentSettings.cs" />
     <Compile Include="Configs\ContentSettings.cs" />
     <Compile Include="Configs\NetworkSettings.cs" />
+    <Compile Include="Configs\NotifyMessageRules.cs" />
     <Compile Include="Configs\ProgramSettings.cs" />
     <Compile Include="CrashReportForm.cs">
       <SubType>Form</SubType>

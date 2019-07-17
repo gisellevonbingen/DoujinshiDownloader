@@ -12,6 +12,8 @@ namespace Giselle.DoujinshiDownloader.Configs
         public bool AllowBackground { get; set; } = false;
         public bool AllowNotifyMessage { get; set; } = false;
 
+        public NotifyMessageRules NotifyMessageRules { get; } = new NotifyMessageRules();
+
         public ProgramSettings()
         {
 
@@ -21,12 +23,16 @@ namespace Giselle.DoujinshiDownloader.Configs
         {
             this.AllowBackground = jToken.Value<bool?>("AllowBackground") ?? true;
             this.AllowNotifyMessage = jToken.Value<bool?>("AllowNotifyMessage") ?? true;
+
+            this.NotifyMessageRules.Read(jToken.Value<JObject>("NotifyMessageRules") ?? new JObject());
         }
 
         public void Write(JToken jToken)
         {
             jToken["AllowBackground"] = this.AllowBackground;
             jToken["AllowNotifyMessage"] = this.AllowNotifyMessage;
+
+            this.NotifyMessageRules.Write(jToken["NotifyMessageRules"] = new JObject());
         }
 
     }
