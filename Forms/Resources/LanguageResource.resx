@@ -117,14 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="QueryQuit.Message.Busy" xml:space="preserve">
-    <value>Download in progress
-Are you sure you want to quit?</value>
-  </data>
-  <data name="QueryQuit.Message.Common" xml:space="preserve">
-    <value>Are you sure you want to quit?</value>
-  </data>
-  <data name="QueryQuit.Title" xml:space="preserve">
-    <value>Quit</value>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome!</value>
   </data>
 </root>

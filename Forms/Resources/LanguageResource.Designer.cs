@@ -61,30 +61,11 @@ namespace Giselle.DoujinshiDownloader.Resources {
         }
         
         /// <summary>
-        ///   Download in progress
-        ///Are you sure you want to quit?과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Welcome!과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        internal static string QueryQuit_Message_Busy {
+        internal static string Welcome {
             get {
-                return ResourceManager.GetString("QueryQuit.Message.Busy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Are you sure you want to quit?과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        internal static string QueryQuit_Message_Common {
-            get {
-                return ResourceManager.GetString("QueryQuit.Message.Common", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Quit과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        internal static string QueryQuit_Title {
-            get {
-                return ResourceManager.GetString("QueryQuit.Title", resourceCulture);
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
     }

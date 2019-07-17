@@ -64,12 +64,7 @@ namespace Giselle.DoujinshiDownloader
 
         public DoujinshiDownloader(CommandLineOptions options)
         {
-            var culture = options.Language.Execute(l => CultureInfo.GetCultureInfo(l)) ?? CultureInfo.CurrentUICulture;
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-            LanguageResource.Culture = culture;
-
-            Console.WriteLine($"UI Language : {culture}");
+            this.SetUILanguage(options.Language);
 
             Console.CancelKeyPress += this.OnConsoleCancelKeyPress;
             Application.EnableVisualStyles();
@@ -82,6 +77,16 @@ namespace Giselle.DoujinshiDownloader
             this.Scheduler = new DownloadScheduler();
 
             this.MainForm = null;
+        }
+
+        private void SetUILanguage(string language)
+        {
+            var culture = language.Execute(l => CultureInfo.GetCultureInfo(l)) ?? CultureInfo.CurrentUICulture;
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+
+            Console.WriteLine($"UI Language : {culture}");
+            Console.WriteLine($"UI Language : {LanguageResource.Welcome}");
         }
 
         private void OnConsoleCancelKeyPress(object sender, ConsoleCancelEventArgs e)

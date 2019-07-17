@@ -117,14 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="QueryQuit.Message.Busy" xml:space="preserve">
-    <value>진행중인 다운로드가 있습니다.
-정말로 종료하시겠습니까?</value>
-  </data>
-  <data name="QueryQuit.Message.Common" xml:space="preserve">
-    <value>프로그램을 종료하시겠습니까?</value>
-  </data>
-  <data name="QueryQuit.Title" xml:space="preserve">
-    <value>종료 확인</value>
+  <data name="Welcome" xml:space="preserve">
+    <value>환영합니다!</value>
   </data>
 </root>
