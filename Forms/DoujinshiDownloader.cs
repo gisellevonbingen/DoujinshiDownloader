@@ -177,8 +177,7 @@ namespace Giselle.DoujinshiDownloader
 
         public void QueryQuit()
         {
-            var dd = DoujinshiDownloader.Instance;
-            var scheduler = dd.Scheduler;
+            var scheduler = this.Scheduler;
             var tasks = scheduler.GetQueueCopy();
 
             string text = null;
