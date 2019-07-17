@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,6 +55,7 @@ namespace Giselle.DoujinshiDownloader
 
         }
 
+        public ResourceManager ResourceManager { get; }
         public ConfigurationManager Config { get; }
         public FontManager FontManager { get; }
         public NotifyIconManager NotifyIconManager { get; }
@@ -64,6 +66,7 @@ namespace Giselle.DoujinshiDownloader
 
         public DoujinshiDownloader(CommandLineOptions options)
         {
+            this.ResourceManager = new ResourceManager("Giselle.DoujinshiDownloader.Resources.LanguageResource", typeof(DoujinshiDownloader).Assembly);
             this.SetUILanguage(options.Language);
 
             Console.CancelKeyPress += this.OnConsoleCancelKeyPress;
@@ -85,8 +88,8 @@ namespace Giselle.DoujinshiDownloader
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
-            Console.WriteLine($"UI Language : {culture}");
-            Console.WriteLine($"UI Language : {LanguageResource.Welcome}");
+            Console.WriteLine($"Culture : {culture.DisplayName}");
+            Console.WriteLine($"UI Language : {this.ResourceManager.GetString("Type")}");
         }
 
         private void OnConsoleCancelKeyPress(object sender, ConsoleCancelEventArgs e)
@@ -189,7 +192,7 @@ namespace Giselle.DoujinshiDownloader
                 text = "프로그램을 종료하시겠습니까?";
             }
 
-            var result = MessageBox.Show(text, "종료 확인", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            var result = MessageBox.Show(text, SR.Get("QuitDialog.Title"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
 
             if (result == DialogResult.OK)
             {

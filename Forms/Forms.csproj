@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{DB36A3AB-6223-447A-B19B-CA0A7CA67544}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Giselle.DoujinshiDownloader</RootNamespace>
     <AssemblyName>Giselle.DoujinshiDownloader.Forms</AssemblyName>
@@ -129,11 +129,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\FontMatchFormat.cs" />
-    <Compile Include="Resources\LanguageResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LanguageResource.resx</DependentUpon>
-    </Compile>
+    <Compile Include="SR.cs" />
     <Compile Include="Schedulers\FileArchive.cs" />
     <Compile Include="Schedulers\FileArchiveDirectory.cs" />
     <Compile Include="Schedulers\FileArchiveZip.cs" />
