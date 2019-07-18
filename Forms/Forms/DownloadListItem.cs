@@ -55,19 +55,19 @@ namespace Giselle.DoujinshiDownloader.Forms
             var detailButton = this.DetailButton = new Button();
             detailButton.FlatStyle = FlatStyle.Flat;
             detailButton.Click += this.OnDetailButtonClick;
-            detailButton.Text = "상세 보기";
+            detailButton.Text = SR.Get("Download.Detail");
             this.Controls.Add(detailButton);
 
             var openButton = this.OpenButton = new Button();
             openButton.FlatStyle = FlatStyle.Flat;
             openButton.Click += this.OnOpenButtonClick;
-            openButton.Text = "폴더 열기";
+            openButton.Text = SR.Get("Download.OpenDirectory");
             this.Controls.Add(openButton);
 
             var removeButton = this.RemoveButton = new Button();
             removeButton.FlatStyle = FlatStyle.Flat;
             removeButton.Click += this.OnRemoveButtonClick;
-            removeButton.Text = "제거";
+            removeButton.Text = SR.Get("Download.Remove");
             this.Controls.Add(removeButton);
 
             this.ResumeLayout(false);
@@ -133,42 +133,20 @@ namespace Giselle.DoujinshiDownloader.Forms
             progressBar.Maximum = task.Count;
             progressBar.Value = task.Progress.Count(DownloadResult.Complete);
 
-            string text = null;
+            var text = SR.Get($"Downlaod.State.{state.ToString()}");
 
-            if (state.HasFlag(TaskState.NotStarted) == true)
-            {
-                text = "다운로드 준비 중";
-            }
-            else if (state.HasFlag(TaskState.Starting) == true)
-            {
-                text = "다운로드 시작 중";
-            }
-            else if (state.HasFlag(TaskState.Running) == true)
+            if (state.HasFlag(TaskState.Running) == true)
             {
                 double percent = task.Count > 0 ? progressBar.Value / (task.Count / 100.0D) : 0.0D;
-                text = $"다운로드 중 {percent.ToString("F2")}%";
-            }
-            else if (state.HasFlag(TaskState.Canceling) == true)
-            {
-                text = "다운로드 취소 중";
-            }
-            else if (state.HasFlag(TaskState.Cancelled) == true)
-            {
-                text = "다운로드 취소 됨";
-            }
-            else if (state.HasFlag(TaskState.Excepted) == true)
-            {
-                text = "예외 발생";
+                text = SR.Replace(text, "Percent", percent.ToString("F2"));
             }
             else if (state.HasFlag(TaskState.Completed) == true)
             {
-                text = "다운로드 완료";
-
                 var exceptionCount = task.Progress.Count(DownloadResult.Exception);
 
                 if (exceptionCount > 0)
                 {
-                    text += $" ({exceptionCount}개 파일 다운로드 실패)";
+                    text += SR.Get("Downlaod.State.Completed.Fails", "ExceptionCount", exceptionCount.ToString());
                 }
                 else if (DoujinshiDownloader.Instance.Config.Values.Content.DownloadCompleteAutoRemove == true)
                 {
@@ -187,7 +165,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             if (file == null)
             {
-                MessageBox.Show(this, "다운로드 폴더가 아직 생성되지 않았습니다.", "폴더 열기", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(this, SR.Get("Download.OpenDirectory.NotExist"), SR.Get("Download.OpenDirectory"), MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
             else
             {
@@ -204,14 +182,14 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             if (task.State.HasFlag(TaskState.Completed) == false)
             {
-                title = $"다운로드 목록에서 제거하기 위해, 다운로드를 취소합니다.{Environment.NewLine}계속하시겠습니까?";
+                title = SR.Get("Download.Remove.Dialog.WithCancelText");
             }
             else
             {
-                title = $"다운로드 목록에서 제거합니다.{Environment.NewLine}계속하시겠습니까?";
+                title = SR.Get("Download.Remove.Dialog.Text");
             }
 
-            var dr = MessageBox.Show(this, title, "제거 확인", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            var dr = MessageBox.Show(this, title, SR.Get("Download.Remove.Dialog.Title"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
 
             if (dr == DialogResult.OK)
             {

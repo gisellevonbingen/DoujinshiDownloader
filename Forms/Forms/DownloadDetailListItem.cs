@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.Commons;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
 
@@ -57,21 +58,13 @@ namespace Giselle.DoujinshiDownloader.Forms
             var state = this.State;
             var bounds = this.DisplayRectangle;
 
-            var map = new Dictionary<DownloadResult, string>(new StructEqualityComparer<DownloadResult>());
-            map[DownloadResult.StandBy] = "준비 중";
-            map[DownloadResult.Downloading] = "다운로드 중";
-            map[DownloadResult.Complete] = "다운로드 완료";
-            map[DownloadResult.Success] = "다운로드 완료";
-            map[DownloadResult.Exception] = "에러 발생";
-            map[DownloadResult.RequestNotCreate] = "경로 생성 안됨";
-
             using (var brush = new SolidBrush(this.ForeColor))
             {
                 using (var format = new StringFormat())
                 {
                     format.Alignment = StringAlignment.Near;
                     format.LineAlignment = StringAlignment.Center;
-                    g.DrawString(text + " : " + map[state], font, brush, bounds, format);
+                    g.DrawString(text + " : " + SR.Get($"Download.Detail.State.{state.ToString()}"), font, brush, bounds, format);
                 }
 
             }

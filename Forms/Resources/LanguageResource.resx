@@ -294,4 +294,78 @@
     <value>※ 상대 경로, 절대 경로 모두 지원합니다
 ※ 일부 폴더는 실행 시 관리자 권한이 필요합니다</value>
   </data>
+  <data name="Download.Detail" xml:space="preserve">
+    <value>상세 보기</value>
+  </data>
+  <data name="Download.Detail.Close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="Download.Detail.State.StandBy" xml:space="preserve">
+    <value>준비 중</value>
+  </data>
+  <data name="Download.Detail.State.Downloading" xml:space="preserve">
+    <value>다운로드 중</value>
+  </data>
+  <data name="Download.Detail.State.Complete" xml:space="preserve">
+    <value>다운로드 완료</value>
+  </data>
+  <data name="Download.Detail.State.Success" xml:space="preserve">
+    <value>다운로드 완료</value>
+  </data>
+  <data name="Download.Detail.State.Exception" xml:space="preserve">
+    <value>에러 발생</value>
+  </data>
+  <data name="Download.Detail.State.RequestNotCreate" xml:space="preserve">
+    <value>경로 생성 안됨</value>
+  </data>
+  <data name="Download.OpenDirectory" xml:space="preserve">
+    <value>폴더 열기</value>
+  </data>
+  <data name="Download.OpenDirectory.NotExist" xml:space="preserve">
+    <value>다운로드 폴더가 아직 생성되지 않았습니다</value>
+  </data>
+  <data name="Download.Remove" xml:space="preserve">
+    <value>제거</value>
+  </data>
+  <data name="Download.Remove.Dialog.Title" xml:space="preserve">
+    <value>제거 확인</value>
+  </data>
+  <data name="Download.Remove.Dialog.WithCancelText" xml:space="preserve">
+    <value>다운로드 목록에서 제거하기 위해, 다운로드를 취소합니다
+계속하시겠습니까?</value>
+  </data>
+  <data name="Download.Remove.Dialog.Text" xml:space="preserve">
+    <value>다운로드 목록에서 제거합니다
+계속하시겠습니까?</value>
+  </data>
+  <data name="Downlaod.State.NotStarted" xml:space="preserve">
+    <value>다운로드 준비 중</value>
+  </data>
+  <data name="Downlaod.State.Starting" xml:space="preserve">
+    <value>다운로드 시작 중</value>
+  </data>
+  <data name="Downlaod.State.Running" xml:space="preserve">
+    <value>다운로드 중 {=Percent}%</value>
+  </data>
+  <data name="Downlaod.State.Canceling" xml:space="preserve">
+    <value>다운로드 취소 중"</value>
+  </data>
+  <data name="Downlaod.State.Cancelled" xml:space="preserve">
+    <value>다운로드 취소 됨</value>
+  </data>
+  <data name="Downlaod.State.Excepted" xml:space="preserve">
+    <value>예외 발생</value>
+  </data>
+  <data name="Downlaod.State.Completed" xml:space="preserve">
+    <value>다운로드 완료</value>
+  </data>
+  <data name="Downlaod.State.Completed.Fails" xml:space="preserve">
+    <value> ({=ExceptionCount}개 파일 다운로드 실패)</value>
+  </data>
+  <data name="" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

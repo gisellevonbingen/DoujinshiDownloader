@@ -15,7 +15,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private DownloadDetailListBox ListBox = null;
 
-        private Button DoneButton = null;
+        private Button CloseButton = null;
 
         public DownloadDetailForm()
         {
@@ -28,18 +28,18 @@ namespace Giselle.DoujinshiDownloader.Forms
             var listBox = this.ListBox = new DownloadDetailListBox();
             controls.Add(listBox);
 
-            var doneButton = this.DoneButton = new Button();
-            doneButton.Text = "확인";
-            doneButton.FlatStyle = FlatStyle.Flat;
-            doneButton.Click += this.OnDoneButtonClick;
-            controls.Add(doneButton);
+            var closeButton = this.CloseButton = new Button();
+            closeButton.Text = SR.Get("Download.Detail.Close");
+            closeButton.FlatStyle = FlatStyle.Flat;
+            closeButton.Click += this.OnCloseButtonClick;
+            controls.Add(closeButton);
 
             this.ResumeLayout(false);
 
             this.ClientSize = new Size(300, 400);
         }
 
-        private void OnDoneButtonClick(object sender, EventArgs e)
+        private void OnCloseButtonClick(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -58,7 +58,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             var map = base.GetPreferredBounds(layoutBounds);
 
-            var doneButton = this.DoneButton;
+            var doneButton = this.CloseButton;
             var doneButtonSize = new Size(120, 40);
             var doneButtonBounds = map[doneButton] = new Rectangle(new Point(layoutBounds.Left + (layoutBounds.Width - doneButtonSize.Width) / 2, layoutBounds.Bottom - doneButtonSize.Height - 10), doneButtonSize);
 
