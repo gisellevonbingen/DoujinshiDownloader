@@ -41,7 +41,7 @@ namespace Giselle.DoujinshiDownloader
                 {
                     if (createdNew == true)
                     {
-                        var instance = Instance = new DoujinshiDownloader(parsed.Value);
+                        var instance = new DoujinshiDownloader(parsed.Value);
                         instance.Run();
                     }
                     else
@@ -66,6 +66,8 @@ namespace Giselle.DoujinshiDownloader
 
         public DoujinshiDownloader(CommandLineOptions options)
         {
+            Instance = this;
+
             this.ResourceManager = new ResourceManager("Giselle.DoujinshiDownloader.Resources.LanguageResource", typeof(DoujinshiDownloader).Assembly);
             this.SetUILanguage(options.Language);
 
