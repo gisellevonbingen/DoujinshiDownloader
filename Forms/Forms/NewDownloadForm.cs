@@ -49,7 +49,6 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var inputControl = this.InputControl = new LabeledTextBox();
             inputControl.Label.Text = SR.Get("NewDownload.Input");
-            inputControl.Label.TextAlign = ContentAlignment.MiddleRight;
             inputControl.TextBox.Font = fm[11, FontStyle.Regular];
             inputControl.TextBox.KeyDown += this.OnInputControlKeyDown;
             this.Controls.Add(inputControl);
@@ -360,6 +359,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var inputControl = this.InputControl;
             var inputControlSize = new Size(verifyButtonBounds.Left - 10 - layoutBounds.Left, 29);
             var inputControlBounds = map[inputControl] = DrawingUtils2.PlaceByDirection(verifyButtonBounds, inputControlSize, PlaceDirection.Left, PlaceLevel.Half);
+            map[inputControl.Label] = new Rectangle(new Point(), inputControl.Label.PreferredSize);
 
             var verifyMessageLabel = this.VerifyMessageLabel;
             var verifyMessageLabelSize = new Size(verifyButtonBounds.Right - inputControlBounds.Left, 21);
