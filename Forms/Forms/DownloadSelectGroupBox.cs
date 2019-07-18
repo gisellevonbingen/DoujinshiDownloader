@@ -253,11 +253,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private class DownloadParamater
         {
-            private DownloadInput _DownloadInput = default(DownloadInput);
-            public DownloadInput DownloadInput { get { return this._DownloadInput; } }
-
-            private DownloadMethod _DownloadMethod = default(DownloadMethod);
-            public DownloadMethod DownloadMethod { get { return this._DownloadMethod; } }
+            public DownloadInput DownloadInput { get; } = default;
+            public DownloadMethod DownloadMethod { get; } = default;
 
             public DownloadParamater()
             {
@@ -266,22 +263,17 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             public DownloadParamater(DownloadInput downloadInput, DownloadMethod downloadMethod)
             {
-                this._DownloadInput = downloadInput;
-                this._DownloadMethod = downloadMethod;
+                this.DownloadInput = downloadInput;
+                this.DownloadMethod = downloadMethod;
             }
 
         }
 
         private class ValidateResult
         {
-            private bool _IsError = false;
-            public bool IsError { get { return this._IsError; } }
-
-            private string _ErrorMessage = null;
-            public string ErrorMessage { get { return this._ErrorMessage; } }
-
-            private string _Title = null;
-            public string Title { get { return this._Title; } }
+            public bool IsError { get; private set; } = false;
+            public string ErrorMessage { get; private set; } = null;
+            public string Title { get; private set; } = null;
 
             private ValidateResult()
             {
@@ -291,8 +283,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             public static ValidateResult CreateByError(string errorMessage)
             {
                 var value = new ValidateResult();
-                value._IsError = true;
-                value._ErrorMessage = errorMessage;
+                value.IsError = true;
+                value.ErrorMessage = errorMessage;
 
                 return value;
             }
@@ -300,8 +292,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             public static ValidateResult CreateByTitle(string title)
             {
                 var value = new ValidateResult();
-                value._IsError = false;
-                value._Title = title;
+                value.IsError = false;
+                value.Title = title;
 
                 return value;
             }
