@@ -129,14 +129,28 @@ namespace Giselle.DoujinshiDownloader
         {
             var file = this.DumpCrashMessage(exception);
 
-            ControlUtils.InvokeIfNeed(this.MainForm, () =>
+            var mainForm = this.MainForm;
+
+            if (mainForm != null)
+            {
+                ControlUtils.InvokeIfNeed(this.MainForm, () =>
+                {
+                    using (var form = new CrashReportForm(file, exception))
+                    {
+                        form.ShowDialog();
+                    }
+
+                });
+
+            }
+            else
             {
                 using (var form = new CrashReportForm(file, exception))
                 {
                     form.ShowDialog();
                 }
 
-            });
+            }
 
         }
 
