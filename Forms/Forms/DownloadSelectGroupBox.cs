@@ -31,14 +31,14 @@ namespace Giselle.DoujinshiDownloader.Forms
             var dd = DoujinshiDownloader.Instance;
             var fm = dd.FontManager;
 
-            this.Text = "다운로드 선택";
+            this.Text = SR.Get("DownloadSelect.Title");
 
             var radioButtons = this.RadioButtons = new Dictionary<RadioButton, DownloadMethod>();
 
-            this.CheckBoxHitomi = this.Register("Hitomi 서버 1", new DownloadMethodHitomi());
-            this.CheckBoxHitomiRemoved = this.Register("Hitomi 서버 2", new DownloadMethodHitomiRemoved());
-            this.CheckBoxExHentai = this.Register("ExHentai 서버", new DownloadMethodExHentai());
-            this.CheckBoxExHentaiOriginal = this.Register("ExHentai 서버(원본 이미지)", new DownloadMethodExHentaiOriginal());
+            this.CheckBoxHitomi = this.Register("Hitomi 1", new DownloadMethodHitomi());
+            this.CheckBoxHitomiRemoved = this.Register("Hitomi 2", new DownloadMethodHitomiRemoved());
+            this.CheckBoxExHentai = this.Register("ExHentai", new DownloadMethodExHentai());
+            this.CheckBoxExHentaiOriginal = this.Register($"ExHentai({SR.Get("DownloadSelect.ExHentai.Original")})", new DownloadMethodExHentaiOriginal());
 
             this.ResumeLayout(false);
         }
@@ -157,7 +157,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             if (site.IsAcceptable(downloadInput) == false)
             {
-                return ValidateResult.CreateByError("지원되지 않는 입력");
+                return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.NotSupported"));
             }
 
             var url = site.ToURL(downloadInput);
@@ -181,22 +181,22 @@ namespace Giselle.DoujinshiDownloader.Forms
             catch (NetworkException e)
             {
                 Console.WriteLine(e);
-                return ValidateResult.CreateByError("네트워크 에러");
+                return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.NetworkError"));
             }
             catch (ExHentaiAccountException e)
             {
                 Console.WriteLine(e);
-                return ValidateResult.CreateByError("ExHentai 계정 에러");
+                return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.ExHentaiAccountError"));
             }
             catch (HitomiRemovedGalleryException e)
             {
                 Console.WriteLine(e);
-                return ValidateResult.CreateByError("갤러리가 삭제됨");
+                return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.GalleryRemoved"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return ValidateResult.CreateByError("제목을 가져올 수 없음");
+                return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.TitleError"));
             }
 
         }
@@ -209,7 +209,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             var radioButton = new RadioButton();
             radioButton.Text = text;
             radioButton.Name = text;
-            radioButton.Font = fm[12, FontStyle.Regular];
             radioButton.CheckedChanged += this.OnRadioButtonCheckedChanged;
 
             this.RadioButtons[radioButton] = downloadMethod;
@@ -235,7 +234,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             foreach (var pair in this.RadioButtons)
             {
-                var radioButtonSize = new Size(layoutBounds.Width, 23);
+                var radioButtonSize = new Size(layoutBounds.Width, 25);
                 Rectangle checkBoxBounds = new Rectangle();
 
                 if (lastRadioButton == null)

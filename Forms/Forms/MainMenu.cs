@@ -31,22 +31,19 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var settingsButton = this.SettingsButton = new Button();
             settingsButton.FlatStyle = FlatStyle.Flat;
-            settingsButton.Font = fm[15, FontStyle.Regular];
-            settingsButton.Text = "설정";
+            settingsButton.Text = SR.Get("MainMenu.Settings");
             settingsButton.Click += this.OnSettingsButtonClick;
             this.Controls.Add(settingsButton);
 
             var downloadDirectoryButton = this.DownloadDirectoryButton = new Button();
             downloadDirectoryButton.FlatStyle = FlatStyle.Flat;
-            downloadDirectoryButton.Font = fm[13, FontStyle.Regular];
-            downloadDirectoryButton.Text = "다운로드 폴더 열기";
+            downloadDirectoryButton.Text = SR.Get("MainMenu.DownloadDirectory");
             downloadDirectoryButton.Click += this.OnDownloadDirectoryButtonClick;
             this.Controls.Add(downloadDirectoryButton);
 
             var newDownloadButton = this.NewDownloadButton = new Button();
             newDownloadButton.FlatStyle = FlatStyle.Flat;
-            newDownloadButton.Font = fm[15, FontStyle.Regular];
-            newDownloadButton.Text = "새 다운로드 추가";
+            newDownloadButton.Text = SR.Get("MainMenu.NewDownloadButton");
             newDownloadButton.Click += this.OnNewDownloadButtonClick;
             this.Controls.Add(newDownloadButton);
 

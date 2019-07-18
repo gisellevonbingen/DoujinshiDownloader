@@ -124,10 +124,67 @@
     <value>프로그램 종료</value>
   </data>
   <data name="QuitDialog.Text.Busy" xml:space="preserve">
-    <value>진행중인 다운로드가 있습니다.
+    <value>진행중인 다운로드가 있습니다
 정말로 종료하시겠습니까?</value>
   </data>
   <data name="QuitDialog.Text.Common" xml:space="preserve">
     <value>프로그램을 종료하시겠습니까?</value>
+  </data>
+  <data name="MainMenu.Settings" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="MainMenu.DownloadDirectory" xml:space="preserve">
+    <value>다운로드 폴더 열기</value>
+  </data>
+  <data name="MainMenu.NewDownloadButton" xml:space="preserve">
+    <value>새 다운로드 추가</value>
+  </data>
+  <data name="NewDownload.Title" xml:space="preserve">
+    <value>새 다운로드 추가</value>
+  </data>
+  <data name="NewDownload.Input" xml:space="preserve">
+    <value>번호 및 URL 등</value>
+  </data>
+  <data name="NewDownload.Verify" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="NewDownload.Verify.Invalid" xml:space="preserve">
+    <value>번호 및 URL을 인식할 수 없습니다</value>
+  </data>
+  <data name="NewDownload.Verify.Verifying" xml:space="preserve">
+    <value>번호를 확인중입니다</value>
+  </data>
+  <data name="NewDownload.Verify.Verified" xml:space="preserve">
+    <value>확인 완료</value>
+  </data>
+  <data name="NewDownload.Add" xml:space="preserve">
+    <value>추가</value>
+  </data>
+  <data name="NewDownload.Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="DownloadSelect.Title" xml:space="preserve">
+    <value>서버 선택</value>
+  </data>
+  <data name="DownloadSelect.ExHentai.Original" xml:space="preserve">
+    <value>원본 이미지</value>
+  </data>
+  <data name="DownloadSelect.Verify.NotSupported" xml:space="preserve">
+    <value>지원되지 않는 입력</value>
+  </data>
+  <data name="DownloadSelect.Verify.NetworkError" xml:space="preserve">
+    <value>네트워크 에러</value>
+  </data>
+  <data name="DownloadSelect.Verify.ExHentaiAccountError" xml:space="preserve">
+    <value>ExHentai 계정 에러</value>
+  </data>
+  <data name="DownloadSelect.Verify.GalleryRemoved" xml:space="preserve">
+    <value>갤러리가 삭제됨</value>
+  </data>
+  <data name="DownloadSelect.Verify.TitleError" xml:space="preserve">
+    <value>제목을 가져올 수 없음</value>
+  </data>
+  <data name="" xml:space="preserve">
+    <value></value>
   </data>
 </root>

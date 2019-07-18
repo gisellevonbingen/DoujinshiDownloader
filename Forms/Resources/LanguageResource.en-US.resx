@@ -130,4 +130,61 @@ Are you sure you want to quit?</value>
   <data name="QuitDialog.Text.Common" xml:space="preserve">
     <value>Are you sure you want to quit?</value>
   </data>
+  <data name="MainMenu.Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="MainMenu.DownloadDirectory" xml:space="preserve">
+    <value>Open Downlaod Directory</value>
+  </data>
+  <data name="MainMenu.NewDownloadButton" xml:space="preserve">
+    <value>New Download</value>
+  </data>
+  <data name="NewDownload.Title" xml:space="preserve">
+    <value>New Download</value>
+  </data>
+  <data name="NewDownload.Input" xml:space="preserve">
+    <value>Input(URL)</value>
+  </data>
+  <data name="NewDownload.Verify" xml:space="preserve">
+    <value>Verify</value>
+  </data>
+  <data name="NewDownload.Verify.Invalid" xml:space="preserve">
+    <value>Invalid Input(URL)</value>
+  </data>
+  <data name="NewDownload.Verify.Verifying" xml:space="preserve">
+    <value>Verifying</value>
+  </data>
+  <data name="NewDownload.Verify.Verified" xml:space="preserve">
+    <value>Verified</value>
+  </data>
+  <data name="NewDownload.Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="NewDownload.Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DownloadSelect.Title" xml:space="preserve">
+    <value>Select Server</value>
+  </data>
+  <data name="DownloadSelect.ExHentai.Original" xml:space="preserve">
+    <value>Original Image</value>
+  </data>
+  <data name="DownloadSelect.Verify.NotSupported" xml:space="preserve">
+    <value>Not Supported</value>
+  </data>
+  <data name="DownloadSelect.Verify.NetworkError" xml:space="preserve">
+    <value>Network Error</value>
+  </data>
+  <data name="DownloadSelect.Verify.ExHentaiAccountError" xml:space="preserve">
+    <value>ExHentai Account Error</value>
+  </data>
+  <data name="DownloadSelect.Verify.GalleryRemoved" xml:space="preserve">
+    <value>Gallery Removed</value>
+  </data>
+  <data name="DownloadSelect.Verify.TitleError" xml:space="preserve">
+    <value>Error To Get Title</value>
+  </data>
+  <data name="" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

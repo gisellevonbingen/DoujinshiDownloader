@@ -44,27 +44,24 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.SuspendLayout();
 
-            this.Text = "새 다운로드 추가";
+            this.Text = SR.Get("NewDownload.Title");
             this.StartPosition = FormStartPosition.CenterParent;
 
             var inputControl = this.InputControl = new LabeledTextBox();
-            inputControl.Label.Text = "번호 및 URL 등";
+            inputControl.Label.Text = SR.Get("NewDownload.Input");
             inputControl.Label.TextAlign = ContentAlignment.MiddleRight;
-            inputControl.Font = fm[12, FontStyle.Regular];
             inputControl.TextBox.Font = fm[11, FontStyle.Regular];
             inputControl.TextBox.KeyDown += this.OnInputControlKeyDown;
             this.Controls.Add(inputControl);
 
             var verifyButton = this.VerifyButton = new Button();
-            verifyButton.Text = "확인";
-            verifyButton.Font = fm[12, FontStyle.Regular];
+            verifyButton.Text = SR.Get("NewDownload.Verify");
             verifyButton.FlatStyle = FlatStyle.Flat;
             verifyButton.Click += this.OnVerifyButtonClick;
             this.Controls.Add(verifyButton);
 
             var verifyMessageLabel = this.VerifyMessageLabel = new Label();
             verifyMessageLabel.TextAlign = ContentAlignment.MiddleRight;
-            verifyMessageLabel.Font = fm[12, FontStyle.Regular];
             this.Controls.Add(verifyMessageLabel);
 
             var downloadSelectGroupBox = this.DownloadSelectGroupBox = new DownloadSelectGroupBox();
@@ -85,14 +82,14 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Controls.Add(addMessageLabel);
 
             var addButton = this.AddButton = new Button();
-            addButton.Text = "추가";
+            addButton.Text = SR.Get("NewDownload.Add");
             addButton.FlatStyle = FlatStyle.Flat;
             addButton.Font = fm[12, FontStyle.Regular];
             addButton.Click += this.OnAddButtonClick;
             this.Controls.Add(addButton);
 
             var cancelButton = this.CancelButton = new Button();
-            cancelButton.Text = "취소";
+            cancelButton.Text = SR.Get("NewDownload.Cancel");
             cancelButton.FlatStyle = FlatStyle.Flat;
             cancelButton.Font = fm[12, FontStyle.Regular];
             cancelButton.Click += this.OnCancelButtonClick;
@@ -228,12 +225,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                 if (DownloadInput.TryParse(input, out downloadInput) == false)
                 {
-                    this.UpdateVerifyMessageLabel("번호 및 URL을 인식할 수 없습니다.", true);
+                    this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Invalid"), true);
 
                 }
                 else
                 {
-                    this.UpdateVerifyMessageLabel("번호를 확인중입니다.", false);
+                    this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Verifying"), false);
 
                     var titles = downloadSelectGroupBox.Validate(downloadInput);
 
@@ -255,7 +252,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                         this.AddButton.Focus();
                     });
 
-                    this.UpdateVerifyMessageLabel("확인 완료", false);
+                    this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Verified"), false);
                 }
 
                 ControlUtils.InvokeIfNeed(this, () =>
