@@ -129,8 +129,8 @@
   <data name="NotifyIcon.Dispose" xml:space="preserve">
     <value>프로그램 종료</value>
   </data>
-  <data name="" xml:space="preserve">
-    <value></value>
+  <data name="NotifyIcon.RunningBackgroundNotifyMessage" xml:space="preserve">
+    <value>프로그램은 계속 실행 중 입니다</value>
   </data>
   <data name="CrashReport.Title" xml:space="preserve">
     <value>충돌보고서</value>

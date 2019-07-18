@@ -129,6 +129,9 @@
   <data name="NotifyIcon.Dispose" xml:space="preserve">
     <value>Exit</value>
   </data>
+  <data name="NotifyIcon.RunningBackgroundNotifyMessage" xml:space="preserve">
+    <value>Program Running In Background</value>
+  </data>
   <data name="CrashReport.Title" xml:space="preserve">
     <value>Crash Report</value>
   </data>
@@ -231,7 +234,7 @@ Are you sure you want to quit?</value>
     <value>Program</value>
   </data>
   <data name="Settings.Program.AllowBackground" xml:space="preserve">
-    <value>Allow Running Background</value>
+    <value>Allow Running In Background</value>
   </data>
   <data name="Settings.Program.AllowNotifyMessage" xml:space="preserve">
     <value>Allow Notify Message</value>

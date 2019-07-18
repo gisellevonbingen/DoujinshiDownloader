@@ -66,7 +66,7 @@ namespace Giselle.DoujinshiDownloader
 
             if (visible == false)
             {
-                this.Show(this.MenuItemMainFormHide.Text, "프로그램은 계속 실행 중 입니다", ToolTipIcon.Info);
+                this.Show(this.MenuItemMainFormHide.Text, SR.Get("NotifyIcon.RunningBackgroundNotifyMessage"), ToolTipIcon.Info);
             }
 
         }
