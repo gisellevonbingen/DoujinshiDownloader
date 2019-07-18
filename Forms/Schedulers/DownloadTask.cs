@@ -35,14 +35,12 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         private List<string> ViewURLs = null;
 
-        private int _Count = 0;
-        public int Count { get { return this._Count; } }
-        private int _Index = 0;
-        public int Index { get { return this._Index; } }
+        public int Count { get; private set; } = 0;
+        public int Index { get; private set; } = 0;
         private GalleryAgent _Agent = null;
         public GalleryAgent Agent { get { return this._Agent; } }
-        private DownloadGalleryParameter _GalleryParameter = null;
-        public DownloadGalleryParameter GalleryParameter { get { return this._GalleryParameter; } }
+
+        public DownloadGalleryParameter GalleryParameter { get; private set; } = null;
 
         private int NextIndex = 0;
 
@@ -217,10 +215,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             }
 
             var viewURLs = this.ViewURLs = agent.GetGalleryImageViewURLs(galleryURL);
-            this._Count = viewURLs.Count;
-            this._Index = 0;
+            this.Count = viewURLs.Count;
+            this.Index = 0;
             this._Agent = agent;
-            this._GalleryParameter = agent.CreateGalleryParameter(galleryURL);
+            this.GalleryParameter = agent.CreateGalleryParameter(galleryURL);
         }
 
         private void Download()
@@ -294,7 +292,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                 lock (this.IndexLock)
                 {
-                    this._Index++;
+                    this.Index++;
                 }
 
                 this.OnProgressing(new TaskProgressingEventArgs(index, url, result));
