@@ -25,7 +25,6 @@ namespace Giselle.DoujinshiDownloader.Forms
         public MainMenu()
         {
             var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
 
             this.SuspendLayout();
 

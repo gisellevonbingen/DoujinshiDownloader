@@ -20,9 +20,6 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.SuspendLayout();
 
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
-
             this.Text = SR.Get("Settings.Program.Title");
 
             var allowBackgroundCheckBox = this.AllowBackgroundCheckBox = new CheckBox();

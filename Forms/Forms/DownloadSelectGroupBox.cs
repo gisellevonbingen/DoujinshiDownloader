@@ -28,12 +28,9 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.SuspendLayout();
 
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
-
             this.Text = SR.Get("DownloadSelect.Title");
 
-            var radioButtons = this.RadioButtons = new Dictionary<RadioButton, DownloadMethod>();
+            this.RadioButtons = new Dictionary<RadioButton, DownloadMethod>();
 
             this.CheckBoxHitomi = this.Register("Hitomi 1", new DownloadMethodHitomi());
             this.CheckBoxHitomiRemoved = this.Register("Hitomi 2", new DownloadMethodHitomiRemoved());

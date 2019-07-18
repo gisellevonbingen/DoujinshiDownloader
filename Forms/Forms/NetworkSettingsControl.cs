@@ -22,8 +22,6 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.SuspendLayout();
 
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
             var defaultValues = new NetworkSettings();
 
             this.Text = SR.Get("Settings.Network.Title");
