@@ -115,11 +115,11 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             if (validation == null)
             {
-                this.UpdateAddMessageLabel(true, "번호 및 URL입력후 확인해주세요.");
+                this.UpdateAddMessageLabel(true, SR.Get("DownloadSelect.Add.MissingInput"));
             }
             else if (selectedMethod == null)
             {
-                this.UpdateAddMessageLabel(true, "갤러리를 다운로드할 서버를 선택해주세요.");
+                this.UpdateAddMessageLabel(true, SR.Get("DownloadSelect.Add.MissingServer"));
             }
             else
             {

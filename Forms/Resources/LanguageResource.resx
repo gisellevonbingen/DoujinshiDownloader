@@ -203,6 +203,12 @@
   <data name="DownloadSelect.Verify.TitleError" xml:space="preserve">
     <value>제목을 가져올 수 없음</value>
   </data>
+  <data name="DownloadSelect.Add.MissingInput" xml:space="preserve">
+    <value>번호 및 URL입력후 확인해주세요</value>
+  </data>
+  <data name="DownloadSelect.Add.MissingServer" xml:space="preserve">
+    <value>갤러리를 다운로드할 서버를 선택해주세요</value>
+  </data>
   <data name="Settings.Title" xml:space="preserve">
     <value>설정</value>
   </data>

@@ -203,6 +203,12 @@ Are you sure you want to quit?</value>
   <data name="DownloadSelect.Verify.TitleError" xml:space="preserve">
     <value>Error To Get Title</value>
   </data>
+  <data name="DownloadSelect.Add.MissingInput" xml:space="preserve">
+    <value>Missing Input Verify</value>
+  </data>
+  <data name="DownloadSelect.Add.MissingServer" xml:space="preserve">
+    <value>Missing Server</value>
+  </data>
   <data name="Settings.Title" xml:space="preserve">
     <value>Settings</value>
   </data>
