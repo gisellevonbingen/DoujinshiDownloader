@@ -120,6 +120,18 @@
   <data name="Type" xml:space="preserve">
     <value>ko-KR</value>
   </data>
+  <data name="NotifyIcon.Show" xml:space="preserve">
+    <value>창 표시</value>
+  </data>
+  <data name="NotifyIcon.Hide" xml:space="preserve">
+    <value>창 숨기기</value>
+  </data>
+  <data name="NotifyIcon.Dispose" xml:space="preserve">
+    <value>프로그램 종료</value>
+  </data>
+  <data name="" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="CrashReport.Title" xml:space="preserve">
     <value>충돌보고서</value>
   </data>

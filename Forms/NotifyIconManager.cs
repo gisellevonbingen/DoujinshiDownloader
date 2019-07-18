@@ -26,13 +26,13 @@ namespace Giselle.DoujinshiDownloader
 
             var menu = impl.ContextMenu = new ContextMenu();
 
-            var itemShow = this.MenuItemMainFormShow = menu.MenuItems.Add("창 표시");
+            var itemShow = this.MenuItemMainFormShow = menu.MenuItems.Add(SR.Get("NotifyIcon.Show"));
             itemShow.Click += this.OnMenuItemMainFormShowClick;
 
-            var itemHide = this.MenuItemMainFormHide = menu.MenuItems.Add("창 숨기기");
+            var itemHide = this.MenuItemMainFormHide = menu.MenuItems.Add(SR.Get("NotifyIcon.Hide"));
             itemHide.Click += this.OnMenuItemMainFormHideClick;
 
-            var itemDispose = this.MenuItemDispose = menu.MenuItems.Add("프로그램 종료");
+            var itemDispose = this.MenuItemDispose = menu.MenuItems.Add(SR.Get("NotifyIcon.Dispose"));
             itemDispose.Click += this.OnMenuItemDisposeClick;
 
             impl.Visible = true;

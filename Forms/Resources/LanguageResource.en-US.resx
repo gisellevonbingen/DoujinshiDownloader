@@ -120,6 +120,15 @@
   <data name="Type" xml:space="preserve">
     <value>en-US</value>
   </data>
+  <data name="NotifyIcon.Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="NotifyIcon.Hide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="NotifyIcon.Dispose" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <data name="CrashReport.Title" xml:space="preserve">
     <value>Crash Report</value>
   </data>
