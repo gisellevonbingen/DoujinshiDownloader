@@ -120,6 +120,25 @@
   <data name="Type" xml:space="preserve">
     <value>en-US</value>
   </data>
+  <data name="CrachReport.Title" xml:space="preserve">
+    <value>Crash Report</value>
+  </data>
+  <data name="CrachReport.Message" xml:space="preserve">
+    <value>Unexpected Exception
+Please Submit This Report</value>
+  </data>
+  <data name="CrachReport.Copy" xml:space="preserve">
+    <value>Copy Log</value>
+  </data>
+  <data name="CrachReport.Copied" xml:space="preserve">
+    <value>Copied</value>
+  </data>
+  <data name="CrachReport.OpenDirectory" xml:space="preserve">
+    <value>Open Directory</value>
+  </data>
+  <data name="CrachReport.Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="QuitDialog.Title" xml:space="preserve">
     <value>Quit</value>
   </data>

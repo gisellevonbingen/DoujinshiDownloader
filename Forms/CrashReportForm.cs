@@ -28,30 +28,30 @@ namespace Giselle.DoujinshiDownloader
 
             this.SuspendLayout();
 
-            this.Text = "충돌 보고서";
+            this.Text = SR.Get("CrachReport.Title");
             this.FormBorderStyle = FormBorderStyle.Fixed3D;
             this.MinimizeBox = false;
             this.MaximizeBox = false;
 
             var messageLabel = this.MessageLabel = new Label();
-            messageLabel.Text = "응용 프로그램에서 처리할 수 없는 예외가 발생했습니다." + Environment.NewLine + "개발자에게 전달해주시면, 프로그램 개선에 큰 도움이 됩니다.";
+            messageLabel.Text = SR.Get("CrachReport.Message");
             this.Controls.Add(messageLabel);
 
             var copyButton = this.CopyButton = new Button();
             copyButton.FlatStyle = FlatStyle.Flat;
-            copyButton.Text = "로그 복사하기";
+            copyButton.Text = SR.Get("CrachReport.Copy");
             copyButton.Click += this.OnCopyButtonClick;
             this.Controls.Add(copyButton);
 
             var openDirectoryButton = this.OpenDirectoryButton = new Button();
             openDirectoryButton.FlatStyle = FlatStyle.Flat;
-            openDirectoryButton.Text = "로그 폴더 열기";
+            openDirectoryButton.Text = SR.Get("CrachReport.OpenDirectory");
             openDirectoryButton.Click += this.OnOpenDirectoryButtonClick;
             this.Controls.Add(openDirectoryButton);
 
             var closeButton = this.CloseButton = new Button();
             closeButton.FlatStyle = FlatStyle.Flat;
-            closeButton.Text = "닫기";
+            closeButton.Text = SR.Get("CrachReport.Close");
             closeButton.Click += this.OnCloseButtonClick;
             this.Controls.Add(closeButton);
 
@@ -78,7 +78,7 @@ namespace Giselle.DoujinshiDownloader
         private void OnCopyButtonClick(object sender, EventArgs e)
         {
             Clipboard.SetText(this.LogTextBox.Text, TextDataFormat.Text);
-            this.CopyButton.Text = "로그 복사됨";
+            this.CopyButton.Text = SR.Get("CrachReport.Copied");
         }
 
         private void OnCloseButtonClick(object sender, EventArgs e)
