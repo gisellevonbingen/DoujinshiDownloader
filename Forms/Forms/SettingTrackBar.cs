@@ -10,8 +10,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 {
     public class SettingTrackBar : LabeledControl
     {
-        private LabeledTrackBar _ValueTrackBar = null;
-        public LabeledTrackBar ValueTrackBar { get { return this._ValueTrackBar; } }
+        public LabeledTrackBar ValueTrackBar { get; } = null;
 
         public Label TextLabel { get { return this.Label; } }
         public OptimizedTrackBar TrackBar { get { return this.ValueTrackBar.TrackBar; } }
@@ -30,7 +29,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var label = this.Label;
             label.TextAlign = ContentAlignment.MiddleLeft;
 
-            var valueTrackBar = this._ValueTrackBar = new LabeledTrackBar();
+            var valueTrackBar = this.ValueTrackBar = new LabeledTrackBar();
             valueTrackBar.Alignment = LabelAlignment.Right;
             valueTrackBar.TrackBar.ValueChanged += this.OnTrackBarValueChanged;
             valueTrackBar.Label.TextAlign = ContentAlignment.MiddleRight;
