@@ -391,15 +391,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private class ValidationInformation
         {
-            private DownloadInput _DownloadInput = default(DownloadInput);
-            public DownloadInput DownloadInput { get { return this._DownloadInput; } set { this._DownloadInput = value; } }
-
-            private Dictionary<DownloadMethod, string> _Titles = null;
-            public Dictionary<DownloadMethod, string> Titles { get { return this._Titles; } }
+            public DownloadInput DownloadInput { get; set; } = default;
+            public Dictionary<DownloadMethod, string> Titles { get; } = null;
 
             public ValidationInformation()
             {
-                this._Titles = new Dictionary<DownloadMethod, string>();
+                this.Titles = new Dictionary<DownloadMethod, string>();
             }
 
         }
