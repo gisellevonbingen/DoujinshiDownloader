@@ -28,30 +28,30 @@ namespace Giselle.DoujinshiDownloader
 
             this.SuspendLayout();
 
-            this.Text = SR.Get("CrachReport.Title");
+            this.Text = SR.Get("CrashReport.Title");
             this.FormBorderStyle = FormBorderStyle.Fixed3D;
             this.MinimizeBox = false;
             this.MaximizeBox = false;
 
             var messageLabel = this.MessageLabel = new Label();
-            messageLabel.Text = SR.Get("CrachReport.Message");
+            messageLabel.Text = SR.Get("CrashReport.Message");
             this.Controls.Add(messageLabel);
 
             var copyButton = this.CopyButton = new Button();
             copyButton.FlatStyle = FlatStyle.Flat;
-            copyButton.Text = SR.Get("CrachReport.Copy");
+            copyButton.Text = SR.Get("CrashReport.Copy");
             copyButton.Click += this.OnCopyButtonClick;
             this.Controls.Add(copyButton);
 
             var openDirectoryButton = this.OpenDirectoryButton = new Button();
             openDirectoryButton.FlatStyle = FlatStyle.Flat;
-            openDirectoryButton.Text = SR.Get("CrachReport.OpenDirectory");
+            openDirectoryButton.Text = SR.Get("CrashReport.OpenDirectory");
             openDirectoryButton.Click += this.OnOpenDirectoryButtonClick;
             this.Controls.Add(openDirectoryButton);
 
             var closeButton = this.CloseButton = new Button();
             closeButton.FlatStyle = FlatStyle.Flat;
-            closeButton.Text = SR.Get("CrachReport.Close");
+            closeButton.Text = SR.Get("CrashReport.Close");
             closeButton.Click += this.OnCloseButtonClick;
             this.Controls.Add(closeButton);
 
@@ -78,7 +78,7 @@ namespace Giselle.DoujinshiDownloader
         private void OnCopyButtonClick(object sender, EventArgs e)
         {
             Clipboard.SetText(this.LogTextBox.Text, TextDataFormat.Text);
-            this.CopyButton.Text = SR.Get("CrachReport.Copied");
+            this.CopyButton.Text = SR.Get("CrashReport.Copied");
         }
 
         private void OnCloseButtonClick(object sender, EventArgs e)

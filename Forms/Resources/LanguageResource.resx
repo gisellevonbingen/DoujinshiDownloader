@@ -120,23 +120,23 @@
   <data name="Type" xml:space="preserve">
     <value>ko-KR</value>
   </data>
-  <data name="CrachReport.Title" xml:space="preserve">
+  <data name="CrashReport.Title" xml:space="preserve">
     <value>충돌보고서</value>
   </data>
-  <data name="CrachReport.Message" xml:space="preserve">
+  <data name="CrashReport.Message" xml:space="preserve">
     <value>응용 프로그램에서 처리할 수 없는 예외가 발생했습니다
 개발자에게 전달해주시면, 프로그램 개선에 큰 도움이 됩니다</value>
   </data>
-  <data name="CrachReport.Copy" xml:space="preserve">
+  <data name="CrashReport.Copy" xml:space="preserve">
     <value>로그 복사하기</value>
   </data>
-  <data name="CrachReport.Copied" xml:space="preserve">
+  <data name="CrashReport.Copied" xml:space="preserve">
     <value>로그 복사됨</value>
   </data>
-  <data name="CrachReport.OpenDirectory" xml:space="preserve">
+  <data name="CrashReport.OpenDirectory" xml:space="preserve">
     <value>로그 폴더 열기</value>
   </data>
-  <data name="CrachReport.Close" xml:space="preserve">
+  <data name="CrashReport.Close" xml:space="preserve">
     <value>닫기</value>
   </data>
   <data name="QuitDialog.Title" xml:space="preserve">
