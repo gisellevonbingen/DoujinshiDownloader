@@ -14,13 +14,16 @@ namespace Giselle.DoujinshiDownloader
         public static string Get(string name, params string[] array)
         {
             var text = DoujinshiDownloader.Instance.ResourceManager.GetString(name);
+            return Replace(text, array);
+        }
 
-            for (int i = 0; i < array.Length; i+= 2)
+        public static string Replace(string text, params string[] array)
+        {
+            for (int i = 0; i < array.Length; i += 2)
             {
                 var key = array[i + 0];
                 var value = array[i + 1];
                 text = text.Replace($"{{={key}}}", value);
-
             }
 
             return text;
