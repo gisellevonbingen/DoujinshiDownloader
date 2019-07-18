@@ -184,7 +184,77 @@ Are you sure you want to quit?</value>
   <data name="DownloadSelect.Verify.TitleError" xml:space="preserve">
     <value>Error To Get Title</value>
   </data>
-  <data name="" xml:space="preserve">
+  <data name="Settings.Title" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings.Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Settings.Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Settings.Program.Title" xml:space="preserve">
+    <value>Program</value>
+  </data>
+  <data name="Settings.Program.AllowBackground" xml:space="preserve">
+    <value>Allow Running Background</value>
+  </data>
+  <data name="Settings.Program.AllowNotifyMessage" xml:space="preserve">
+    <value>Allow Notify Message</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
+    <value>ExHentai Account</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Verify" xml:space="preserve">
+    <value>Verify Account</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Verifying" xml:space="preserve">
+    <value>Verifying</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Success" xml:space="preserve">
+    <value>Account Verified</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Fail" xml:space="preserve">
+    <value>Verify Fail</value>
+  </data>
+  <data name="Settings.Network.Title" xml:space="preserve">
+    <value>Network</value>
+  </data>
+  <data name="Settings.Network.DefaultValueTemplete" xml:space="preserve">
+    <value>(Default : {=Value}{=Unit})</value>
+  </data>
+  <data name="Settings.Network.Timeout" xml:space="preserve">
+    <value>Timeout {=Default}</value>
+  </data>
+  <data name="Settings.Network.TimeoutUnit" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="Settings.Network.ThreadCount" xml:space="preserve">
+    <value>Thread Count {=Default}</value>
+  </data>
+  <data name="Settings.Network.ThreadCountUnit" xml:space="preserve">
     <value></value>
+  </data>
+  <data name="Settings.Network.RetryCount" xml:space="preserve">
+    <value>Retry Count {=Default}</value>
+  </data>
+  <data name="Settings.Network.RetryCountUnit" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Settings.Download.Title" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Settings.Download.CompleteAutoRemove" xml:space="preserve">
+    <value>Remove On Download Complete</value>
+  </data>
+  <data name="Settings.Download.DownloadToArchive" xml:space="preserve">
+    <value>Downalod To Archive File (*.zip)</value>
+  </data>
+  <data name="Settings.Download.DirectoryTextBox" xml:space="preserve">
+    <value>Directory</value>
+  </data>
+  <data name="Settings.Download.DirectoryWarning" xml:space="preserve">
+    <value>※ Supports Both Relative, Absolute Paths
+※ Some Directory Require Administrator Privileges</value>
   </data>
 </root>

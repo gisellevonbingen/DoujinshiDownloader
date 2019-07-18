@@ -27,7 +27,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.SuspendLayout();
 
-            this.Text = "설정";
+            this.Text = SR.Get("Settings.Title");
             this.StartPosition = FormStartPosition.CenterParent;
 
             this.ListBox = new ListBox();
@@ -54,14 +54,14 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var saveButton = this.SaveButton = new Button();
             saveButton.FlatStyle = FlatStyle.Flat;
-            saveButton.Text = "저장";
+            saveButton.Text = SR.Get("Settings.Save");
             saveButton.Font = fm[12, FontStyle.Regular];
             saveButton.Click += this.OnSaveButtonClick;
             this.Controls.Add(saveButton);
 
             var cancelButton = this.CancelButton = new Button();
             cancelButton.FlatStyle = FlatStyle.Flat;
-            cancelButton.Text = "취소";
+            cancelButton.Text = SR.Get("Settings.Cancel");
             cancelButton.Font = fm[12, FontStyle.Regular];
             cancelButton.Click += this.OnCancelButtonClick;
             this.Controls.Add(cancelButton);

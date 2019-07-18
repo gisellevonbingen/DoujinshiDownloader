@@ -23,16 +23,14 @@ namespace Giselle.DoujinshiDownloader.Forms
             var dd = DoujinshiDownloader.Instance;
             var fm = dd.FontManager;
 
-            this.Text = "프로그램";
+            this.Text = SR.Get("Settings.Program.Title");
 
             var allowBackgroundCheckBox = this.AllowBackgroundCheckBox = new CheckBox();
-            allowBackgroundCheckBox.Text = "백그라운드 실행 허용";
-            allowBackgroundCheckBox.Font = fm[10, FontStyle.Regular];
+            allowBackgroundCheckBox.Text = SR.Get("Settings.Program.AllowBackground");
             this.Controls.Add(allowBackgroundCheckBox);
 
             var allowNotifyMessageCheckBox = this.AllowNotifyMessageCheckBox = new CheckBox();
-            allowNotifyMessageCheckBox.Text = "알림메시지 허용";
-            allowNotifyMessageCheckBox.Font = fm[10, FontStyle.Regular];
+            allowNotifyMessageCheckBox.Text = SR.Get("Settings.Program.AllowNotifyMessage");
             this.Controls.Add(allowNotifyMessageCheckBox);
 
             this.ResumeLayout(false);

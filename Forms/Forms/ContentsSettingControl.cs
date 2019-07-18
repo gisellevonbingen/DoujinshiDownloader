@@ -28,23 +28,20 @@ namespace Giselle.DoujinshiDownloader.Forms
             var dd = DoujinshiDownloader.Instance;
             var fm = dd.FontManager;
 
-            this.Text = "다운로드";
+            this.Text = SR.Get("Settings.Download.Title");
 
             var completeAutoRemoveCheckBox = this.CompleteAutoRemoveCheckBox = new CheckBox();
-            completeAutoRemoveCheckBox.Text = "다운로드 완료 시 목록에서 자동으로 제거";
-            completeAutoRemoveCheckBox.Font = fm[10, FontStyle.Regular];
+            completeAutoRemoveCheckBox.Text = SR.Get("Settings.Download.CompleteAutoRemove");
             this.Controls.Add(completeAutoRemoveCheckBox);
 
             var downloadToArchiveCheckBox = this.DownloadToArchiveCheckBox = new CheckBox();
-            downloadToArchiveCheckBox.Text = "압축파일로 다운로드";
-            downloadToArchiveCheckBox.Font = fm[10, FontStyle.Regular];
+            downloadToArchiveCheckBox.Text = SR.Get("Settings.Download.DownloadToArchive");
             this.Controls.Add(downloadToArchiveCheckBox);
 
             var directoryTextBox = this.DirectoryTextBox = new LabeledTextBox();
-            directoryTextBox.Font = fm[10, FontStyle.Regular];
-            directoryTextBox.Label.Text = "다운로드 폴더";
-            directoryTextBox.Label.TextAlign = ContentAlignment.MiddleRight;
+            directoryTextBox.Label.Text = SR.Get("Settings.Download.DirectoryTextBox");
             directoryTextBox.TextBox.TextChanged += this.OnDirectoryTextBoxTextChanged;
+            directoryTextBox.TextBox.Font = fm[10, FontStyle.Regular];
             this.Controls.Add(directoryTextBox);
 
             var directoryButton = this.DirectoryButton = new Button();
@@ -55,8 +52,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Controls.Add(directoryButton);
 
             var directoryCommentLabel = this.DirectoryCommentLabel = new Label();
-            directoryCommentLabel.Font = fm[10, FontStyle.Regular];
-            directoryCommentLabel.Text = "※ 상대 경로, 절대 경로 모두 지원합니다." + Environment.NewLine + "※ 일부 폴더는 실행 시 관리자 권한이 필요합니다.";
+            directoryCommentLabel.Text = SR.Get("Settings.Download.DirectoryWarning");
             directoryCommentLabel.TextAlign = ContentAlignment.MiddleLeft;
             this.Controls.Add(directoryCommentLabel);
 
@@ -108,7 +104,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var directoryTextBox = this.DirectoryTextBox;
             var directoryTextBoxBounds = map[directoryTextBox] = Rectangle.FromLTRB(layoutBounds.Left, directoryButtonBounds.Top, directoryButtonLeft - margin, directoryButtonBounds.Bottom);
-            map[directoryTextBox.Label] = new Rectangle(0, 0, 100, directoryTextBoxBounds.Height);
+            map[directoryTextBox.Label] = new Rectangle(0, 0, directoryTextBox.Label.PreferredWidth, directoryTextBoxBounds.Height);
 
             var directoryCommentLabel = this.DirectoryCommentLabel;
             map[directoryCommentLabel] = new Rectangle(new Point(directoryTextBoxBounds.Left, directoryTextBoxBounds.Bottom), directoryCommentLabel.PreferredSize);

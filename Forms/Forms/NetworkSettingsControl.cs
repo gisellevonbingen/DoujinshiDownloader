@@ -24,13 +24,14 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var dd = DoujinshiDownloader.Instance;
             var fm = dd.FontManager;
+            var defaultValues = new NetworkSettings();
 
-            this.Text = "네트워크";
+            this.Text = SR.Get("Settings.Network.Title");
+            var defaultValueTemplete = SR.Get("Settings.Network.DefaultValueTemplete");
 
             var timeoutControl = this.TimeoutControl = new SettingTrackBar();
-            timeoutControl.TextLabel.Text = "타임아웃 (기본 값 : 60.0초)";
-            timeoutControl.Font = fm[10, FontStyle.Regular];
-            timeoutControl.Unit = "초";
+            timeoutControl.Unit = SR.Get("Settings.Network.TimeoutUnit");
+            timeoutControl.TextLabel.Text = SR.Get("Settings.Network.Timeout", "Default", SR.Replace(defaultValueTemplete, "Value", (defaultValues.Timeout / 1000).ToString("F1"), "Unit", timeoutControl.Unit));
             timeoutControl.ValueConstructor += this.OnTimeCoutControlValueConstructor;
             var timeoutTrackBar = timeoutControl.TrackBar;
             timeoutTrackBar.Minimum = 10000;
@@ -42,18 +43,16 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Controls.Add(timeoutControl);
 
             var threadCountControl = this.ThreadCountControl = new SettingTrackBar();
-            threadCountControl.TextLabel.Text = "쓰레드 개수(기본 값 : 4개)";
-            threadCountControl.Font = fm[10, FontStyle.Regular];
-            threadCountControl.Unit = "개";
+            threadCountControl.Unit = SR.Get("Settings.Network.ThreadCountUnit");
+            threadCountControl.TextLabel.Text = SR.Get("Settings.Network.ThreadCount", "Default", SR.Replace(defaultValueTemplete, "Value", defaultValues.ThreadCount.ToString(), "Unit", threadCountControl.Unit));
             var threadCountTrackBar = threadCountControl.TrackBar;
             threadCountTrackBar.Minimum = 1;
             threadCountTrackBar.Maximum = 16;
             this.Controls.Add(threadCountControl);
 
             var retryCountControl = this.RetryCountControl = new SettingTrackBar();
-            retryCountControl.TextLabel.Text = "다운로드 재시도 횟수(기본 값 : 2회)";
-            retryCountControl.Font = fm[10, FontStyle.Regular];
-            retryCountControl.Unit = "회";
+            retryCountControl.Unit = SR.Get("Settings.Network.RetryCountUnit");
+            retryCountControl.TextLabel.Text = SR.Get("Settings.Network.RetryCount", "Default", SR.Replace(defaultValueTemplete, "Value", defaultValues.ThreadCount.ToString(), "Unit", retryCountControl.Unit));
             var retryCountTrackBar = retryCountControl.TrackBar;
             retryCountTrackBar.Minimum = 0;
             retryCountTrackBar.Maximum = 16;

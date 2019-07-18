@@ -32,25 +32,25 @@ namespace Giselle.DoujinshiDownloader.Forms
             var dd = DoujinshiDownloader.Instance;
             var fm = dd.FontManager;
 
-            this.Text = "Exhentai계정";
+            this.Text = SR.Get("Settings.ExHentaiAccount.Title");
 
             var memberIdControl = this.MemberIdControl = new LabeledTextBox();
             memberIdControl.Label.Text = "MemberId";
             memberIdControl.Label.TextAlign = ContentAlignment.MiddleRight;
-            memberIdControl.Font = fm[10, FontStyle.Regular];
             memberIdControl.TextBox.KeyDown += this.OnControlKeyDown;
+            memberIdControl.TextBox.Font = fm[10, FontStyle.Regular];
             this.Controls.Add(memberIdControl);
 
             var passHashControl = this.PassHashControl = new LabeledTextBox();
             passHashControl.Label.Text = "PassHash";
             passHashControl.Label.TextAlign = ContentAlignment.MiddleRight;
-            passHashControl.Font = fm[10, FontStyle.Regular];
             passHashControl.TextBox.KeyDown += this.OnControlKeyDown;
+            passHashControl.TextBox.Font = fm[10, FontStyle.Regular];
             this.Controls.Add(passHashControl);
 
             var verifyButton = this.VerifyButton = new Button();
             verifyButton.FlatStyle = FlatStyle.Flat;
-            verifyButton.Text = "계정 확인";
+            verifyButton.Text = SR.Get("Settings.ExHentaiAccount.Verify");
             verifyButton.Font = fm[12, FontStyle.Regular];
             verifyButton.Click += this.OnVerifyButtonClick;
             this.Controls.Add(verifyButton);
@@ -94,7 +94,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                     passHashControl.TextBox.Enabled = false;
                     verifyButton.Enabled = false;
                     messageLabel.ForeColor = Color.Black;
-                    messageLabel.Text = "확인중입니다.";
+                    messageLabel.Text = SR.Get("Settings.ExHentaiAccount.Verifying");
                 });
 
                 result = agent.CheckAccount(this.ParseAccount());
@@ -117,12 +117,12 @@ namespace Giselle.DoujinshiDownloader.Forms
                         if (o1 == true)
                         {
                             messageLabel.ForeColor = Color.Green;
-                            messageLabel.Text = "Exhentai연결에 성공했습니다.";
+                            messageLabel.Text = SR.Get("Settings.ExHentaiAccount.Success");
                         }
                         else
                         {
                             messageLabel.ForeColor = Color.Red;
-                            messageLabel.Text = "Exhentai연결에 실패했습니다.";
+                            messageLabel.Text = SR.Get("Settings.ExHentaiAccount.Fail");
                         }
 
                     }, result);

@@ -184,7 +184,77 @@
   <data name="DownloadSelect.Verify.TitleError" xml:space="preserve">
     <value>제목을 가져올 수 없음</value>
   </data>
-  <data name="" xml:space="preserve">
-    <value></value>
+  <data name="Settings.Title" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="Settings.Save" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="Settings.Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Settings.Program.Title" xml:space="preserve">
+    <value>프로그램</value>
+  </data>
+  <data name="Settings.Program.AllowBackground" xml:space="preserve">
+    <value>백그라운드 실행 허용</value>
+  </data>
+  <data name="Settings.Program.AllowNotifyMessage" xml:space="preserve">
+    <value>알림메시지 허용</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
+    <value>ExHentai 계정</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Verify" xml:space="preserve">
+    <value>계정 확인</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Verifying" xml:space="preserve">
+    <value>확인중입니다</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Success" xml:space="preserve">
+    <value>Exhentai 연결에 성공했습니다</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Fail" xml:space="preserve">
+    <value>Exhentai 연결에 실패했습니다</value>
+  </data>
+  <data name="Settings.Network.Title" xml:space="preserve">
+    <value>네트워크</value>
+  </data>
+  <data name="Settings.Network.DefaultValueTemplete" xml:space="preserve">
+    <value>(기본 값 : {=Value}{=Unit})</value>
+  </data>
+  <data name="Settings.Network.Timeout" xml:space="preserve">
+    <value>타임아웃 {=Default}</value>
+  </data>
+  <data name="Settings.Network.TimeoutUnit" xml:space="preserve">
+    <value>초</value>
+  </data>
+  <data name="Settings.Network.ThreadCount" xml:space="preserve">
+    <value>쓰레드 개수 {=Default}</value>
+  </data>
+  <data name="Settings.Network.ThreadCountUnit" xml:space="preserve">
+    <value>개</value>
+  </data>
+  <data name="Settings.Network.RetryCount" xml:space="preserve">
+    <value>다운로드 재시도 횟수 {=Default}</value>
+  </data>
+  <data name="Settings.Network.RetryCountUnit" xml:space="preserve">
+    <value>회</value>
+  </data>
+  <data name="Settings.Download.Title" xml:space="preserve">
+    <value>다운로드</value>
+  </data>
+  <data name="Settings.Download.CompleteAutoRemove" xml:space="preserve">
+    <value>다운로드 완료 시 목록에서 자동으로 제거</value>
+  </data>
+  <data name="Settings.Download.DownloadToArchive" xml:space="preserve">
+    <value>압축파일로 다운로드 (*.zip)</value>
+  </data>
+  <data name="Settings.Download.DirectoryTextBox" xml:space="preserve">
+    <value>다운로드 폴더</value>
+  </data>
+  <data name="Settings.Download.DirectoryWarning" xml:space="preserve">
+    <value>※ 상대 경로, 절대 경로 모두 지원합니다
+※ 일부 폴더는 실행 시 관리자 권한이 필요합니다</value>
   </data>
 </root>
