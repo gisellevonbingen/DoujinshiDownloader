@@ -9,9 +9,9 @@ namespace Giselle.DoujinshiDownloader.Configs
 {
     public class NetworkSettings
     {
-        public int Timeout { get; set; } = 0;
-        public int ThreadCount { get; set; } = 0;
-        public int RetryCount { get; set; } = 0;
+        public int Timeout { get; set; } = 60 * 1000;
+        public int ThreadCount { get; set; } = 4;
+        public int RetryCount { get; set; } = 2;
 
         public NetworkSettings()
         {
@@ -20,9 +20,9 @@ namespace Giselle.DoujinshiDownloader.Configs
 
         public void Read(JToken jToken)
         {
-            this.Timeout = jToken.Value<int?>("Timeout") ?? 60 * 1000;
-            this.ThreadCount = jToken.Value<int?>("ThreadCount") ?? 4;
-            this.RetryCount = jToken.Value<int?>("RetryCount") ?? 2;
+            this.Timeout = jToken.Value<int?>("Timeout") ?? this.Timeout;
+            this.ThreadCount = jToken.Value<int?>("ThreadCount") ?? this.ThreadCount;
+            this.RetryCount = jToken.Value<int?>("RetryCount") ?? this.RetryCount;
         }
 
         public void Write(JToken jToken)

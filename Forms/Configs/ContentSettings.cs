@@ -9,7 +9,7 @@ namespace Giselle.DoujinshiDownloader.Configs
 {
     public class ContentSettings
     {
-        public string DownloadDirectory { get; set; } = null;
+        public string DownloadDirectory { get; set; } = "Downloads";
         public bool DownloadCompleteAutoRemove { get; set; } = false;
         public bool DownloadToArchive { get; set; } = false;
 
@@ -20,9 +20,9 @@ namespace Giselle.DoujinshiDownloader.Configs
 
         public void Read(JToken jToken)
         {
-            this.DownloadDirectory = jToken.Value<string>("DownloadDirectory") ?? "Downloads";
-            this.DownloadCompleteAutoRemove = jToken.Value<bool?>("DownloadCompleteAutoRemove") ?? false;
-            this.DownloadToArchive = jToken.Value<bool?>("DownloadToArchive") ?? false;
+            this.DownloadDirectory = jToken.Value<string>("DownloadDirectory") ?? this.DownloadDirectory;
+            this.DownloadCompleteAutoRemove = jToken.Value<bool?>("DownloadCompleteAutoRemove") ?? this.DownloadCompleteAutoRemove;
+            this.DownloadToArchive = jToken.Value<bool?>("DownloadToArchive") ?? this.DownloadToArchive;
         }
 
         public void Write(JToken jToken)

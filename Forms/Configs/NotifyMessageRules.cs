@@ -19,8 +19,8 @@ namespace Giselle.DoujinshiDownloader.Configs
 
         public void Read(JToken jToken)
         {
-            this.HideMainForm = jToken.Value<bool?>("HideMainForm") ?? true;
-            this.DownlaodComplete = jToken.Value<bool?>("DownlaodComplete") ?? true;
+            this.HideMainForm = jToken.Value<bool?>("HideMainForm") ?? this.HideMainForm;
+            this.DownlaodComplete = jToken.Value<bool?>("DownlaodComplete") ?? this.DownlaodComplete;
         }
 
         public void Write(JToken jToken)
