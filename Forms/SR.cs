@@ -11,9 +11,19 @@ namespace Giselle.DoujinshiDownloader
 {
     public static class SR
     {
-        public static string Get(string name)
+        public static string Get(string name, params string[] array)
         {
-            return DoujinshiDownloader.Instance.ResourceManager.GetString(name);
+            var text = DoujinshiDownloader.Instance.ResourceManager.GetString(name);
+
+            for (int i = 0; i < array.Length; i+= 2)
+            {
+                var key = array[i + 0];
+                var value = array[i + 1];
+                text = text.Replace($"{{={key}}}", value);
+
+            }
+
+            return text;
         }
 
     }
