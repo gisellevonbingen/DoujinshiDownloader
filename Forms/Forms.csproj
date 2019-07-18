@@ -216,12 +216,12 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\LanguageResource.en-US.resx">
+    <EmbeddedResource Include="Resources\LanguageResource.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\LanguageResource.resx">
+    <EmbeddedResource Include="Resources\LanguageResource.ko-KR.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>LanguageResource.Designer.cs</LastGenOutput>
+      <LastGenOutput>LanguageResource.ko-KR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

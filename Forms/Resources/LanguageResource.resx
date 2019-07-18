@@ -118,254 +118,248 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Type" xml:space="preserve">
-    <value>ko-KR</value>
+    <value>en-US</value>
   </data>
   <data name="NotifyIcon.Show" xml:space="preserve">
-    <value>창 표시</value>
+    <value>Show</value>
   </data>
   <data name="NotifyIcon.Hide" xml:space="preserve">
-    <value>창 숨기기</value>
+    <value>Hide</value>
   </data>
   <data name="NotifyIcon.Dispose" xml:space="preserve">
-    <value>프로그램 종료</value>
+    <value>Exit</value>
   </data>
   <data name="NotifyIcon.RunningBackgroundNotifyMessage" xml:space="preserve">
-    <value>프로그램은 계속 실행 중 입니다</value>
+    <value>Program Running In Background</value>
   </data>
   <data name="CrashReport.Title" xml:space="preserve">
-    <value>충돌보고서</value>
+    <value>Crash Report</value>
   </data>
   <data name="CrashReport.Message" xml:space="preserve">
-    <value>응용 프로그램에서 처리할 수 없는 예외가 발생했습니다
-개발자에게 전달해주시면, 프로그램 개선에 큰 도움이 됩니다</value>
+    <value>Unexpected Exception
+Please Submit This Report</value>
   </data>
   <data name="CrashReport.Copy" xml:space="preserve">
-    <value>로그 복사하기</value>
+    <value>Copy Log</value>
   </data>
   <data name="CrashReport.Copied" xml:space="preserve">
-    <value>로그 복사됨</value>
+    <value>Copied</value>
   </data>
   <data name="CrashReport.OpenDirectory" xml:space="preserve">
-    <value>로그 폴더 열기</value>
+    <value>Open Directory</value>
   </data>
   <data name="CrashReport.Close" xml:space="preserve">
-    <value>닫기</value>
+    <value>Close</value>
   </data>
   <data name="QuitDialog.Title" xml:space="preserve">
-    <value>프로그램 종료</value>
+    <value>Quit</value>
   </data>
   <data name="QuitDialog.Text.Busy" xml:space="preserve">
-    <value>진행중인 다운로드가 있습니다
-정말로 종료하시겠습니까?</value>
+    <value>Download in progress
+Are You Sure You Want To Quit?</value>
   </data>
   <data name="QuitDialog.Text.Common" xml:space="preserve">
-    <value>프로그램을 종료하시겠습니까?</value>
+    <value>Are you sure you want to quit?</value>
   </data>
   <data name="MainMenu.Settings" xml:space="preserve">
-    <value>설정</value>
+    <value>Settings</value>
   </data>
   <data name="MainMenu.DownloadDirectory" xml:space="preserve">
-    <value>다운로드 폴더 열기</value>
+    <value>Open Downlaod Directory</value>
   </data>
   <data name="MainMenu.NewDownloadButton" xml:space="preserve">
-    <value>새 다운로드 추가</value>
+    <value>New Download</value>
   </data>
   <data name="NewDownload.Title" xml:space="preserve">
-    <value>새 다운로드 추가</value>
+    <value>New Download</value>
   </data>
   <data name="NewDownload.Input" xml:space="preserve">
-    <value>번호 및 URL 등</value>
+    <value>Input(URL)</value>
   </data>
   <data name="NewDownload.Verify" xml:space="preserve">
-    <value>확인</value>
+    <value>Verify</value>
   </data>
   <data name="NewDownload.Verify.Invalid" xml:space="preserve">
-    <value>번호 및 URL을 인식할 수 없습니다</value>
+    <value>Invalid Input(URL)</value>
   </data>
   <data name="NewDownload.Verify.Verifying" xml:space="preserve">
-    <value>번호를 확인중입니다</value>
+    <value>Verifying</value>
   </data>
   <data name="NewDownload.Verify.Verified" xml:space="preserve">
-    <value>확인 완료</value>
+    <value>Verified</value>
   </data>
   <data name="NewDownload.Add" xml:space="preserve">
-    <value>추가</value>
+    <value>Add</value>
   </data>
   <data name="NewDownload.Cancel" xml:space="preserve">
-    <value>취소</value>
+    <value>Cancel</value>
   </data>
   <data name="DownloadSelect.Title" xml:space="preserve">
-    <value>서버 선택</value>
+    <value>Select Server</value>
   </data>
   <data name="DownloadSelect.ExHentai.Original" xml:space="preserve">
-    <value>원본 이미지</value>
+    <value>Original Image</value>
   </data>
   <data name="DownloadSelect.Verify.NotSupported" xml:space="preserve">
-    <value>지원되지 않는 입력</value>
+    <value>Not Supported</value>
   </data>
   <data name="DownloadSelect.Verify.NetworkError" xml:space="preserve">
-    <value>네트워크 에러</value>
+    <value>Network Error</value>
   </data>
   <data name="DownloadSelect.Verify.ExHentaiAccountError" xml:space="preserve">
-    <value>ExHentai 계정 에러</value>
+    <value>ExHentai Account Error</value>
   </data>
   <data name="DownloadSelect.Verify.GalleryRemoved" xml:space="preserve">
-    <value>갤러리가 삭제됨</value>
+    <value>Gallery Removed</value>
   </data>
   <data name="DownloadSelect.Verify.TitleError" xml:space="preserve">
-    <value>제목을 가져올 수 없음</value>
+    <value>Error To Get Title</value>
   </data>
   <data name="DownloadSelect.Add.MissingInput" xml:space="preserve">
-    <value>번호 및 URL입력후 확인해주세요</value>
+    <value>Missing Input Verify</value>
   </data>
   <data name="DownloadSelect.Add.MissingServer" xml:space="preserve">
-    <value>갤러리를 다운로드할 서버를 선택해주세요</value>
+    <value>Missing Server</value>
   </data>
   <data name="Settings.Title" xml:space="preserve">
-    <value>설정</value>
+    <value>Settings</value>
   </data>
   <data name="Settings.Save" xml:space="preserve">
-    <value>저장</value>
+    <value>Save</value>
   </data>
   <data name="Settings.Cancel" xml:space="preserve">
-    <value>취소</value>
+    <value>Cancel</value>
   </data>
   <data name="Settings.Program.Title" xml:space="preserve">
-    <value>프로그램</value>
+    <value>Program</value>
   </data>
   <data name="Settings.Program.AllowBackground" xml:space="preserve">
-    <value>백그라운드 실행 허용</value>
+    <value>Allow Running In Background</value>
   </data>
   <data name="Settings.Program.AllowNotifyMessage" xml:space="preserve">
-    <value>알림메시지 허용</value>
+    <value>Allow Notify Message</value>
   </data>
   <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
-    <value>ExHentai 계정</value>
+    <value>ExHentai Account</value>
   </data>
   <data name="Settings.ExHentaiAccount.Verify" xml:space="preserve">
-    <value>계정 확인</value>
+    <value>Verify Account</value>
   </data>
   <data name="Settings.ExHentaiAccount.Verifying" xml:space="preserve">
-    <value>확인중입니다</value>
+    <value>Verifying</value>
   </data>
   <data name="Settings.ExHentaiAccount.Success" xml:space="preserve">
-    <value>Exhentai 연결에 성공했습니다</value>
+    <value>Account Verified</value>
   </data>
   <data name="Settings.ExHentaiAccount.Fail" xml:space="preserve">
-    <value>Exhentai 연결에 실패했습니다</value>
+    <value>Verify Fail</value>
   </data>
   <data name="Settings.Network.Title" xml:space="preserve">
-    <value>네트워크</value>
+    <value>Network</value>
   </data>
   <data name="Settings.Network.DefaultValueTemplete" xml:space="preserve">
-    <value>(기본 값 : {=Value}{=Unit})</value>
+    <value>(Default : {=Value}{=Unit})</value>
   </data>
   <data name="Settings.Network.Timeout" xml:space="preserve">
-    <value>타임아웃 {=Default}</value>
+    <value>Timeout {=Default}</value>
   </data>
   <data name="Settings.Network.TimeoutUnit" xml:space="preserve">
-    <value>초</value>
+    <value>s</value>
   </data>
   <data name="Settings.Network.ThreadCount" xml:space="preserve">
-    <value>쓰레드 개수 {=Default}</value>
+    <value>Thread Count {=Default}</value>
   </data>
   <data name="Settings.Network.ThreadCountUnit" xml:space="preserve">
-    <value>개</value>
+    <value></value>
   </data>
   <data name="Settings.Network.RetryCount" xml:space="preserve">
-    <value>다운로드 재시도 횟수 {=Default}</value>
+    <value>Retry Count {=Default}</value>
   </data>
   <data name="Settings.Network.RetryCountUnit" xml:space="preserve">
-    <value>회</value>
+    <value></value>
   </data>
   <data name="Settings.Download.Title" xml:space="preserve">
-    <value>다운로드</value>
+    <value>Download</value>
   </data>
   <data name="Settings.Download.CompleteAutoRemove" xml:space="preserve">
-    <value>다운로드 완료 시 목록에서 자동으로 제거</value>
+    <value>Remove On Download Complete</value>
   </data>
   <data name="Settings.Download.DownloadToArchive" xml:space="preserve">
-    <value>압축파일로 다운로드 (*.zip)</value>
+    <value>Downalod To Archive File (*.zip)</value>
   </data>
   <data name="Settings.Download.DirectoryTextBox" xml:space="preserve">
-    <value>다운로드 폴더</value>
+    <value>Directory</value>
   </data>
   <data name="Settings.Download.DirectoryWarning" xml:space="preserve">
-    <value>※ 상대 경로, 절대 경로 모두 지원합니다
-※ 일부 폴더는 실행 시 관리자 권한이 필요합니다</value>
+    <value>※ Supports Both Relative, Absolute Paths
+※ Some Directory Require Administrator Privileges</value>
   </data>
   <data name="Download.Detail" xml:space="preserve">
-    <value>상세 보기</value>
+    <value>Detail</value>
   </data>
   <data name="Download.Detail.Close" xml:space="preserve">
-    <value>닫기</value>
+    <value>Close</value>
   </data>
   <data name="Download.Detail.State.StandBy" xml:space="preserve">
-    <value>준비 중</value>
+    <value>Ready</value>
   </data>
   <data name="Download.Detail.State.Downloading" xml:space="preserve">
-    <value>다운로드 중</value>
+    <value>Downloading</value>
   </data>
   <data name="Download.Detail.State.Complete" xml:space="preserve">
-    <value>다운로드 완료</value>
+    <value>Complete</value>
   </data>
   <data name="Download.Detail.State.Success" xml:space="preserve">
-    <value>다운로드 완료</value>
+    <value>Complete</value>
   </data>
   <data name="Download.Detail.State.Exception" xml:space="preserve">
-    <value>에러 발생</value>
+    <value>Exception</value>
   </data>
   <data name="Download.Detail.State.RequestNotCreate" xml:space="preserve">
-    <value>경로 생성 안됨</value>
+    <value>File Not Found</value>
   </data>
   <data name="Download.OpenDirectory" xml:space="preserve">
-    <value>폴더 열기</value>
+    <value>Open</value>
   </data>
   <data name="Download.OpenDirectory.NotExist" xml:space="preserve">
-    <value>다운로드 폴더가 아직 생성되지 않았습니다</value>
+    <value>Directory Not Created Yet</value>
   </data>
   <data name="Download.Remove" xml:space="preserve">
-    <value>제거</value>
+    <value>Remove</value>
   </data>
   <data name="Download.Remove.Dialog.Title" xml:space="preserve">
-    <value>제거 확인</value>
+    <value>Confirm Remove</value>
   </data>
   <data name="Download.Remove.Dialog.WithCancelText" xml:space="preserve">
-    <value>다운로드 목록에서 제거하기 위해, 다운로드를 취소합니다
-계속하시겠습니까?</value>
+    <value>Cancel Download For Remove From List
+Would You Like To Continue?</value>
   </data>
-  <data name="Download.Remove.Dialog.Text" xml:space="preserve">
-    <value>다운로드 목록에서 제거합니다
-계속하시겠습니까?</value>
+	<data name="Download.Remove.Dialog.Text" xml:space="preserve">
+    <value>Remove Download From List
+Would You Like To Continue?</value>
   </data>
   <data name="Downlaod.State.NotStarted" xml:space="preserve">
-    <value>다운로드 준비 중</value>
+    <value>Ready</value>
   </data>
   <data name="Downlaod.State.Starting" xml:space="preserve">
-    <value>다운로드 시작 중</value>
+    <value>Starting</value>
   </data>
   <data name="Downlaod.State.Running" xml:space="preserve">
-    <value>다운로드 중 {=Percent}%</value>
+    <value>Downloading {=Percent}%</value>
   </data>
   <data name="Downlaod.State.Canceling" xml:space="preserve">
-    <value>다운로드 취소 중"</value>
+    <value>Canceling</value>
   </data>
   <data name="Downlaod.State.Cancelled" xml:space="preserve">
-    <value>다운로드 취소 됨</value>
+    <value>Cancelled</value>
   </data>
   <data name="Downlaod.State.Excepted" xml:space="preserve">
-    <value>예외 발생</value>
+    <value>Unexpected Excepted</value>
   </data>
   <data name="Downlaod.State.Completed" xml:space="preserve">
-    <value>다운로드 완료</value>
+    <value>Complete</value>
   </data>
   <data name="Downlaod.State.Completed.Fails" xml:space="preserve">
-    <value> ({=ExceptionCount}개 파일 다운로드 실패)</value>
-  </data>
-  <data name="" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="" xml:space="preserve">
-    <value></value>
+    <value> (Fail Files : {=ExceptionCount})</value>
   </data>
 </root>
