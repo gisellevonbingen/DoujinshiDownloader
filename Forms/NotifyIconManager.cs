@@ -22,6 +22,7 @@ namespace Giselle.DoujinshiDownloader
         {
             var impl = this.Impl = new NotifyIcon();
             impl.Icon = Icon.FromHandle(Properties.Resources.NotifyIcon.GetHicon());
+            impl.Text = DoujinshiDownloader.Name;
             impl.DoubleClick += this.OnImplDoubleClick;
 
             var menu = impl.ContextMenu = new ContextMenu();
