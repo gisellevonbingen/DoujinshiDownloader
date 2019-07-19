@@ -245,6 +245,12 @@ Are You Sure You Want To Quit?</value>
   <data name="Settings.Program.AllowNotifyMessage" xml:space="preserve">
     <value>Allow Notify Message</value>
   </data>
+  <data name="Settings.Program.NotifyMessageRules.HideMainForm" xml:space="preserve">
+    <value>When Main Form Hide</value>
+  </data>
+  <data name="Settings.Program.NotifyMessageRules.DownlaodComplete" xml:space="preserve">
+    <value>Download Complete</value>
+  </data>
   <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
     <value>ExHentai Account</value>
   </data>

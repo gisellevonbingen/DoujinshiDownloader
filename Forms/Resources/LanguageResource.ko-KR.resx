@@ -245,6 +245,12 @@
   <data name="Settings.Program.AllowNotifyMessage" xml:space="preserve">
     <value>알림메시지 허용</value>
   </data>
+  <data name="Settings.Program.NotifyMessageRules.HideMainForm" xml:space="preserve">
+    <value>창이 숨겨질 때</value>
+  </data>
+  <data name="Settings.Program.NotifyMessageRules.DownlaodComplete" xml:space="preserve">
+    <value>다운로드 완료</value>
+  </data>
   <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
     <value>ExHentai 계정</value>
   </data>
