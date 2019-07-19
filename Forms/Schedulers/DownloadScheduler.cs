@@ -14,8 +14,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         private readonly object StateLockObject = new object();
 
         private bool Stopping = false;
-        private bool _Busy = false;
-        public bool Busy { get { return this._Busy; } }
+
+        public bool Busy { get; private set; } = false;
 
         private ManualResetEventSlim ResetEvent = null;
         private Thread ExecuteThread = null;
@@ -61,7 +61,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                     try
                     {
-                        this._Busy = true;
+                        this.Busy = true;
 
                         DownloadTask[] array = null;
 
@@ -89,7 +89,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     }
                     finally
                     {
-                        this._Busy = false;
+                        this.Busy = false;
                     }
 
                 }
