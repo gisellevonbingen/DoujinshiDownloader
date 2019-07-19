@@ -132,6 +132,12 @@
   <data name="NotifyIcon.RunningBackgroundNotifyMessage" xml:space="preserve">
     <value>Program Running In Background</value>
   </data>
+  <data name="NotifyIcon.DownloadCompleteNotifyMessage.Title" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="NotifyIcon.DownloadCompleteNotifyMessage.Text" xml:space="preserve">
+    <value>{=Title}</value>
+  </data>
   <data name="CrashReport.Title" xml:space="preserve">
     <value>Crash Report</value>
   </data>

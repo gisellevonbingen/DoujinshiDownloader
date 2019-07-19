@@ -66,7 +66,13 @@ namespace Giselle.DoujinshiDownloader
 
             if (visible == false)
             {
-                this.Show(this.MenuItemMainFormHide.Text, SR.Get("NotifyIcon.RunningBackgroundNotifyMessage"), ToolTipIcon.Info);
+                var config = DoujinshiDownloader.Instance.Config.Values.Program;
+
+                if (config.NotifyMessageRules.HideMainForm == true)
+                {
+                    this.Show(this.MenuItemMainFormHide.Text, SR.Get("NotifyIcon.RunningBackgroundNotifyMessage"), ToolTipIcon.Info);
+                }
+
             }
 
         }

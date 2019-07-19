@@ -132,6 +132,12 @@
   <data name="NotifyIcon.RunningBackgroundNotifyMessage" xml:space="preserve">
     <value>프로그램은 계속 실행 중 입니다</value>
   </data>
+  <data name="NotifyIcon.DownloadCompleteNotifyMessage.Title" xml:space="preserve">
+    <value>다운로드</value>
+  </data>
+  <data name="NotifyIcon.DownloadCompleteNotifyMessage.Text" xml:space="preserve">
+    <value>{=Title}</value>
+  </data>
   <data name="CrashReport.Title" xml:space="preserve">
     <value>충돌보고서</value>
   </data>
