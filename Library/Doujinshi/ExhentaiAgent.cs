@@ -70,7 +70,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             {
                 var redirect = response.Impl.Headers["Content-Disposition"];
 
-                if (redirect !=null)
+                if (redirect != null)
                 {
                     throw new ExHentaiAccountException();
                 }
@@ -182,15 +182,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
                     using (var response2 = this.Explorer.Request(parameter2))
                     {
-                        try
-                        {
-                            return response2.Impl.Headers["Location"];
-                        }
-                        finally
-                        {
-                            ObjectUtils.CloseAndDisposeQuietly(response2);
-                        }
-
+                        return response2.Impl.Headers["Location"];
                     }
 
                 }

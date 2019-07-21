@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Giselle.Commons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,21 +41,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             }
 
             s = s.ToLowerInvariant().Replace(" ", "");
-
-            if (s.StartsWith("/") == true)
-            {
-                s = s.Substring(1);
-            }
-
-            if (s.EndsWith("/") == true)
-            {
-                s = s.Substring(0, s.Length - 1);
-            }
-
-            var list = new List<Tuple<string, string>>();
-            list.Add(new Tuple<string, string>("https://e-hentai.org/g/", null));
-            list.Add(new Tuple<string, string>("https://exhentai.org/g/", null));
-            list.Add(new Tuple<string, string>("https://hitomi.la/galleries/", ".html"));
+            s = StringUtils.RemovePrefix(s, "/");
+            s = StringUtils.RemoveSuffx(s, "/");
 
             foreach (var site in Site.Knowns)
             {
