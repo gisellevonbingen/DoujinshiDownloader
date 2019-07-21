@@ -16,6 +16,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
     public class ExHentaiAgent : GalleryAgent
     {
         public ExHentaiAccount Account { get; set; } = null;
+        public bool Original { get; set; } = false;
 
         public ExHentaiAgent()
         {
@@ -59,7 +60,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override string GetGalleryTitle(string url, DownloadAgentParameter agentParameter)
+        public override string GetGalleryTitle(string url)
         {
             var parameter = this.CreateRequestParameter();
             parameter.URL = url;
@@ -139,9 +140,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         }
 
 
-        public override RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter, DownloadAgentParameter agentParameter)
+        public override RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter)
         {
-            var downloadURL = this.GetGalleryImageDownloadPath(url, agentParameter as ExHentaiDownloadParameter);
+            var downloadURL = this.GetGalleryImageDownloadPath(url);
 
             if (downloadURL != null)
             {
@@ -155,7 +156,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return null;
         }
 
-        public string GetGalleryImageDownloadPath(string url, ExHentaiDownloadParameter downloadParameter)
+        public string GetGalleryImageDownloadPath(string url)
         {
             var parameter = this.CreateRequestParameter();
             parameter.URL = url;
@@ -165,7 +166,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             {
                 var mainDivElement = response.ReadToDocument().DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i1"));
 
-                if ((downloadParameter?.Original).GetValueOrDefault(false) == true)
+                if (this.Original == true)
                 {
                     var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i7"));
                     string url2 = HttpUtility.HtmlDecode(subDivElement?.ChildNodes["a"]?.GetAttributeValue("href", null));

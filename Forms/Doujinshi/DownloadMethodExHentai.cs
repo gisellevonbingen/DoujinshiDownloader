@@ -21,16 +21,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
             var agent = new ExHentaiAgent();
             agent.Account = account;
+            agent.Original = this.Original;
 
             return agent;
         }
 
-        public override DownloadAgentParameter CreateDownloadParameter()
-        {
-            var parameter = new ExHentaiDownloadParameter();
-            parameter.Original = false;
-            return parameter;
-        }
+        public virtual bool Original { get; }
 
     }
 

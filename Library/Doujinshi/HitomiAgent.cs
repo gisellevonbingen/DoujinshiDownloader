@@ -15,12 +15,14 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class HitomiAgent : GalleryAgent
     {
+        public bool Removed { get; set; } = false;
+
         public HitomiAgent()
         {
 
         }
 
-        public override RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter, DownloadAgentParameter agentParameter)
+        public override RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
@@ -135,15 +137,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return null;
         }
 
-        public override string GetGalleryTitle(string url, DownloadAgentParameter downloadParameter)
+        public override string GetGalleryTitle(string url)
         {
-            var removed = (downloadParameter as HitomiDownloadParameter)?.Removed ?? false;
-
             var parameter = this.CreateRequestParameter();
             parameter.URL = url;
             parameter.Method = "GET";
 
-            if (removed == false)
+            if (this.Removed == false)
             {
                 return this.GetGalleryTitle(parameter);
             }

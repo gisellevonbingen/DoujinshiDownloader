@@ -162,8 +162,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             try
             {
-                var parameter = downloadMethod.CreateDownloadParameter();
-                var title = agent.GetGalleryTitle(url, parameter);
+                var title = agent.GetGalleryTitle(url);
 
                 if (title == null)
                 {

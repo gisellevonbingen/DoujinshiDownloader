@@ -29,7 +29,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return requeset;
         }
 
-        public abstract string GetGalleryTitle(string url, DownloadAgentParameter agentParameter);
+        public abstract string GetGalleryTitle(string url);
 
         public abstract List<string> GetGalleryImageViewURLs(string url);
 
@@ -38,7 +38,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return new DownloadGalleryParameter { Referer = url };
         }
 
-        public abstract RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter, DownloadAgentParameter agentParameter);
+        public abstract RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter);
     }
 
 }

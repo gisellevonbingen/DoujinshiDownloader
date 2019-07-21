@@ -17,8 +17,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public abstract GalleryAgent CreateAgent();
 
-        public abstract DownloadAgentParameter CreateDownloadParameter();
-
         public bool Equals(DownloadMethod other)
         {
             return this == other;
