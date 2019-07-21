@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Giselle.Commons.Drawing;
+using Giselle.Drawing;
 
 namespace Giselle.DoujinshiDownloader.Forms.Utils
 {
