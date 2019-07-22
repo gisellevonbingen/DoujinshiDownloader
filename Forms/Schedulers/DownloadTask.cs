@@ -202,15 +202,15 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             var downloadDirectory = config.Content.DownloadDirectory;
             Directory.CreateDirectory(downloadDirectory);
 
-            var ffff = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.Title));
+            var downloadPath = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.Title));
 
             if (downloadToArchive == true)
             {
-                this.DownloadFile = new FileArchiveZip(ffff + ".zip");
+                this.DownloadFile = new FileArchiveZip(downloadPath + ".zip");
             }
             else
             {
-                this.DownloadFile = new FileArchiveDirectory(ffff);
+                this.DownloadFile = new FileArchiveDirectory(downloadPath);
             }
 
             var viewURLs = this.ViewURLs = agent.GetGalleryImageViewURLs(galleryURL);
