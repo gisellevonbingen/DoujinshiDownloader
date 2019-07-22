@@ -45,12 +45,21 @@ namespace Giselle.DoujinshiDownloader.Forms
                 this.Visible = true;
             }
 
-            if (this.WindowState == FormWindowState.Minimized)
+            this.BringToFront();
+            this.Activate();
+
+            var state = this.WindowState;
+
+            if (state == FormWindowState.Minimized)
             {
                 this.WindowState = FormWindowState.Normal;
             }
+            else
+            {
+                this.WindowState = FormWindowState.Minimized;
+                this.WindowState = state;
+            }
 
-            this.Activate();
         }
 
 
