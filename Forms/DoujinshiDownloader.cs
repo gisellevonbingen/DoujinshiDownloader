@@ -37,16 +37,32 @@ namespace Giselle.DoujinshiDownloader
             }
             else if (result is CommandLine.Parsed<CommandLineOptions> parsed)
             {
-                using (var mutex = new Mutex(true, FullName, out var createdNew))
+                var options = parsed.Value;
+
+                if (options.Console == true)
                 {
-                    if (createdNew == true)
+                    NativeMethods.AllocConsole();
+                }
+
+                if (options.MultiInstance == true)
+                {
+                    var instance = new DoujinshiDownloader(options);
+                    instance.Run();
+                }
+                else
+                {
+                    using (var mutex = new Mutex(true, FullName, out var createdNew))
                     {
-                        var instance = new DoujinshiDownloader(parsed.Value);
-                        instance.Run();
-                    }
-                    else
-                    {
-                        NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_ShowSingleInstance, IntPtr.Zero, IntPtr.Zero);
+                        if (createdNew == true)
+                        {
+                            var instance = new DoujinshiDownloader(options);
+                            instance.Run();
+                        }
+                        else
+                        {
+                            NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_ShowSingleInstance, IntPtr.Zero, IntPtr.Zero);
+                        }
+
                     }
 
                 }
@@ -55,6 +71,7 @@ namespace Giselle.DoujinshiDownloader
 
         }
 
+        public CommandLineOptions CommandLineOptions { get; }
         public ResourceManager ResourceManager { get; }
         public ConfigurationManager Config { get; }
         public FontManager FontManager { get; }
@@ -68,6 +85,7 @@ namespace Giselle.DoujinshiDownloader
         {
             Instance = this;
 
+            this.CommandLineOptions = options;
             this.ResourceManager = new ResourceManager("Giselle.DoujinshiDownloader.Resources.LanguageResource", typeof(DoujinshiDownloader).Assembly);
             this.SetUILanguage(options.Language);
 

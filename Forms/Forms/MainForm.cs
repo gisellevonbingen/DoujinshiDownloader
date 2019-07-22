@@ -60,7 +60,11 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             if (m.Msg == NativeMethods.WM_ShowSingleInstance)
             {
-                this.ShowWithActivate();
+                if (DoujinshiDownloader.Instance.CommandLineOptions.MultiInstance == false)
+                {
+                    this.ShowWithActivate();
+                }
+
             }
 
         }
