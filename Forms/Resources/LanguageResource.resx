@@ -251,6 +251,15 @@ Are You Sure You Want To Quit?</value>
   <data name="Settings.Program.NotifyMessageRules.DownlaodComplete" xml:space="preserve">
     <value>Download Complete</value>
   </data>
+  <data name="Settings.Program.UserInterfaceRule" xml:space="preserve">
+    <value>User Interface</value>
+  </data>
+  <data name="Settings.Program.UserInterfaceRules.ConfirmBeforeExitProgram" xml:space="preserve">
+    <value>Confirm Before Exit Program</value>
+  </data>
+  <data name="Settings.Program.UserInterfaceRules.ConfirmBeforeRemoveDownload" xml:space="preserve">
+    <value>Confirm Before Cancel/Remvoe Download</value>
+  </data>
   <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
     <value>ExHentai Account</value>
   </data>

@@ -251,6 +251,15 @@
   <data name="Settings.Program.NotifyMessageRules.DownlaodComplete" xml:space="preserve">
     <value>다운로드 완료</value>
   </data>
+  <data name="Settings.Program.UserInterfaceRule" xml:space="preserve">
+    <value>사용자 인터페이스</value>
+  </data>
+  <data name="Settings.Program.UserInterfaceRules.ConfirmBeforeExitProgram" xml:space="preserve">
+    <value>프로그램 종료시 확인</value>
+  </data>
+  <data name="Settings.Program.UserInterfaceRules.ConfirmBeforeRemoveDownload" xml:space="preserve">
+    <value>다운로드 제거/취소시 확인</value>
+  </data>
   <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
     <value>ExHentai 계정</value>
   </data>

@@ -178,30 +178,31 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             var task = this.Task;
 
-            string title = null;
-
-            if (task.State.HasFlag(TaskState.Completed) == false)
+            if (DoujinshiDownloader.Instance.Config.Values.Program.UserInterfaceRules.ConfirmBeforeRemoveDownload == true)
             {
-                title = SR.Get("Download.Remove.Dialog.WithCancelText");
-            }
-            else
-            {
-                title = SR.Get("Download.Remove.Dialog.Text");
+                string title = null;
+
+                if (task.State.HasFlag(TaskState.Completed) == false)
+                {
+                    title = SR.Get("Download.Remove.Dialog.WithCancelText");
+                }
+                else
+                {
+                    title = SR.Get("Download.Remove.Dialog.Text");
+                }
+
+                var dr = MessageBox.Show(this, title, SR.Get("Download.Remove.Dialog.Title"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+
+
+                if (dr == DialogResult.Cancel)
+                {
+                    return;
+                }
+
             }
 
-            var dr = MessageBox.Show(this, title, SR.Get("Download.Remove.Dialog.Title"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-
-            if (dr == DialogResult.OK)
-            {
-                task.Cancel();
-
-                this.OnRemoveRequest(EventArgs.Empty);
-            }
-            else
-            {
-                return;
-            }
-
+            task.Cancel();
+            this.OnRemoveRequest(EventArgs.Empty);
         }
 
         protected virtual void OnRemoveRequest(EventArgs e)

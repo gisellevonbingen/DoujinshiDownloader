@@ -13,6 +13,7 @@ namespace Giselle.DoujinshiDownloader.Configs
         public bool AllowNotifyMessage { get; set; } = true;
 
         public NotifyMessageRules NotifyMessageRules { get; } = new NotifyMessageRules();
+        public UserInterfaceRules UserInterfaceRules { get; } = new UserInterfaceRules();
 
         public ProgramSettings()
         {
@@ -25,6 +26,7 @@ namespace Giselle.DoujinshiDownloader.Configs
             this.AllowNotifyMessage = jToken.Value<bool?>("AllowNotifyMessage") ?? this.AllowNotifyMessage;
 
             this.NotifyMessageRules.Read(jToken.Value<JObject>("NotifyMessageRules") ?? new JObject());
+            this.UserInterfaceRules.Read(jToken.Value<JObject>("UserInterfaceRules") ?? new JObject());
         }
 
         public void Write(JToken jToken)
@@ -33,6 +35,7 @@ namespace Giselle.DoujinshiDownloader.Configs
             jToken["AllowNotifyMessage"] = this.AllowNotifyMessage;
 
             this.NotifyMessageRules.Write(jToken["NotifyMessageRules"] = new JObject());
+            this.UserInterfaceRules.Write(jToken["UserInterfaceRules"] = new JObject());
         }
 
     }
