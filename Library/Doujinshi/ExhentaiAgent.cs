@@ -60,7 +60,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override string GetGalleryTitle(string url)
+        public override GalleryInfo GetGalleryInfo(string url)
         {
             var parameter = this.CreateRequestParameter();
             parameter.URL = url;
@@ -75,12 +75,16 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                     throw new ExHentaiAccountException();
                 }
 
+                var info = new GalleryInfo();
+
                 var document = response.ReadToDocument();
                 var gmDivElement = document.DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("gm"));
                 var gd2Elements = gmDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gd2")).ChildNodes;
                 var gnElement = gd2Elements.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gn"));
 
-                return gnElement.InnerText;
+                info.Title = gnElement.InnerText;
+
+                return info;
             }
 
         }

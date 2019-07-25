@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -29,7 +30,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return requeset;
         }
 
-        public abstract string GetGalleryTitle(string url);
+        public abstract GalleryInfo GetGalleryInfo(string url);
 
         public abstract List<string> GetGalleryImageViewURLs(string url);
 
@@ -39,6 +40,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         }
 
         public abstract RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter);
+
     }
 
 }

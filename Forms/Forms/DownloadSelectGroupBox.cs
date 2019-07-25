@@ -162,15 +162,17 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             try
             {
-                var title = agent.GetGalleryTitle(url);
+                var info = agent.GetGalleryInfo(url);
+                //thumbnail.Save(site.Name + "_" + downloadInput + ".jpg");
+                Console.WriteLine(info.Thumbnail);
 
-                if (title == null)
+                if (info.Title == null)
                 {
                     throw new Exception();
                 }
                 else
                 {
-                    return ValidateResult.CreateByTitle(title);
+                    return ValidateResult.CreateByTitle(info.Title);
                 }
 
             }
