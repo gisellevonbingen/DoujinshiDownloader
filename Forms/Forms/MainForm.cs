@@ -112,8 +112,9 @@ namespace Giselle.DoujinshiDownloader.Forms
         private void OnTaskStateChanged(object sender, EventArgs e)
         {
             var task = sender as DownloadTask;
+            var state = task.State;
 
-            if (task.State.HasFlag(TaskState.Completed) == true)
+            if (state.HasFlag(TaskState.Completed) == true && state.HasFlag(TaskState.Cancelled) == false)
             {
                 task.StateChanged -= this.OnTaskStateChanged;
 
