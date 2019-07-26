@@ -8,8 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.DoujinshiDownloader.Doujinshi;
+using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Drawing;
+using static System.Windows.Forms.LinkLabel;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -17,6 +20,8 @@ namespace Giselle.DoujinshiDownloader.Forms
     {
         private Button SettingsButton = null;
         private Button DownloadDirectoryButton = null;
+
+        private LinkLabel LinkLabel = null;
 
         private Button NewDownloadButton = null;
 
@@ -40,6 +45,11 @@ namespace Giselle.DoujinshiDownloader.Forms
             downloadDirectoryButton.Click += this.OnDownloadDirectoryButtonClick;
             this.Controls.Add(downloadDirectoryButton);
 
+            var linkLabel = this.LinkLabel = new LinkLabel();
+            linkLabel.Text = "Open Github";
+            linkLabel.LinkClicked += this.OnLinkLabelLinkClicked;
+            this.Controls.Add(linkLabel);
+
             var newDownloadButton = this.NewDownloadButton = new Button();
             newDownloadButton.FlatStyle = FlatStyle.Flat;
             newDownloadButton.Text = SR.Get("MainMenu.NewDownloadButton");
@@ -47,6 +57,11 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Controls.Add(newDownloadButton);
 
             this.ResumeLayout(false);
+        }
+
+        private void OnLinkLabelLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/gisellevonbingen/DoujinshiDownloader/issues?q=");
         }
 
         private void OnDownloadDirectoryButtonClick(object sender, EventArgs e)
@@ -105,6 +120,10 @@ namespace Giselle.DoujinshiDownloader.Forms
             var newDownloadButton = this.NewDownloadButton;
             var newDownloadButtonSize = new Size(200, buttonHeight);
             map[newDownloadButton] = new Rectangle(new Point(buttonMargin, buttonTop), newDownloadButtonSize);
+
+            var linkLabel = this.LinkLabel;
+            var linkLabelSize = new Size(linkLabel.PreferredWidth, 25);
+            map[linkLabel] = DrawingUtils2.PlaceByDirection(map[downloadDirectoryButton], linkLabelSize, PlaceDirection.Left, PlaceLevel.Full);
 
             return map;
         }
