@@ -74,7 +74,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.Padding = new Padding(0, 0, 0, 1);
             this.UpdateTitleLabelFont();
-            this.UpdateProgressBar();
+            this.HandleTaskStateChanged();
 
             task.Progressed += this.OnTaskProgressed;
             task.StateChanged += this.OnTaskStateChanged;
@@ -115,15 +115,15 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void OnTaskStateChanged(object sender, EventArgs e)
         {
-            ControlUtils.InvokeIfNeed(this, this.UpdateProgressBar);
+            ControlUtils.InvokeIfNeed(this, this.HandleTaskStateChanged);
         }
 
         private void OnTaskProgressed(object sender, TaskProgressingEventArgs e)
         {
-            ControlUtils.InvokeIfNeed(this, this.UpdateProgressBar);
+            ControlUtils.InvokeIfNeed(this, this.HandleTaskStateChanged);
         }
 
-        private void UpdateProgressBar()
+        private void HandleTaskStateChanged()
         {
             var task = this.Task;
             var state = task.State;
