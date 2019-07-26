@@ -12,6 +12,7 @@ using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Resources;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Commons;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -133,7 +134,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             progressBar.Maximum = task.Count;
             progressBar.Value = task.Progress.Count(DownloadResult.Complete);
 
-            var text = SR.Get($"Downlaod.State.{state.ToString()}");
+            var states = EnumUtils.GetValues<TaskState>();
+            var text = string.Join(", ", states.Where(v => state.HasFlag(v)).Select(v => SR.Get($"Downlaod.State.{v.ToString()}")));
 
             if (state.HasFlag(TaskState.Running) == true)
             {
@@ -148,7 +150,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 {
                     text += SR.Get("Downlaod.State.Completed.Fails", "ExceptionCount", exceptionCount.ToString());
                 }
-                else if (state.HasFlag(TaskState.Cancelled) == true || DoujinshiDownloader.Instance.Config.Values.Content.DownloadCompleteAutoRemove == true)
+                else if (DoujinshiDownloader.Instance.Config.Values.Content.DownloadCompleteAutoRemove == true)
                 {
                     this.OnRemoveRequest(new EventArgs());
                 }
@@ -177,12 +179,13 @@ namespace Giselle.DoujinshiDownloader.Forms
         private void OnRemoveButtonClick(object sender, EventArgs e)
         {
             var task = this.Task;
+            var state = task.State;
 
             if (DoujinshiDownloader.Instance.Config.Values.Program.UserInterfaceRules.ConfirmBeforeRemoveDownload == true)
             {
                 string title = null;
 
-                if (task.State.HasFlag(TaskState.Completed) == false)
+                if (state.HasFlag(TaskState.Completed) == false)
                 {
                     title = SR.Get("Download.Remove.Dialog.WithCancelText");
                 }
@@ -201,7 +204,15 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(() => task.Cancel());
+            if (state.HasFlag(TaskState.Completed) == false)
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(() => task.Cancel());
+            }
+            else
+            {
+                this.OnRemoveRequest(new EventArgs());
+            }
+
         }
 
         protected virtual void OnRemoveRequest(EventArgs e)
