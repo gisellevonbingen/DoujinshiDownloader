@@ -201,8 +201,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             }
 
-            task.Cancel();
             this.OnRemoveRequest(EventArgs.Empty);
+            System.Threading.Tasks.Task.Factory.StartNew(() => task.Cancel());
         }
 
         protected virtual void OnRemoveRequest(EventArgs e)
