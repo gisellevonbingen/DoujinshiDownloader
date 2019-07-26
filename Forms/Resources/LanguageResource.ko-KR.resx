@@ -203,8 +203,20 @@
   <data name="DownloadSelect.Title" xml:space="preserve">
     <value>서버 선택</value>
   </data>
-  <data name="DownloadSelect.ExHentai.Original" xml:space="preserve">
-    <value>원본 이미지</value>
+  <data name="DownloadSelect.Method.Hitomi" xml:space="preserve">
+    <value>Hitomi 1</value>
+  </data>
+  <data name="DownloadSelect.Method.Hitomi_Removed" xml:space="preserve">
+    <value>Hitomi 2</value>
+  </data>
+  <data name="DownloadSelect.Method.E-Hentai" xml:space="preserve">
+    <value>E-Hentai</value>
+  </data>
+  <data name="DownloadSelect.Method.ExHentai" xml:space="preserve">
+    <value>ExHentai</value>
+  </data>
+  <data name="DownloadSelect.Method.ExHentai_Original" xml:space="preserve">
+    <value>ExHentai(원본 이미지)</value>
   </data>
   <data name="DownloadSelect.Verify.NotSupported" xml:space="preserve">
     <value>지원되지 않는 입력</value>

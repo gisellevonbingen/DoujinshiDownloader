@@ -20,7 +20,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.SuspendLayout();
 
-            this.Text = DoujinshiDownloader.Name;
+            this.Text = $"{DoujinshiDownloader.Name} - Experimental : E-Hentai";
             this.StartPosition = FormStartPosition.CenterScreen;
 
             var mainMenu = this.MainMenu = new MainMenu();

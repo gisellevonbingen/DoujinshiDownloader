@@ -6,22 +6,20 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
-    public class DownloadMethodExHentai : DownloadMethod
+    public class DownloadMethodE_Hentai : DownloadMethod
     {
-        public DownloadMethodExHentai(string name) : base(name)
+        public DownloadMethodE_Hentai(string name) : base(name)
         {
 
         }
 
-        public override Site Site { get { return Site.ExHentai; } }
+        public override Site Site { get { return Site.E_Hentai; } }
 
         public override GalleryAgent CreateAgent()
         {
-            var account = DoujinshiDownloader.Instance.Config.Values.Agent.ExHentaiAccount;
-
             var agent = new ExHentaiAgent();
-            agent.Account = account;
-            agent.Original = this.Original;
+            agent.Account = null;
+            agent.Original = false;
 
             return agent;
         }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Giselle.Commons;
 using Giselle.DoujinshiDownloader.Doujinshi;
+using Giselle.DoujinshiDownloader.Utils;
 using Giselle.DoujinshiDownloader.Web;
 using HtmlAgilityPack;
 
@@ -37,8 +38,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             if (account != null)
             {
                 var uri = new Uri("https://exhentai.org/");
-                cookies.Add(uri, new Cookie("ipb_member_id", account.MemberId, "/", ".exhentai.org"));
-                cookies.Add(uri, new Cookie("ipb_pass_hash", account.PassHash, "/", ".exhentai.org"));
+                account.MemberId.Execute(v => cookies.Add(uri, new Cookie("ipb_member_id", v, "/", ".exhentai.org")));
+                account.PassHash.Execute(v => cookies.Add(uri, new Cookie("ipb_pass_hash", v, "/", ".exhentai.org")));
             }
 
 
