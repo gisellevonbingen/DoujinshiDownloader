@@ -142,6 +142,10 @@ namespace Giselle.DoujinshiDownloader.Forms
                 double percent = task.Count > 0 ? progressBar.Value / (task.Count / 100.0D) : 0.0D;
                 text = SR.Replace(text, "Percent", percent.ToString("F2"));
             }
+            else if (state.HasFlag(TaskState.Cancelled) == true)
+            {
+                this.OnRemoveRequest(new EventArgs());
+            }
             else if (state.HasFlag(TaskState.Completed) == true)
             {
                 var exceptionCount = task.Progress.Count(DownloadResult.Exception);
