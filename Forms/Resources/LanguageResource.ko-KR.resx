@@ -381,7 +381,7 @@
     <value>다운로드 중 {=Percent}%</value>
   </data>
   <data name="Downlaod.State.Canceling" xml:space="preserve">
-    <value>다운로드 취소 중"</value>
+    <value>다운로드 취소 중</value>
   </data>
   <data name="Downlaod.State.Cancelled" xml:space="preserve">
     <value>다운로드 취소 됨</value>
