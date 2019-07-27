@@ -23,7 +23,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         private readonly object OperationLock = new object();
 
         private Thread Thread = null;
-        private readonly List<Thread> DownloadThreads = null;
+        private readonly List<CancellationTokenSource> CancelSources = null;
 
         private TaskState _State = TaskState.NotStarted;
         public TaskState State { get { lock (this.StateLock) { return this._State; } } }
@@ -50,7 +50,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this.Request = request;
             this.Progress = new DownloadProgress(this);
             this.IndexLock = new object();
-            this.DownloadThreads = new List<Thread>();
+            this.CancelSources = new List<CancellationTokenSource>();
         }
 
         ~DownloadTask()
@@ -67,6 +67,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         protected virtual void Dispose(bool disposing)
         {
             ObjectUtils.DisposeQuietly(this.DownloadFile);
+            this.DisposeCancelSources(false);
         }
 
         private void RequireState(TaskState require)
@@ -134,23 +135,12 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             lock (this.OperationLock)
             {
                 this.UpdateState(TaskState.Canceling);
+                this.DisposeCancelSources(true);
 
-                ThreadUtils.AbortAndJoin(this.Thread);
-                this.Thread = null;
-
-                var downloadThreads = this.DownloadThreads;
-
-                lock (downloadThreads)
-                {
-                    foreach (var thread in downloadThreads)
-                    {
-                        ThreadUtils.AbortAndJoin(thread);
-                    }
-
-                    downloadThreads.Clear();
-                }
+                ThreadUtils.Join(this.Thread);
 
                 this.UpdateState(TaskState.Completed | TaskState.Cancelled);
+
             }
 
         }
@@ -165,9 +155,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                 this.Download();
 
+                this.ThrowIfCanceling();
                 this.UpdateState(TaskState.Completed);
             }
-            catch (ThreadAbortException)
+            catch (TaskCancelingException)
             {
 
             }
@@ -226,29 +217,48 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             var config = dd.Config.Values;
 
             var threadCount = config.Network.ThreadCount;
-            var threads = this.DownloadThreads;
+            var threads = new List<Thread>();
 
-            lock (threads)
+            for (int i = 0; i < threadCount; i++)
             {
-                for (int i = 0; i < threadCount; i++)
+                var thread = new Thread(this.DownloadThreading);
+                threads.Add(thread);
+
+                thread.Start();
+            }
+
+            foreach (var thread in threads)
+            {
+                ThreadUtils.Join(thread);
+            }
+
+        }
+
+        private void DisposeCancelSources(bool cancel)
+        {
+            var sources = this.CancelSources;
+
+            lock (sources)
+            {
+                foreach (var source in sources)
                 {
-                    var thread = new Thread(this.DownloadThreading);
-                    threads.Add(thread);
-                    thread.Start();
+                    if (cancel == true)
+                    {
+                        try
+                        {
+                            source.Cancel();
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+
+                    }
+
+                    ObjectUtils.DisposeQuietly(source);
                 }
 
-            }
-
-            var downloadThreads = threads.ToArray();
-
-            foreach (var thread in downloadThreads)
-            {
-                thread.Join();
-            }
-
-            lock (threads)
-            {
-                threads.Clear();
+                sources.Clear();
             }
 
         }
@@ -279,9 +289,9 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     this.OnProgressing(new TaskProgressingEventArgs(index, url, DownloadResult.Downloading));
                     result = this.Download(url);
                 }
-                catch (ThreadAbortException)
+                catch (TaskCancelingException)
                 {
-                    return;
+
                 }
                 catch (Exception e)
                 {
@@ -304,12 +314,20 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this.Progressed?.Invoke(this, e);
         }
 
+        protected virtual void ThrowIfCanceling()
+        {
+            var state = this.State;
+
+            if (state.HasFlag(TaskState.Canceling) == true)
+            {
+                throw new TaskCancelingException();
+            }
+
+        }
+
         private DownloadResult Download(string pagePath)
         {
-            var request = this.Request;
-            var method = request.DownloadMethod;
             var agent = this.Agent;
-
             var downloadRequest = agent.GetGalleryImageDownloadRequest(pagePath, this.GalleryParameter);
 
             if (downloadRequest == null)
@@ -322,15 +340,16 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 var config = dd.Config.Values;
                 var retryCount = config.Network.RetryCount;
                 var fileName = this.GetFileName(downloadRequest.URL);
-                var buffer = new byte[16 * 1024];
 
                 for (int k = 0; k < retryCount; k++)
                 {
+                    this.ThrowIfCanceling();
+
                     try
                     {
                         using (var localStream = new MemoryStream())
                         {
-                            var result = this.Download(agent, downloadRequest, localStream, buffer);
+                            var result = this.Download(agent, downloadRequest, localStream);
 
                             if (result == DownloadResult.Success)
                             {
@@ -340,15 +359,15 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                                     this.DownloadFile.Write(fileName, localStream);
                                 }
 
+                                return result;
                             }
 
-                            return result;
                         }
 
                     }
-                    catch (ThreadAbortException)
+                    catch (TaskCancelingException)
                     {
-                        return DownloadResult.Exception;
+                        throw;
                     }
                     catch (Exception e)
                     {
@@ -366,6 +385,45 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             return DownloadResult.Exception;
         }
 
+        private DownloadResult Download(GalleryAgent agent, RequestParameter downloadRequest, Stream stream)
+        {
+            using (var source = new CancellationTokenSource())
+            {
+                var cancelSources = this.CancelSources;
+
+                try
+                {
+                    lock (cancelSources)
+                    {
+                        this.ThrowIfCanceling();
+                        cancelSources.Add(source);
+                    }
+
+                    using (var response = agent.Explorer.Request(downloadRequest, source.Token))
+                    {
+                        using (var responseStream = response.ReadToStream())
+                        {
+                            responseStream.CopyTo(stream);
+
+                            return DownloadResult.Success;
+                        }
+
+                    }
+
+                }
+                finally
+                {
+                    lock (cancelSources)
+                    {
+                        cancelSources.Remove(source);
+                    }
+
+                }
+
+            }
+
+        }
+
         private string GetFileName(string url)
         {
             var fileName = new Uri(url).LocalPath;
@@ -377,24 +435,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             }
 
             return fileName;
-        }
-
-        private DownloadResult Download(GalleryAgent agent, RequestParameter downloadRequest, Stream stream, byte[] buffer)
-        {
-            using (var response = agent.Explorer.Request(downloadRequest))
-            {
-                using (var responseStream = response.ReadToStream())
-                {
-                    for (int len = 0; (len = responseStream.Read(buffer, 0, buffer.Length)) > 0;)
-                    {
-                        stream.Write(buffer, 0, len);
-                    }
-
-                    return DownloadResult.Success;
-                }
-
-            }
-
         }
 
     }
