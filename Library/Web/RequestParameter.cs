@@ -30,9 +30,6 @@ namespace Giselle.DoujinshiDownloader.Web
         private int _Timeout = 60 * 1000;
         public int Timeout { get { return this._Timeout; } set { this._Timeout = value; } }
 
-        private int _RetryCount = 2;
-        public int RetryCount { get { return this._RetryCount; } set { this._RetryCount = value; } }
-
         private bool _AllowAutoRedirect = false;
         public bool AllowAutoRedirect { get { return this._AllowAutoRedirect; } set { this._AllowAutoRedirect = value; } }
 

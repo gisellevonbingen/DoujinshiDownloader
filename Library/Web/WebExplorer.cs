@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Giselle.Commons;
 
@@ -18,7 +19,7 @@ namespace Giselle.DoujinshiDownloader.Web
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.DefaultConnectionLimit = 9999;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            ServicePointManager.ServerCertificateValidationCallback += delegate {  return true; };
+            ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
         }
 
         private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -139,27 +140,7 @@ namespace Giselle.DoujinshiDownloader.Web
 
         }
 
-        public SessionResponse Request(RequestParameter parameter)
-        {
-            Exception lastException = null;
-
-            for (int i = 0; i < parameter.RetryCount + 1; i++)
-            {
-                try
-                {
-                    return this.Request0(parameter);
-                }
-                catch (Exception e)
-                {
-                    lastException = e;
-                }
-
-            }
-
-            throw new NetworkException("", lastException);
-        }
-
-        private SessionResponse Request0(RequestParameter parameter)
+        public SessionResponse Request(RequestParameter parameter, CancellationToken? cancelToken = null)
         {
             HttpWebResponse response = null;
             Exception innerException = null;
@@ -171,6 +152,7 @@ namespace Giselle.DoujinshiDownloader.Web
 
                 try
                 {
+                    cancelToken?.Register(() => request.Abort());
                     response = (HttpWebResponse)request.GetResponse();
                 }
                 catch (WebException e)
