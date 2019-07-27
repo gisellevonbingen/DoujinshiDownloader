@@ -291,7 +291,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 }
                 catch (TaskCancelingException)
                 {
-
+                    return;
                 }
                 catch (Exception e)
                 {
