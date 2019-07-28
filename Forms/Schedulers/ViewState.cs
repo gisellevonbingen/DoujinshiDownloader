@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Giselle.DoujinshiDownloader.Schedulers
 {
     [Flags]
-    public enum DownloadResult : byte
+    public enum ViewState : byte
     {
         StandBy = 0,
         Downloading = 1 << 1,

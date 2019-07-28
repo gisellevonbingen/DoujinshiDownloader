@@ -58,10 +58,9 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             for (int i = 0; i < taskCount; i++)
             {
-                var item = new DownloadDetailListItem();
+                var imageView = task.ImageViews[i];
+                var item = new DownloadDetailListItem(i, imageView);
                 item.Font = fm[9.0F, FontStyle.Regular];
-                item.Text = i.ToString(format);
-                item.State = task.Progress[i];
 
                 items.Add(item);
                 controls.Add(item);
@@ -94,7 +93,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             foreach (var item in items)
             {
-                var itemBounds = map[item] = new Rectangle(0, top, layoutBounds.Width - 17, 30);
+                var size = item.GetPreferredSize(new Size(layoutBounds.Width - 17, 0));
+                var itemBounds = map[item] = new Rectangle(layoutBounds.Left, top, size.Width, size.Height);
                 top = itemBounds.Bottom;
             }
 
@@ -103,7 +103,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void OnTaskProgressed(object sender, TaskProgressingEventArgs _e)
         {
-            ControlUtils.InvokeIfNeed(this, e => this.Items[e.Index].State = e.Result, _e);
+            ControlUtils.InvokeIfNeed(this, e => this.Items[e.Index].UpdateState(), _e);
         }
 
     }
