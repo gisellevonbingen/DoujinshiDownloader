@@ -8,7 +8,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class DownloadMethodExHentaiOriginal : DownloadMethodExHentai
     {
-        public DownloadMethodExHentaiOriginal()
+        public DownloadMethodExHentaiOriginal(string name) : base(name)
         {
 
         }

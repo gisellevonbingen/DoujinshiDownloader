@@ -98,6 +98,7 @@
     <Compile Include="Doujinshi\DownloadMethod.cs" />
     <Compile Include="Doujinshi\DownloadMethodExHentai.cs" />
     <Compile Include="Doujinshi\DownloadMethodExHentaiOriginal.cs" />
+    <Compile Include="Doujinshi\DownloadMethodE_Hentai.cs" />
     <Compile Include="Doujinshi\DownloadMethodHitomi.cs" />
     <Compile Include="Doujinshi\DownloadMethodHitomiRemoved.cs" />
     <Compile Include="Forms\ContentsSettingControl.cs">
@@ -212,7 +213,6 @@
     <Compile Include="Utils\DirectoryUtils.cs" />
     <Compile Include="Utils\ExplorerUtils.cs" />
     <Compile Include="Utils\FormUtils.cs" />
-    <Compile Include="Utils\ObjectUtils2.cs" />
     <Compile Include="Utils\PathUtils.cs" />
     <Compile Include="Utils\StructEqualityComparer.cs" />
     <Compile Include="Utils\FileSizeUnit.cs" />
