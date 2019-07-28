@@ -46,9 +46,11 @@ namespace Giselle.DoujinshiDownloader.Forms
         public void UpdateState()
         {
             var view = this.ImageView;
+            var state = view.State;
 
             var stateLabel = this.StateLabel;
-            stateLabel.Text = $"{this.Index} : {SR.Get($"Download.Detail.State.{view.State.ToString()}")}";
+            stateLabel.Text = $"{this.Index} : {SR.Get($"Download.Detail.State.{state.ToString()}")}";
+            stateLabel.ForeColor = (state == ViewState.Exception || state == ViewState.RequestNotCreate) ? Color.Red : Color.Black;
         }
 
         protected override void OnPaint(PaintEventArgs e)
