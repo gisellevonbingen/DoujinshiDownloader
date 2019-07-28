@@ -36,7 +36,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.ResumeLayout(false);
 
-            this.ClientSize = new Size(300, 400);
+            this.Padding = new Padding(0);
+            this.ClientSize = new Size(400, 400);
         }
 
         private void OnCloseButtonClick(object sender, EventArgs e)

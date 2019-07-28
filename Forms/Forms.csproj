@@ -133,15 +133,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\FontMatchFormat.cs" />
+    <Compile Include="Schedulers\ImageView.cs" />
+    <Compile Include="Schedulers\ImageViews.cs" />
     <Compile Include="Schedulers\TaskCancelingException.cs" />
     <Compile Include="SR.cs" />
     <Compile Include="Schedulers\FileArchive.cs" />
     <Compile Include="Schedulers\FileArchiveDirectory.cs" />
     <Compile Include="Schedulers\FileArchiveZip.cs" />
-    <Compile Include="Schedulers\DownloadProgress.cs" />
     <Compile Include="Schedulers\DownloadRequest.cs" />
     <Compile Include="Schedulers\DownloadRequestEventArgs.cs" />
-    <Compile Include="Schedulers\DownloadResult.cs" />
+    <Compile Include="Schedulers\ViewState.cs" />
     <Compile Include="Schedulers\TaskProgressingEventArgs.cs" />
     <Compile Include="Schedulers\DownloadScheduler.cs" />
     <Compile Include="Schedulers\DownloadTask.cs" />
