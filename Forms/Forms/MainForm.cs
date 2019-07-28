@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,7 +21,10 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.SuspendLayout();
 
-            this.Text = $"{DoujinshiDownloader.Name} - Experimental : E-Hentai";
+            var attribute = (AssemblyFileVersionAttribute)this.GetType().Assembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), true)[0];
+            var version = attribute.Version;
+
+            this.Text = $"{DoujinshiDownloader.Name} - Version : {version}";
             this.StartPosition = FormStartPosition.CenterScreen;
 
             var mainMenu = this.MainMenu = new MainMenu();
