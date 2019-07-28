@@ -132,7 +132,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var progressBar = this.ProgressBar;
             progressBar.Minimum = 0;
             progressBar.Maximum = task.Count;
-            progressBar.Value = task.Progress.Count(DownloadResult.Complete);
+            progressBar.Value = task.ImageViews?.CountState(ViewState.Complete) ?? 0;
 
             var states = EnumUtils.GetValues<TaskState>();
             var text = string.Join(", ", states.Where(v => state.HasFlag(v)).Select(v => SR.Get($"Downlaod.State.{v.ToString()}")));
@@ -148,7 +148,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             }
             else if (state.HasFlag(TaskState.Completed) == true)
             {
-                var exceptionCount = task.Progress.Count(DownloadResult.Exception);
+                var exceptionCount = task.ImageViews?.CountState(ViewState.Exception);
 
                 if (exceptionCount > 0)
                 {
