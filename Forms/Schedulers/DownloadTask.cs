@@ -190,7 +190,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             var downloadDirectory = config.Content.DownloadDirectory;
             Directory.CreateDirectory(downloadDirectory);
 
-            var downloadPath = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.Title));
+            var downloadPath = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.Info.Title));
 
             if (downloadToArchive == true)
             {

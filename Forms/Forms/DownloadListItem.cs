@@ -18,9 +18,9 @@ namespace Giselle.DoujinshiDownloader.Forms
 {
     public class DownloadListItem : OptimizedControl
     {
-        private readonly DownloadTask _Task = null;
-        public DownloadTask Task { get { return this._Task; } }
+        public DownloadTask Task { get; }
 
+        private PictureBox ThumbnailControl = null;
         private SelectAllableTextBox TitleLabel = null;
         private OptimizedProgressBar ProgressBar = null;
         private Button DetailButton = null;
@@ -31,16 +31,24 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public DownloadListItem(DownloadTask task)
         {
-            this._Task = task;
+            this.Task = task;
 
             var dd = DoujinshiDownloader.Instance;
             var fm = dd.FontManager;
 
             this.SuspendLayout();
 
+            var thumbnailBytes = task.Request.Info.Thumbnail;
+            var thumbnailImage = ImageUtils.FromBytes(thumbnailBytes);
+
+            var thumbnailControl = this.ThumbnailControl = new PictureBox();
+            thumbnailControl.SizeMode = PictureBoxSizeMode.StretchImage;
+            thumbnailControl.Image = thumbnailImage;
+            this.Controls.Add(thumbnailControl);
+
             var titleLabel = this.TitleLabel = new SelectAllableTextBox();
             titleLabel.ReadOnly = true;
-            titleLabel.Text = task.Request.DownloadMethod.Site.ToURL(task.Request.DownloadInput) + Environment.NewLine + task.Request.Title;
+            titleLabel.Text = task.Request.DownloadMethod.Site.ToURL(task.Request.DownloadInput) + Environment.NewLine + task.Request.Info.Title;
             titleLabel.Multiline = true;
             titleLabel.BackColor = this.BackColor;
             titleLabel.BorderStyle = BorderStyle.None;
@@ -74,27 +82,24 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.ResumeLayout(false);
 
             this.Padding = new Padding(0, 0, 0, 1);
-            this.UpdateTitleLabelFont();
             this.HandleTaskStateChanged();
 
             task.Progressed += this.OnTaskProgressed;
             task.StateChanged += this.OnTaskStateChanged;
         }
 
-        protected override void UpdateControlsBoundsPreferred(Size size)
+        protected override void Dispose(bool disposing)
         {
-            base.UpdateControlsBoundsPreferred(size);
+            base.Dispose(disposing);
 
-            this.UpdateTitleLabelFont();
+            ObjectUtils.DisposeQuietly(this.ThumbnailControl.Image);
         }
 
-        private void UpdateTitleLabelFont()
+        protected override void UpdateControlsBoundsPreferred(Rectangle layoutBounds)
         {
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
+            base.UpdateControlsBoundsPreferred(layoutBounds);
 
-            var titleLabel = this.TitleLabel;
-            titleLabel.Font = fm.FindMatch(titleLabel.Text, new FontMatchFormat() { Style = FontStyle.Regular, Size = 12, ProposedSize = titleLabel.Size });
+            this.UpdateGalleryInfoControlsBounds(layoutBounds);
         }
 
         private void OnDetailButtonClick(object sender, EventArgs e)
@@ -244,7 +249,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var map = base.GetPreferredBounds(layoutBounds);
 
             var margin = 10;
-            var buttonSize = new Size(layoutBounds.Height - margin * 2, 30);
+            var buttonSize = new Size(90, 30);
 
             var removeButton = this.RemoveButton;
             var removeButtonBounds = map[removeButton] = new Rectangle(new Point(layoutBounds.Right - buttonSize.Width - margin, layoutBounds.Bottom - buttonSize.Height - margin), buttonSize);
@@ -255,19 +260,33 @@ namespace Giselle.DoujinshiDownloader.Forms
             var detailButton = this.DetailButton;
             var detailButtonBounds = map[detailButton] = DrawingUtils2.PlaceByDirection(openButtonBounds, buttonSize, PlaceDirection.Left, margin);
 
+            return map;
+        }
 
-            var titleLabelLeft = layoutBounds.Left + margin;
-            var titleLabelTop = layoutBounds.Top + margin;
+        private void UpdateGalleryInfoControlsBounds(Rectangle layoutBounds)
+        {
+            var titleLabel = this.TitleLabel;
+            var thumbnailControl = this.ThumbnailControl;
+            var detailButton = this.DetailButton;
+
+            var margin = 10;
+            var thumbnailLeft = layoutBounds.Left + margin;
+            var thumbnailTop = layoutBounds.Top + margin;
+            var thumbnailBottom = detailButton.Bottom;
+            var thumbnailImageSize = thumbnailControl.Image?.Size ?? new Size();
+            var thumbnailHeight = thumbnailBottom - thumbnailTop;
+            var thumbnailWidth = (int)(thumbnailImageSize.Width * ((float)thumbnailHeight / thumbnailImageSize.Height));
+
+            thumbnailControl.Bounds = new Rectangle(thumbnailLeft, thumbnailTop, thumbnailWidth, thumbnailHeight);
 
             var progressBar = this.ProgressBar;
+            var progressLeft = thumbnailControl.Right + margin;
+            var progressRight = detailButton.Left - margin;
             var progressBarHeight = 30;
-            var progressBarBounds = map[progressBar] = Rectangle.FromLTRB(titleLabelLeft, openButtonBounds.Bottom - progressBarHeight, detailButtonBounds.Left - margin, openButtonBounds.Bottom);
+            progressBar.Bounds = Rectangle.FromLTRB(progressLeft, detailButton.Bottom - progressBarHeight, progressRight, detailButton.Bottom);
 
-            var titleLabel = this.TitleLabel;
-            var titleLabelBounds = map[titleLabel] = Rectangle.FromLTRB(titleLabelLeft, titleLabelTop, layoutBounds.Right, progressBarBounds.Top - 10);
-
-
-            return map;
+            titleLabel.Bounds = Rectangle.FromLTRB(thumbnailControl.Right + margin, thumbnailControl.Top, layoutBounds.Right, progressBar.Top - margin);
+            titleLabel.Font = DoujinshiDownloader.Instance.FontManager.FindMatch(titleLabel.Text, new FontMatchFormat() { Style = FontStyle.Regular, Size = 12, ProposedSize = titleLabel.Size });
         }
 
     }

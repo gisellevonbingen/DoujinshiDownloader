@@ -85,9 +85,9 @@ namespace Giselle.DoujinshiDownloader.Forms
             network.RetryCount = this.RetryCountControl.TrackBar.Value;
         }
 
-        protected override void UpdateControlsBoundsPreferred(Size size)
+        protected override void UpdateControlsBoundsPreferred(Rectangle layoutBounds)
         {
-            base.UpdateControlsBoundsPreferred(size);
+            base.UpdateControlsBoundsPreferred(layoutBounds);
 
             var list = new List<SettingTrackBar>();
             list.Add(this.TimeoutControl);

@@ -118,20 +118,24 @@ namespace Giselle.DoujinshiDownloader.Forms
             var task = sender as DownloadTask;
             var state = task.State;
 
-            if (state.HasFlag(TaskState.Completed) == true && state.HasFlag(TaskState.Cancelled) == false)
+            if (state.HasFlag(TaskState.Completed) == true)
             {
                 task.StateChanged -= this.OnTaskStateChanged;
 
-                var config = DoujinshiDownloader.Instance.Config.Values.Program;
-
-                if (config.NotifyMessageRules.DownlaodComplete == true)
+                if (state.HasFlag(TaskState.Cancelled) == false)
                 {
-                    ControlUtils.InvokeIfNeed(this, t =>
+                    var config = DoujinshiDownloader.Instance.Config.Values.Program;
+
+                    if (config.NotifyMessageRules.DownlaodComplete == true)
                     {
-                        var title = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Title");
-                        var text = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Text", "Title", t.Request.Title);
-                        DoujinshiDownloader.Instance.NotifyIconManager.Show(title, text, ToolTipIcon.Info);
-                    }, task);
+                        ControlUtils.InvokeIfNeed(this, t =>
+                        {
+                            var title = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Title");
+                            var text = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Text", "Title", t.Request.Info.Title);
+                            DoujinshiDownloader.Instance.NotifyIconManager.Show(title, text, ToolTipIcon.Info);
+                        }, task);
+
+                    }
 
                 }
 

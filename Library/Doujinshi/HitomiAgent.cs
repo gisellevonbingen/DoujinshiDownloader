@@ -75,44 +75,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return url.Replace("galleries", "reader") + "#1";
         }
 
-        private string GetGalleryTitle(RequestParameter parameter)
-        {
-            using (var response = this.Explorer.Request(parameter))
-            {
-                if (response.Impl.StatusCode != HttpStatusCode.OK)
-                {
-                    throw new HitomiRemovedGalleryException();
-                }
-
-                var document = response.ReadToDocument();
-                var gelleryInfo = document.DocumentNode.Descendants().FirstOrDefault(n =>
-                {
-                    var clazz = n.GetAttributeValue("class", string.Empty);
-                    return clazz.StartsWith("gallery \n") == true && clazz.Contains("-gallery\n") == true;
-                });
-
-                if (gelleryInfo != null)
-                {
-                    var nodes = gelleryInfo.Descendants().ToArray();
-                    var title = nodes.FirstOrDefault(n => n.Name.Equals("h1")).Descendants().FirstOrDefault(n => n.Name.Equals("a")).InnerText;
-                    var artist0 = nodes.FirstOrDefault(n => n.Name.Equals("h2")).Descendants().FirstOrDefault(n => n.Name.Equals("a"))?.InnerText;
-
-                    if (artist0 == null)
-                    {
-                        return title;
-                    }
-                    else
-                    {
-                        var artist = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(artist0);
-                        return $"[{artist}] {title}";
-                    }
-
-                }
-
-            }
-
-            return null;
-        }
 
         private string GetReaderTitle(RequestParameter parameter)
         {
@@ -137,21 +99,67 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return null;
         }
 
-        public override string GetGalleryTitle(string url)
+        public override GalleryInfo GetGalleryInfo(string url)
         {
             var parameter = this.CreateRequestParameter();
             parameter.URL = url;
             parameter.Method = "GET";
 
-            if (this.Removed == false)
+            var info = new GalleryInfo();
+
+            if (this.Removed == true)
             {
-                return this.GetGalleryTitle(parameter);
+                info.Title = this.GetReaderTitle(parameter);
             }
             else
             {
-                return this.GetReaderTitle(parameter);
+                using (var response = this.Explorer.Request(parameter))
+                {
+                    if (response.Impl.StatusCode != HttpStatusCode.OK)
+                    {
+                        throw new HitomiRemovedGalleryException();
+                    }
+
+                    var document = response.ReadToDocument();
+
+                    var infoNode = document.DocumentNode.Descendants().FirstOrDefault(n =>
+                    {
+                        var clazz = n.GetAttributeValue("class", string.Empty);
+                        return clazz.StartsWith("gallery \n") == true && clazz.Contains("-gallery\n") == true;
+                    });
+
+                    if (infoNode != null)
+                    {
+                        var nodes = infoNode.Descendants().ToArray();
+                        var title = nodes.FirstOrDefault(n => n.Name.Equals("h1")).Descendants().FirstOrDefault(n => n.Name.Equals("a")).InnerText;
+                        var artist0 = nodes.FirstOrDefault(n => n.Name.Equals("h2")).Descendants().FirstOrDefault(n => n.Name.Equals("a"))?.InnerText;
+
+                        if (artist0 == null)
+                        {
+                            info.Title = title;
+                        }
+                        else
+                        {
+                            var artist = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(artist0);
+                            info.Title = $"[{artist}] {title}";
+                        }
+
+                    }
+
+                    var coverNode = document.DocumentNode.Descendants().FirstOrDefault(n => n.Name.Equals("div") && n.HasClass("cover"));
+
+                    if (coverNode != null)
+                    {
+                        var uri = new Uri(url);
+                        var coverImgNode = coverNode.Descendants().FirstOrDefault(n => n.Name.Equals("img"));
+                        info.Thumbnail =  uri.Scheme + ":" + coverImgNode.GetAttributeValue("src", null);
+                    }
+
+                }
+
             }
 
+            return info;
         }
 
     }

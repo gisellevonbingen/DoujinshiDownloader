@@ -33,7 +33,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public override Size GetPreferredSize(Size proposedSize)
         {
-            var map = this.GetPreferredBounds(proposedSize);
+            var layoutBounds = this.GetLayoutBounds(proposedSize);
+            var map = this.GetPreferredBounds(layoutBounds);
             var offset = this.GetPreferredSizeOffset();
             int width = 0;
             int height = 0;
@@ -62,12 +63,13 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         protected virtual void UpdateControlsBoundsPreferred()
         {
-            this.UpdateControlsBoundsPreferred(this.ClientSize);
+            var layoutBounds = this.GetLayoutBounds(this.ClientSize);
+            this.UpdateControlsBoundsPreferred(layoutBounds);
         }
 
-        protected virtual void UpdateControlsBoundsPreferred(Size size)
+        protected virtual void UpdateControlsBoundsPreferred(Rectangle layoutBounds)
         {
-            var map = this.GetPreferredBounds(size);
+            var map = this.GetPreferredBounds(layoutBounds);
 
             foreach (var pair in map)
             {
@@ -81,14 +83,6 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             }
 
-        }
-
-        public virtual Dictionary<Control, Rectangle> GetPreferredBounds(Size size)
-        {
-            var layoutBounds = this.GetLayoutBounds(size);
-            var map = this.GetPreferredBounds(layoutBounds);
-
-            return map;
         }
 
         protected virtual Rectangle GetLayoutBounds(Size size)

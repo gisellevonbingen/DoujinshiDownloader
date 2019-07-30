@@ -12,7 +12,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
     {
         public DownloadInput DownloadInput { get; set; } = default;
         public DownloadMethod DownloadMethod { get; set; } = null;
-        public string Title { get; set; } = null;
+        public GalleryInfo2 Info { get; set; } = null;
 
         public DownloadRequest()
         {
@@ -26,7 +26,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         public override int GetHashCode()
         {
-            return this.Title.GetHashCode();
+            return this.Info.Title.GetHashCode();
         }
 
         public bool Equals(DownloadRequest other)
