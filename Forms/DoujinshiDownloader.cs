@@ -225,13 +225,18 @@ namespace Giselle.DoujinshiDownloader
                 text = SR.Get("QuitDialog.Text.Common");
             }
 
-            var result = MessageBox.Show(text, SR.Get("QuitDialog.Title"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-
-            if (result == DialogResult.OK)
+            if (this.Config.Values.Program.UserInterfaceRules.ConfirmBeforeExitProgram == true)
             {
-                ObjectUtils.DisposeQuietly(this);
+                var result = MessageBox.Show(text, SR.Get("QuitDialog.Title"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+
+                if (result == DialogResult.Cancel)
+                {
+                    return;
+                }
+
             }
 
+            ObjectUtils.DisposeQuietly(this);
         }
 
         ~DoujinshiDownloader()

@@ -12,6 +12,7 @@ using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Resources;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Commons;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -74,7 +75,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.Padding = new Padding(0, 0, 0, 1);
             this.UpdateTitleLabelFont();
-            this.UpdateProgressBar();
+            this.HandleTaskStateChanged();
 
             task.Progressed += this.OnTaskProgressed;
             task.StateChanged += this.OnTaskStateChanged;
@@ -115,15 +116,15 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void OnTaskStateChanged(object sender, EventArgs e)
         {
-            ControlUtils.InvokeIfNeed(this, this.UpdateProgressBar);
+            ControlUtils.InvokeIfNeed(this, this.HandleTaskStateChanged);
         }
 
         private void OnTaskProgressed(object sender, TaskProgressingEventArgs e)
         {
-            ControlUtils.InvokeIfNeed(this, this.UpdateProgressBar);
+            ControlUtils.InvokeIfNeed(this, this.HandleTaskStateChanged);
         }
 
-        private void UpdateProgressBar()
+        private void HandleTaskStateChanged()
         {
             var task = this.Task;
             var state = task.State;
@@ -131,18 +132,23 @@ namespace Giselle.DoujinshiDownloader.Forms
             var progressBar = this.ProgressBar;
             progressBar.Minimum = 0;
             progressBar.Maximum = task.Count;
-            progressBar.Value = task.Progress.Count(DownloadResult.Complete);
+            progressBar.Value = task.ImageViews?.CountState(ViewState.Complete) ?? 0;
 
-            var text = SR.Get($"Downlaod.State.{state.ToString()}");
+            var states = EnumUtils.GetValues<TaskState>();
+            var text = string.Join(", ", states.Where(v => state.HasFlag(v)).Select(v => SR.Get($"Downlaod.State.{v.ToString()}")));
 
             if (state.HasFlag(TaskState.Running) == true)
             {
                 double percent = task.Count > 0 ? progressBar.Value / (task.Count / 100.0D) : 0.0D;
                 text = SR.Replace(text, "Percent", percent.ToString("F2"));
             }
+            else if (state.HasFlag(TaskState.Cancelled) == true)
+            {
+                this.OnRemoveRequest(new EventArgs());
+            }
             else if (state.HasFlag(TaskState.Completed) == true)
             {
-                var exceptionCount = task.Progress.Count(DownloadResult.Exception);
+                var exceptionCount = task.ImageViews?.CountState(ViewState.Exception);
 
                 if (exceptionCount > 0)
                 {
@@ -177,29 +183,38 @@ namespace Giselle.DoujinshiDownloader.Forms
         private void OnRemoveButtonClick(object sender, EventArgs e)
         {
             var task = this.Task;
+            var state = task.State;
 
-            string title = null;
-
-            if (task.State.HasFlag(TaskState.Completed) == false)
+            if (DoujinshiDownloader.Instance.Config.Values.Program.UserInterfaceRules.ConfirmBeforeRemoveDownload == true)
             {
-                title = SR.Get("Download.Remove.Dialog.WithCancelText");
+                string title = null;
+
+                if (state.HasFlag(TaskState.Completed) == false)
+                {
+                    title = SR.Get("Download.Remove.Dialog.WithCancelText");
+                }
+                else
+                {
+                    title = SR.Get("Download.Remove.Dialog.Text");
+                }
+
+                var dr = MessageBox.Show(this, title, SR.Get("Download.Remove.Dialog.Title"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+
+
+                if (dr == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+            }
+
+            if (state.HasFlag(TaskState.Completed) == false)
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(() => task.Cancel());
             }
             else
             {
-                title = SR.Get("Download.Remove.Dialog.Text");
-            }
-
-            var dr = MessageBox.Show(this, title, SR.Get("Download.Remove.Dialog.Title"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-
-            if (dr == DialogResult.OK)
-            {
-                task.Cancel();
-
-                this.OnRemoveRequest(EventArgs.Empty);
-            }
-            else
-            {
-                return;
+                this.OnRemoveRequest(new EventArgs());
             }
 
         }

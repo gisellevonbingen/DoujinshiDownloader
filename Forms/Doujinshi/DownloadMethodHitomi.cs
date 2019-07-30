@@ -8,7 +8,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class DownloadMethodHitomi : DownloadMethod
     {
-        public DownloadMethodHitomi()
+        public DownloadMethodHitomi(string name) : base(name)
         {
 
         }

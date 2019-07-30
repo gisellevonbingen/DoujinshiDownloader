@@ -91,12 +91,14 @@
     <Compile Include="Configs\NetworkSettings.cs" />
     <Compile Include="Configs\NotifyMessageRules.cs" />
     <Compile Include="Configs\ProgramSettings.cs" />
+    <Compile Include="Configs\UserInterfaceRules.cs" />
     <Compile Include="CrashReportForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Doujinshi\DownloadMethod.cs" />
     <Compile Include="Doujinshi\DownloadMethodExHentai.cs" />
     <Compile Include="Doujinshi\DownloadMethodExHentaiOriginal.cs" />
+    <Compile Include="Doujinshi\DownloadMethodE_Hentai.cs" />
     <Compile Include="Doujinshi\DownloadMethodHitomi.cs" />
     <Compile Include="Doujinshi\DownloadMethodHitomiRemoved.cs" />
     <Compile Include="Forms\ContentsSettingControl.cs">
@@ -132,14 +134,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\FontMatchFormat.cs" />
+    <Compile Include="Schedulers\ImageView.cs" />
+    <Compile Include="Schedulers\ImageViews.cs" />
+    <Compile Include="Schedulers\TaskCancelingException.cs" />
     <Compile Include="SR.cs" />
     <Compile Include="Schedulers\FileArchive.cs" />
     <Compile Include="Schedulers\FileArchiveDirectory.cs" />
     <Compile Include="Schedulers\FileArchiveZip.cs" />
-    <Compile Include="Schedulers\DownloadProgress.cs" />
     <Compile Include="Schedulers\DownloadRequest.cs" />
     <Compile Include="Schedulers\DownloadRequestEventArgs.cs" />
-    <Compile Include="Schedulers\DownloadResult.cs" />
+    <Compile Include="Schedulers\ViewState.cs" />
     <Compile Include="Schedulers\TaskProgressingEventArgs.cs" />
     <Compile Include="Schedulers\DownloadScheduler.cs" />
     <Compile Include="Schedulers\DownloadTask.cs" />
@@ -209,7 +213,6 @@
     <Compile Include="Utils\DirectoryUtils.cs" />
     <Compile Include="Utils\ExplorerUtils.cs" />
     <Compile Include="Utils\FormUtils.cs" />
-    <Compile Include="Utils\ObjectUtils2.cs" />
     <Compile Include="Utils\PathUtils.cs" />
     <Compile Include="Utils\StructEqualityComparer.cs" />
     <Compile Include="Utils\FileSizeUnit.cs" />

@@ -19,6 +19,9 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private Dictionary<PropertyInfo, CheckBox> NotifyMessageRuleCheckBoxs;
 
+        private Label UserInterfaceRuleLabel;
+        private Dictionary<PropertyInfo, CheckBox> UserInterfaceRuleCheckBoxs;
+
         public ProgramSettingsControl()
         {
             this.SuspendLayout();
@@ -34,8 +37,13 @@ namespace Giselle.DoujinshiDownloader.Forms
             allowNotifyMessageCheckBox.CheckedChanged += this.OnAllowNotifyMessageCheckBoxCheckedChanged;
             this.Controls.Add(allowNotifyMessageCheckBox);
 
-            var properties = this.CreateNotifyMessageRuleProperties(typeof(NotifyMessageRules), typeof(bool));
-            this.NotifyMessageRuleCheckBoxs = this.CreateNotifyMessageRuleCheckBoxs(properties);
+            this.NotifyMessageRuleCheckBoxs = this.CreatePropertyCheckBoxs(this.GetProperites(typeof(NotifyMessageRules), typeof(bool)), "Settings.Program.NotifyMessageRules");
+
+            var userInterfaceRuleLabel = this.UserInterfaceRuleLabel = new Label();
+            userInterfaceRuleLabel.Text = SR.Get("Settings.Program.UserInterfaceRule");
+            this.Controls.Add(userInterfaceRuleLabel);
+
+            this.UserInterfaceRuleCheckBoxs = this.CreatePropertyCheckBoxs(this.GetProperites(typeof(UserInterfaceRules), typeof(bool)), "Settings.Program.UserInterfaceRules");
 
             this.ResumeLayout(false);
         }
@@ -57,14 +65,14 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.UpdateNotifymessageRuleCheckBoxs();
         }
 
-        private Dictionary<PropertyInfo, CheckBox> CreateNotifyMessageRuleCheckBoxs(List<PropertyInfo> properties)
+        private Dictionary<PropertyInfo, CheckBox> CreatePropertyCheckBoxs(List<PropertyInfo> properties, string languagePrefix)
         {
             var map = new Dictionary<PropertyInfo, CheckBox>();
 
             foreach (var property in properties)
             {
                 var checkBox = new CheckBox();
-                checkBox.Text = SR.Get("Settings.Program.NotifyMessageRules." + property.Name);
+                checkBox.Text = SR.Get(languagePrefix + "." + property.Name);
                 this.Controls.Add(checkBox);
                 map[property] = checkBox;
             }
@@ -72,7 +80,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             return map;
         }
 
-        private List<PropertyInfo> CreateNotifyMessageRuleProperties(Type type, Type valueType)
+        private List<PropertyInfo> GetProperites(Type type, Type valueType)
         {
             var list = new List<PropertyInfo>();
 
@@ -100,16 +108,30 @@ namespace Giselle.DoujinshiDownloader.Forms
             var allowNotifyMessageCheckBox = this.AllowNotifyMessageCheckBox;
             var allowNotifyMessageCheckBoxBounds = map[allowNotifyMessageCheckBox] = DrawingUtils2.PlaceByDirection(allowBackgroundCheckBoxBounds, new Size(allowNotifyMessageCheckBox.PreferredSize.Width, checkBoxHeight), PlaceDirection.Bottom, 0);
 
+            var rulesLastest = this.PlacePropertyCheckBoxs(map, this.NotifyMessageRuleCheckBoxs.Values, checkBoxHeight, allowNotifyMessageCheckBoxBounds);
+
+            var userInterfaceRuleLabel = this.UserInterfaceRuleLabel;
+            var userInterfaceRuleLabelLocation = new Point(map[allowNotifyMessageCheckBox].Left, map[rulesLastest].Bottom + 10);
+            var userInterfaceRuleLabelSize = new Size(userInterfaceRuleLabel.PreferredSize.Width, checkBoxHeight);
+            var userInterfaceRuleLabelBounds = map[userInterfaceRuleLabel] = new Rectangle(userInterfaceRuleLabelLocation, userInterfaceRuleLabelSize);
+
+            this.PlacePropertyCheckBoxs(map, this.UserInterfaceRuleCheckBoxs.Values, checkBoxHeight, userInterfaceRuleLabelBounds);
+
+            return map;
+        }
+
+        private Control PlacePropertyCheckBoxs(Dictionary<Control, Rectangle> map, IEnumerable<CheckBox> checkBoxs, int checkBoxHeight, Rectangle start)
+        {
             Control rulesLastest = null;
 
-            foreach (var checkBox in this.NotifyMessageRuleCheckBoxs.Values)
+            foreach (var checkBox in checkBoxs)
             {
                 var location = new Point();
                 var size = new Size(checkBox.PreferredSize.Width, checkBoxHeight);
 
                 if (rulesLastest == null)
                 {
-                    var point = DrawingUtils.PlaceByDirection(allowNotifyMessageCheckBoxBounds, size, PlaceDirection.Bottom, 0);
+                    var point = DrawingUtils.PlaceByDirection(start, size, PlaceDirection.Bottom, 0);
                     location = new Point(point.X + 20, point.Y);
                 }
                 else
@@ -121,7 +143,19 @@ namespace Giselle.DoujinshiDownloader.Forms
                 rulesLastest = checkBox;
             }
 
-            return map;
+            return rulesLastest;
+        }
+
+        private void ApplyPropertyCheckBoxs(object values, Dictionary<PropertyInfo, CheckBox> checkBoxs)
+        {
+            foreach (var pair in checkBoxs)
+            {
+                var property = pair.Key;
+                var checkBox = pair.Value;
+
+                property.SetValue(values, checkBox.Checked);
+            }
+
         }
 
         public override void Apply(Configuration config)
@@ -130,14 +164,18 @@ namespace Giselle.DoujinshiDownloader.Forms
             program.AllowBackground = this.AllowBackgroundCheckBox.Checked;
             program.AllowNotifyMessage = this.AllowNotifyMessageCheckBox.Checked;
 
-            var rules = program.NotifyMessageRules;
+            this.ApplyPropertyCheckBoxs(program.NotifyMessageRules, this.NotifyMessageRuleCheckBoxs);
+            this.ApplyPropertyCheckBoxs(program.UserInterfaceRules, this.UserInterfaceRuleCheckBoxs);
+        }
 
-            foreach (var pair in this.NotifyMessageRuleCheckBoxs)
+        private void BindPropertyCheckBoxs(object values, Dictionary<PropertyInfo, CheckBox> checkBoxs)
+        {
+            foreach (var pair in checkBoxs)
             {
                 var property = pair.Key;
                 var checkBox = pair.Value;
 
-                property.SetValue(rules, checkBox.Checked);
+                checkBox.Checked = (property.GetValue(values) as bool?) ?? false;
             }
 
         }
@@ -148,15 +186,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.AllowBackgroundCheckBox.Checked = program.AllowBackground;
             this.AllowNotifyMessageCheckBox.Checked = program.AllowNotifyMessage;
 
-            var rules = program.NotifyMessageRules;
-
-            foreach (var pair in this.NotifyMessageRuleCheckBoxs)
-            {
-                var property = pair.Key;
-                var checkBox = pair.Value;
-
-                checkBox.Checked = (property.GetValue(rules) as bool?) ?? false;
-            }
+            this.BindPropertyCheckBoxs(program.NotifyMessageRules, this.NotifyMessageRuleCheckBoxs);
+            this.BindPropertyCheckBoxs(program.UserInterfaceRules, this.UserInterfaceRuleCheckBoxs);
 
             this.UpdateNotifymessageRuleCheckBoxs();
         }

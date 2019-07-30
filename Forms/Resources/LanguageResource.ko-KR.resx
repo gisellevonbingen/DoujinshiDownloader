@@ -203,8 +203,20 @@
   <data name="DownloadSelect.Title" xml:space="preserve">
     <value>서버 선택</value>
   </data>
-  <data name="DownloadSelect.ExHentai.Original" xml:space="preserve">
-    <value>원본 이미지</value>
+  <data name="DownloadSelect.Method.Hitomi" xml:space="preserve">
+    <value>Hitomi 1</value>
+  </data>
+  <data name="DownloadSelect.Method.Hitomi_Removed" xml:space="preserve">
+    <value>Hitomi 2</value>
+  </data>
+  <data name="DownloadSelect.Method.E-Hentai" xml:space="preserve">
+    <value>E-Hentai</value>
+  </data>
+  <data name="DownloadSelect.Method.ExHentai" xml:space="preserve">
+    <value>ExHentai</value>
+  </data>
+  <data name="DownloadSelect.Method.ExHentai_Original" xml:space="preserve">
+    <value>ExHentai(원본 이미지)</value>
   </data>
   <data name="DownloadSelect.Verify.NotSupported" xml:space="preserve">
     <value>지원되지 않는 입력</value>
@@ -250,6 +262,15 @@
   </data>
   <data name="Settings.Program.NotifyMessageRules.DownlaodComplete" xml:space="preserve">
     <value>다운로드 완료</value>
+  </data>
+  <data name="Settings.Program.UserInterfaceRule" xml:space="preserve">
+    <value>사용자 인터페이스</value>
+  </data>
+  <data name="Settings.Program.UserInterfaceRules.ConfirmBeforeExitProgram" xml:space="preserve">
+    <value>프로그램 종료시 확인</value>
+  </data>
+  <data name="Settings.Program.UserInterfaceRules.ConfirmBeforeRemoveDownload" xml:space="preserve">
+    <value>다운로드 제거/취소시 확인</value>
   </data>
   <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
     <value>ExHentai 계정</value>
@@ -360,7 +381,7 @@
     <value>다운로드 중 {=Percent}%</value>
   </data>
   <data name="Downlaod.State.Canceling" xml:space="preserve">
-    <value>다운로드 취소 중"</value>
+    <value>다운로드 취소 중</value>
   </data>
   <data name="Downlaod.State.Cancelled" xml:space="preserve">
     <value>다운로드 취소 됨</value>

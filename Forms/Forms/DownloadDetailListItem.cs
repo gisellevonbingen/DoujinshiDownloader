@@ -6,69 +6,80 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons;
+using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Drawing;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class DownloadDetailListItem : OptimizedControl
     {
-        private DownloadResult _State = DownloadResult.StandBy;
-        public event EventHandler StateChanged = null;
+        public int Index { get; }
+        public ImageView ImageView { get; }
 
-        public DownloadDetailListItem()
+        private Label StateLabel;
+        private TextBox UrlTextBox;
+
+        public DownloadDetailListItem(int index, ImageView imageView)
         {
+            this.Index = index;
+            this.ImageView = imageView;
 
+            this.SuspendLayout();
+
+            var stateLabel = this.StateLabel = new Label();
+            this.Controls.Add(stateLabel);
+
+            var urlTextBox = this.UrlTextBox = new TextBox();
+            urlTextBox.ReadOnly = true;
+            urlTextBox.Text = imageView.Url;
+            urlTextBox.BorderStyle = BorderStyle.None;
+            this.Controls.Add(urlTextBox);
+
+            this.ResumeLayout(false);
+            this.Padding = new Padding(10, 5, 0, 6);
+
+            this.UpdateState();
         }
 
-        protected override void OnTextChanged(EventArgs e)
+        public void UpdateState()
         {
-            base.OnTextChanged(e);
-        }
+            var view = this.ImageView;
+            var state = view.State;
 
-        public DownloadResult State
-        {
-            get
-            {
-                return this._State;
-            }
-
-            set
-            {
-                this._State = value;
-                this.OnStateChanged(EventArgs.Empty);
-            }
-
-        }
-
-        private void OnStateChanged(EventArgs e)
-        {
-            this.StateChanged?.Invoke(this, e);
-
-            this.Invalidate();
+            var stateLabel = this.StateLabel;
+            stateLabel.Text = $"{this.Index} : {SR.Get($"Download.Detail.State.{state.ToString()}")}";
+            stateLabel.ForeColor = (state == ViewState.Exception || state == ViewState.RequestNotCreate) ? Color.Red : Color.Black;
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
 
-            var g = e.Graphics;
-            var font = this.Font;
-            var text = this.Text;
-            var state = this.State;
-            var bounds = this.DisplayRectangle;
 
-            using (var brush = new SolidBrush(this.ForeColor))
+            using (var pen = new Pen(Brushes.Black, 1.0F))
             {
-                using (var format = new StringFormat())
-                {
-                    format.Alignment = StringAlignment.Near;
-                    format.LineAlignment = StringAlignment.Center;
-                    g.DrawString(text + " : " + SR.Get($"Download.Detail.State.{state.ToString()}"), font, brush, bounds, format);
-                }
-
+                var g = e.Graphics;
+                var padding = this.Padding;
+                var size = this.ClientSize;
+                var bottom = size.Height - pen.Width;
+                g.DrawLine(pen, 0, bottom, size.Width, bottom);
             }
 
+        }
+
+        protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)
+        {
+            var map = base.GetPreferredBounds(layoutBounds);
+
+            var stateLabel = this.StateLabel;
+            map[stateLabel] = new Rectangle(layoutBounds.Left, layoutBounds.Top, layoutBounds.Width, stateLabel.PreferredHeight);
+
+            var urlTextBox = this.UrlTextBox;
+            map[urlTextBox] = DrawingUtils2.PlaceByDirection(map[stateLabel], new Size(layoutBounds.Width, urlTextBox.PreferredHeight), PlaceDirection.Bottom, 0);
+
+            return map;
         }
 
     }

@@ -16,10 +16,6 @@ namespace Giselle.DoujinshiDownloader.Forms
     public class DownloadSelectGroupBox : OptimizedGroupBox
     {
         private Dictionary<RadioButton, DownloadMethod> RadioButtons = null;
-        private RadioButton CheckBoxHitomi = null;
-        private RadioButton CheckBoxHitomiRemoved = null;
-        private RadioButton CheckBoxExHentai = null;
-        private RadioButton CheckBoxExHentaiOriginal = null;
 
         public event EventHandler SelectedDownloadMethodChanged = null;
         private bool SelectedDownloadMethodChanging = false;
@@ -32,10 +28,10 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.RadioButtons = new Dictionary<RadioButton, DownloadMethod>();
 
-            this.CheckBoxHitomi = this.Register("Hitomi 1", new DownloadMethodHitomi());
-            this.CheckBoxHitomiRemoved = this.Register("Hitomi 2", new DownloadMethodHitomiRemoved());
-            this.CheckBoxExHentai = this.Register("ExHentai", new DownloadMethodExHentai());
-            this.CheckBoxExHentaiOriginal = this.Register($"ExHentai({SR.Get("DownloadSelect.ExHentai.Original")})", new DownloadMethodExHentaiOriginal());
+            foreach (var method in DownloadMethod.Knowns)
+            {
+                var radioButton = this.Register(SR.Get($"DownloadSelect.Method.{method.Name}"), method);
+            }
 
             this.ResumeLayout(false);
         }
