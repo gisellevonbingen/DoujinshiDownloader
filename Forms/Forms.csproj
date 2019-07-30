@@ -113,7 +113,7 @@
     <Compile Include="Forms\DownloadDetailListItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\GalleryInfo.cs" />
+    <Compile Include="Doujinshi\GalleryInfo2.cs" />
     <Compile Include="Forms\ListItemWrapper.cs" />
     <Compile Include="Forms\OptimizedProgressBar.cs">
       <SubType>Component</SubType>
@@ -214,6 +214,7 @@
     <Compile Include="Utils\DirectoryUtils.cs" />
     <Compile Include="Utils\ExplorerUtils.cs" />
     <Compile Include="Utils\FormUtils.cs" />
+    <Compile Include="Utils\ImageUtils.cs" />
     <Compile Include="Utils\PathUtils.cs" />
     <Compile Include="Utils\StructEqualityComparer.cs" />
     <Compile Include="Utils\FileSizeUnit.cs" />

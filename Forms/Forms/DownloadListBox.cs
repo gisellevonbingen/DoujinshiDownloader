@@ -99,20 +99,15 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.UpdateControlsBoundsPreferred();
         }
 
-        protected override void UpdateControlsBoundsPreferred(Size size)
+        protected override void UpdateControlsBoundsPreferred(Rectangle layoutBounds)
         {
             var panel = this.Panel;
-            panel.Size = size;
+            panel.Size = layoutBounds.Size;
             panel.AutoScrollPosition = new Point(0, 0);
             panel.Refresh();
 
-            base.UpdateControlsBoundsPreferred(size);
-            base.UpdateControlsBoundsPreferred(size);
-        }
-
-        protected override Rectangle GetLayoutBounds(Size size)
-        {
-            return this.Panel.ClientRectangle;
+            base.UpdateControlsBoundsPreferred(layoutBounds);
+            base.UpdateControlsBoundsPreferred(layoutBounds);
         }
 
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)

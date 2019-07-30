@@ -13,6 +13,7 @@ using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
 using System.IO;
 using Giselle.DoujinshiDownloader.Resources;
+using Giselle.DoujinshiDownloader.Utils;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -26,7 +27,6 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private PictureBox ThumbnailControl = null;
         private SelectAllableTextBox TitleLabel = null;
-        private Image ActiveThumbnailImage = null;
 
         private Label AddMessageLabel = null;
         private Button AddButton = null;
@@ -38,8 +38,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         private readonly object VerifyInputThreadLock = new object();
         private Thread VerifyInputThread = null;
 
-        private DownloadRequest _Request = null;
-        public DownloadRequest Request { get { return this._Request; } }
+        public DownloadRequest Request { get; private set; }
 
         public NewDownloadForm()
         {
@@ -111,7 +110,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             base.Dispose(disposing);
 
-            ObjectUtils.DisposeQuietly(this.ActiveThumbnailImage);
+            ObjectUtils.DisposeQuietly(this.ThumbnailControl.Image);
         }
 
         private void OnAddButtonClick(object sender, EventArgs e)
@@ -136,10 +135,10 @@ namespace Giselle.DoujinshiDownloader.Forms
             }
             else
             {
-                var request = this._Request = new DownloadRequest();
+                var request = this.Request = new DownloadRequest();
                 request.DownloadInput = validation.DownloadInput;
                 request.DownloadMethod = selectedMethod;
-                request.Title = validation.Infos[selectedMethod].Title;
+                request.Info = validation.Infos[selectedMethod];
 
                 this.DialogResult = DialogResult.OK;
             }
@@ -327,7 +326,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var titleLabel = this.TitleLabel;
             var thumbnailControl = this.ThumbnailControl;
             var selectedDownloadMethod = this.DownloadSelectGroupBox.SelectedDownloadMethod;
-            GalleryInfo info = null;
+            GalleryInfo2 info = null;
 
             lock (this.ValidationLock)
             {
@@ -340,8 +339,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             }
 
+            ObjectUtils.DisposeQuietly(thumbnailControl.Image);
             thumbnailControl.Image = null;
-            ObjectUtils.DisposeQuietly(this.ActiveThumbnailImage);
 
             if (info == null)
             {
@@ -351,27 +350,18 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 titleLabel.Text = info.Title;
 
-                var thumbnail = info.Thumbnail;
-
-                if (thumbnail != null)
-                {
-                    using (var ms = new MemoryStream(thumbnail))
-                    {
-                        var image = new Bitmap(ms);
-                        this.ActiveThumbnailImage = image;
-                        thumbnailControl.Image = image;
-                    }
-
-                }
+                var thumbnailBytes = info.Thumbnail;
+                var image = ImageUtils.FromBytes(thumbnailBytes);
+                thumbnailControl.Image = image;
 
                 this.UpdateGalleryInfoControlsBounds();
             }
 
         }
 
-        protected override void UpdateControlsBoundsPreferred(Size size)
+        protected override void UpdateControlsBoundsPreferred(Rectangle layoutBounds)
         {
-            base.UpdateControlsBoundsPreferred(size);
+            base.UpdateControlsBoundsPreferred(layoutBounds);
 
             this.UpdateGalleryInfoControlsBounds();
         }
@@ -450,11 +440,11 @@ namespace Giselle.DoujinshiDownloader.Forms
         private class ValidationInformation
         {
             public DownloadInput DownloadInput { get; set; } = default;
-            public Dictionary<DownloadMethod, GalleryInfo> Infos { get; } = null;
+            public Dictionary<DownloadMethod, GalleryInfo2> Infos { get; } = null;
 
             public ValidationInformation()
             {
-                this.Infos = new Dictionary<DownloadMethod, GalleryInfo>();
+                this.Infos = new Dictionary<DownloadMethod, GalleryInfo2>();
             }
 
         }

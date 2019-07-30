@@ -85,11 +85,11 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
-        public Dictionary<DownloadMethod, GalleryInfo> Validate(DownloadInput downloadInput)
+        public Dictionary<DownloadMethod, GalleryInfo2> Validate(DownloadInput downloadInput)
         {
             var radioButtons = this.RadioButtons;
 
-            var titles = new Dictionary<DownloadMethod, GalleryInfo>();
+            var titles = new Dictionary<DownloadMethod, GalleryInfo2>();
             var taskPairs = new Dictionary<RadioButton, Task<ValidateResult>>();
 
             foreach (var pair in radioButtons)
@@ -159,7 +159,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             try
             {
                 var linfo = agent.GetGalleryInfo(url);
-                var finfo = new GalleryInfo();
+                var finfo = new GalleryInfo2();
                 finfo.Title = linfo.Title;
 
                 if (string.IsNullOrWhiteSpace(linfo.Thumbnail) == false)
@@ -283,7 +283,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             public bool IsError { get; private set; } = false;
             public string ErrorMessage { get; private set; } = null;
-            public GalleryInfo Info { get; private set; } = null;
+            public GalleryInfo2 Info { get; private set; } = null;
 
             private ValidateResult()
             {
@@ -299,7 +299,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 return value;
             }
 
-            public static ValidateResult CreateByInfo(GalleryInfo info)
+            public static ValidateResult CreateByInfo(GalleryInfo2 info)
             {
                 var value = new ValidateResult();
                 value.IsError = false;
