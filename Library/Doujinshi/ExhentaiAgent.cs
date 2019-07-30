@@ -80,10 +80,21 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
                 var document = response.ReadToDocument();
                 var gmDivElement = document.DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("gm"));
+
                 var gd2Elements = gmDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gd2")).ChildNodes;
                 var gnElement = gd2Elements.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gn"));
-
                 info.Title = gnElement.InnerText;
+
+                var gleftElements = gmDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gleft")).ChildNodes;
+                var gd1Elements = gleftElements.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gd1")).ChildNodes;
+                var thumbnailElement = gd1Elements.FirstOrDefault(n => n.Name.Equals("div"));
+                var style = thumbnailElement.GetAttributeValue("style", string.Empty);
+
+                var thumbnailPrefix = "url(";
+                var thumbnailSuffix = ")";
+                var thumbnailUrlS = style.IndexOf(thumbnailPrefix) + thumbnailPrefix.Length;
+                var thumbnailUrlE = style.IndexOf(thumbnailSuffix, thumbnailUrlS);
+                info.Thumbnail = style.Substring(thumbnailUrlS, thumbnailUrlE - thumbnailUrlS);
 
                 return info;
             }
