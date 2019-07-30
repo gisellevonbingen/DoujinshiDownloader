@@ -39,7 +39,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return new DownloadGalleryParameter { Referer = url };
         }
 
-        public abstract RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter);
+        public abstract GalleryImage GetGalleryImage(string viewUrl);
 
         public virtual byte[] GetGalleryThumbnail(string thumbnailUrl)
         {
@@ -63,6 +63,18 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             }
 
         }
+
+        public virtual RequestParameter CreateImageRequest(string imageUrl, DownloadGalleryParameter galleryParameter)
+        {
+            var parameter = this.CreateRequestParameter();
+            parameter.Method = "GET";
+            parameter.URL = imageUrl;
+            parameter.Referer = galleryParameter.Referer;
+
+            return parameter;
+        }
+
+        public abstract GalleryImage ReloadImage(string requestUrl, string reloadUrl, DownloadGalleryParameter galleryParameter);
 
     }
 

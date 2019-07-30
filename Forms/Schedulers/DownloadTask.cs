@@ -326,18 +326,19 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         private ViewState Download(ImageView view)
         {
             var agent = this.Agent;
-            var downloadRequest = agent.GetGalleryImageDownloadRequest(view.Url, this.GalleryParameter);
+            var image = agent.GetGalleryImage(view.Url);
 
-            if (downloadRequest == null)
+            if (image.ImageUrl == null)
             {
                 return ViewState.RequestNotCreate;
             }
             else
             {
+                var fileName = this.GetFileName(image.ImageUrl);
+
                 var dd = DoujinshiDownloader.Instance;
                 var config = dd.Config.Values;
                 var retryCount = config.Network.RetryCount;
-                var fileName = this.GetFileName(downloadRequest.URL);
 
                 for (int k = 0; k < retryCount; k++)
                 {
@@ -345,6 +346,13 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                     try
                     {
+                        if (string.IsNullOrWhiteSpace(image.ReloadUrl) == false)
+                        {
+                            image = agent.ReloadImage(image.ImageUrl, image.ReloadUrl, this.GalleryParameter);
+                        }
+
+                        var downloadRequest = agent.CreateImageRequest(image.ImageUrl, this.GalleryParameter);
+
                         using (var localStream = new MemoryStream())
                         {
                             var result = this.Download(agent, downloadRequest, localStream);
@@ -371,7 +379,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     {
                         if (k + 1 == retryCount)
                         {
-                            throw new Exception(downloadRequest.URL, e);
+                            throw new Exception(image.ImageUrl, e);
                         }
 
                     }

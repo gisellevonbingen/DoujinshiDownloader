@@ -22,14 +22,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter)
+        public override GalleryImage GetGalleryImage(string viewUrl)
         {
-            var parameter = this.CreateRequestParameter();
-            parameter.Method = "GET";
-            parameter.URL = url;
-            parameter.Referer = galleryParameter.Referer;
-
-            return parameter;
+            return new GalleryImage() { ImageUrl = viewUrl };
         }
 
         public string GetRetval(string url)
@@ -160,6 +155,11 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             }
 
             return info;
+        }
+
+        public override GalleryImage ReloadImage(string requestUrl, string reloadUrl, DownloadGalleryParameter galleryParameter)
+        {
+            throw new NotImplementedException();
         }
 
     }

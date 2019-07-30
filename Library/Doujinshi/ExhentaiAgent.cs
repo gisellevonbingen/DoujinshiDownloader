@@ -89,12 +89,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 var gd1Elements = gleftElements.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gd1")).ChildNodes;
                 var thumbnailElement = gd1Elements.FirstOrDefault(n => n.Name.Equals("div"));
                 var style = thumbnailElement.GetAttributeValue("style", string.Empty);
-
-                var thumbnailPrefix = "url(";
-                var thumbnailSuffix = ")";
-                var thumbnailUrlS = style.IndexOf(thumbnailPrefix) + thumbnailPrefix.Length;
-                var thumbnailUrlE = style.IndexOf(thumbnailSuffix, thumbnailUrlS);
-                info.Thumbnail = style.Substring(thumbnailUrlS, thumbnailUrlE - thumbnailUrlS);
+                info.Thumbnail = style.Substring("url(", ")");
 
                 return info;
             }
@@ -156,60 +151,68 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         }
 
 
-        public override RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter)
-        {
-            var downloadURL = this.GetGalleryImageDownloadPath(url);
-
-            if (downloadURL != null)
-            {
-                var parameter = this.CreateRequestParameter();
-                parameter.URL = downloadURL;
-                parameter.Method = "GET";
-                parameter.Referer = galleryParameter.Referer;
-                return parameter;
-            }
-
-            return null;
-        }
-
-        public string GetGalleryImageDownloadPath(string url)
+        public override GalleryImage GetGalleryImage(string viewUrl)
         {
             var parameter = this.CreateRequestParameter();
-            parameter.URL = url;
+            parameter.URL = viewUrl;
             parameter.Method = "GET";
 
             using (var response = this.Explorer.Request(parameter))
             {
-                var mainDivElement = response.ReadToDocument().DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i1"));
+                var bodyElement = response.ReadToDocument().DocumentNode.ChildNodes["html"].ChildNodes["body"];
+                var mainDivElement = bodyElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i1"));
 
-                if (this.Original == true)
+                var image = new GalleryImage();
+                image.ImageUrl = this.GetGalleryImageUrl(mainDivElement);
+                image.ReloadUrl = this.GetGalleryReloadUrl(viewUrl, mainDivElement);
+
+                return image;
+            }
+
+        }
+
+        public string GetGalleryReloadUrl(string viewUrl, HtmlNode mainDivElement)
+        {
+            var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i6"));
+            var loadfailElement = subDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("loadfail"));
+            var functionArgs = loadfailElement.GetAttributeValue("onclick", string.Empty).Substring("nl('", "')");
+
+            return $"{viewUrl}?nl={functionArgs}";
+        }
+
+        public string GetGalleryImageUrl(HtmlNode mainDivElement)
+        {
+            if (this.Original == true)
+            {
+                var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i7"));
+                string url2 = HttpUtility.HtmlDecode(subDivElement?.ChildNodes["a"]?.GetAttributeValue("href", null));
+
+                if (url2 == null)
                 {
-                    var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i7"));
-                    string url2 = HttpUtility.HtmlDecode(subDivElement?.ChildNodes["a"]?.GetAttributeValue("href", null));
-
-                    if (url2 == null)
-                    {
-                        return null;
-                    }
-
-                    var parameter2 = this.CreateRequestParameter();
-                    parameter2.URL = url2;
-                    parameter2.Method = "GET";
-
-                    using (var response2 = this.Explorer.Request(parameter2))
-                    {
-                        return response2.Impl.Headers["Location"];
-                    }
-
+                    return null;
                 }
-                else
+
+                var parameter2 = this.CreateRequestParameter();
+                parameter2.URL = url2;
+                parameter2.Method = "GET";
+
+                using (var response2 = this.Explorer.Request(parameter2))
                 {
-                    var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i3"));
-                    return HttpUtility.HtmlDecode(subDivElement?.ChildNodes["a"]?.ChildNodes["img"]?.GetAttributeValue("src", null));
+                    return response2.Impl.Headers["Location"];
                 }
 
             }
+            else
+            {
+                var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i3"));
+                return HttpUtility.HtmlDecode(subDivElement?.ChildNodes["a"]?.ChildNodes["img"]?.GetAttributeValue("src", null));
+            }
 
+        }
+
+        public override GalleryImage ReloadImage(string requestUrl, string reloadUrl, DownloadGalleryParameter galleryParameter)
+        {
+            return  this.GetGalleryImage(reloadUrl);
         }
 
     }
