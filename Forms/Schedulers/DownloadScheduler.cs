@@ -36,8 +36,12 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         {
             try
             {
-                task.Start();
-                task.WaitForComplete();
+                if (task.State.HasFlag(TaskState.NotStarted) == true)
+                {
+                    task.Start();
+                    task.WaitForComplete();
+                }
+
             }
             catch (ThreadAbortException)
             {
@@ -158,17 +162,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this.Stop();
         }
 
-        public bool IsInQueue(DownloadRequest request)
-        {
-            var queue = this.Queue;
-
-            lock (queue)
-            {
-                return queue.Any(t => t.Request.Equals(request));
-            }
-
-        }
-
         public List<DownloadTask> GetQueueCopy()
         {
             var queue = this.Queue;
@@ -187,11 +180,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             lock (queue)
             {
-                if (this.IsInQueue(request) == true)
-                {
-                    throw new ArgumentException("Already scheduling request");
-                }
-
                 task = new DownloadTask(request);
                 queue.Add(task);
 
