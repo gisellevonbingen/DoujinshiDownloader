@@ -127,7 +127,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             for (int i = 0; i < items.Length; i++)
             {
                 var item = items[i];
-                int height = 111;
+                int height = 130 + 1;
                 int top = layoutBounds.Top + height * i;
                 int left = layoutBounds.Left;
                 int width = layoutBounds.Width;

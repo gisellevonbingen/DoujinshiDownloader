@@ -242,7 +242,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var map = base.GetPreferredBounds(layoutBounds);
 
             var margin = 10;
-            var buttonSize = new Size(layoutBounds.Height - margin * 2, 30);
+            var buttonSize = new Size(90, 30);
 
             var removeButton = this.RemoveButton;
             var removeButtonBounds = map[removeButton] = new Rectangle(new Point(layoutBounds.Right - buttonSize.Width - margin, layoutBounds.Bottom - buttonSize.Height - margin), buttonSize);
@@ -253,32 +253,32 @@ namespace Giselle.DoujinshiDownloader.Forms
             var detailButton = this.DetailButton;
             var detailButtonBounds = map[detailButton] = DrawingUtils2.PlaceByDirection(openButtonBounds, buttonSize, PlaceDirection.Left, margin);
 
-            var progressBar = this.ProgressBar;
-            var progressLeft = layoutBounds.Left + margin;
-            var progressBarHeight = 30;
-            var progressBarBounds = map[progressBar] = Rectangle.FromLTRB(progressLeft, openButtonBounds.Bottom - progressBarHeight, detailButtonBounds.Left - margin, openButtonBounds.Bottom);
-
             return map;
         }
-        
+
         private void UpdateGalleryInfoControlsBounds(Rectangle layoutBounds)
         {
             var titleLabel = this.TitleLabel;
             var thumbnailControl = this.ThumbnailControl;
-
-            var progressBar = this.ProgressBar;
+            var detailButton = this.DetailButton;
 
             var margin = 10;
             var thumbnailLeft = layoutBounds.Left + margin;
             var thumbnailTop = layoutBounds.Top + margin;
-            var thumbnailBottom = progressBar.Top - margin;
+            var thumbnailBottom = detailButton.Bottom;
             var thumbnailImageSize = thumbnailControl.Image?.Size ?? new Size();
             var thumbnailHeight = thumbnailBottom - thumbnailTop;
             var thumbnailWidth = (int)(thumbnailImageSize.Width * ((float)thumbnailHeight / thumbnailImageSize.Height));
 
             thumbnailControl.Bounds = new Rectangle(thumbnailLeft, thumbnailTop, thumbnailWidth, thumbnailHeight);
-            titleLabel.Bounds = Rectangle.FromLTRB(thumbnailControl.Right, thumbnailControl.Top, layoutBounds.Right, thumbnailControl.Bottom);
 
+            var progressBar = this.ProgressBar;
+            var progressLeft = thumbnailControl.Right + margin;
+            var progressRight = detailButton.Left - margin;
+            var progressBarHeight = 30;
+            progressBar.Bounds = Rectangle.FromLTRB(progressLeft, detailButton.Bottom - progressBarHeight, progressRight, detailButton.Bottom);
+
+            titleLabel.Bounds = Rectangle.FromLTRB(thumbnailControl.Right + margin, thumbnailControl.Top, layoutBounds.Right, progressBar.Top - margin);
             titleLabel.Font = DoujinshiDownloader.Instance.FontManager.FindMatch(titleLabel.Text, new FontMatchFormat() { Style = FontStyle.Regular, Size = 12, ProposedSize = titleLabel.Size });
         }
 
