@@ -11,6 +11,8 @@ using Giselle.Drawing;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
+using System.IO;
+using Giselle.DoujinshiDownloader.Resources;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -22,7 +24,9 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private DownloadSelectGroupBox DownloadSelectGroupBox = null;
 
+        private PictureBox ThumbnailControl = null;
         private SelectAllableTextBox TitleLabel = null;
+        private Image ActiveThumbnailImage = null;
 
         private Label AddMessageLabel = null;
         private Button AddButton = null;
@@ -67,12 +71,15 @@ namespace Giselle.DoujinshiDownloader.Forms
             downloadSelectGroupBox.SelectedDownloadMethodChanged += this.OnDownloadSelectGroupBoxSelectedDownloadMethodChanged;
             this.Controls.Add(downloadSelectGroupBox);
 
+            var thumbnailControl = this.ThumbnailControl = new PictureBox();
+            thumbnailControl.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.Controls.Add(thumbnailControl);
+
             var titleLabel = this.TitleLabel = new SelectAllableTextBox();
             titleLabel.ReadOnly = true;
             titleLabel.Multiline = true;
             titleLabel.BackColor = this.BackColor;
             titleLabel.BorderStyle = BorderStyle.None;
-            titleLabel.Font = fm[12, FontStyle.Regular];
             this.Controls.Add(titleLabel);
 
             var addMessageLabel = this.AddMessageLabel = new Label();
@@ -100,6 +107,13 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.UpdateControlsBoundsPreferred();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            ObjectUtils.DisposeQuietly(this.ActiveThumbnailImage);
+        }
+
         private void OnAddButtonClick(object sender, EventArgs e)
         {
             var downloadSelectGroupBox = this.DownloadSelectGroupBox;
@@ -125,7 +139,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 var request = this._Request = new DownloadRequest();
                 request.DownloadInput = validation.DownloadInput;
                 request.DownloadMethod = selectedMethod;
-                request.Title = validation.Titles[selectedMethod];
+                request.Title = validation.Infos[selectedMethod].Title;
 
                 this.DialogResult = DialogResult.OK;
             }
@@ -146,7 +160,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void OnDownloadSelectGroupBoxSelectedDownloadMethodChanged(object sender, EventArgs e)
         {
-            this.UpdateTitleLabelText();
+            this.UpdateGalleryInfoControls();
 
             this.AddButton.Select();
             this.AddButton.Focus();
@@ -219,7 +233,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                     verifyButton.Enabled = false;
                     addButton.Enabled = false;
                     downloadSelectGroupBox.Enabled = false;
-                    this.UpdateTitleLabelText();
+                    this.UpdateGalleryInfoControls();
                 });
 
                 if (DownloadInput.TryParse(input, out downloadInput) == false)
@@ -231,13 +245,13 @@ namespace Giselle.DoujinshiDownloader.Forms
                 {
                     this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Verifying"), false);
 
-                    var titles = downloadSelectGroupBox.Validate(downloadInput);
+                    var galleryInfos = downloadSelectGroupBox.Validate(downloadInput);
 
                     lock (this.ValidationLock)
                     {
                         var validation = new ValidationInformation();
                         validation.DownloadInput = downloadInput;
-                        DictionaryUtils.PutAll(validation.Titles, titles);
+                        DictionaryUtils.PutAll(validation.Infos, galleryInfos);
                         this.LastValidation = validation;
                     }
 
@@ -245,7 +259,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                     {
                         downloadSelectGroupBox.Enabled = true;
                         this.SelectFirstDownloadMethod();
-                        this.UpdateTitleLabelText();
+                        this.UpdateGalleryInfoControls();
 
                         this.AddButton.Select();
                         this.AddButton.Focus();
@@ -284,7 +298,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             lock (this.ValidationLock)
             {
-                var titles = this.LastValidation?.Titles;
+                var titles = this.LastValidation?.Infos;
 
                 if (titles != null)
                 {
@@ -308,11 +322,12 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.DownloadSelectGroupBox.SelectedDownloadMethod = selectedDownloadMethod;
         }
 
-        private void UpdateTitleLabelText()
+        private void UpdateGalleryInfoControls()
         {
             var titleLabel = this.TitleLabel;
+            var thumbnailControl = this.ThumbnailControl;
             var selectedDownloadMethod = this.DownloadSelectGroupBox.SelectedDownloadMethod;
-            string title = null;
+            GalleryInfo info = null;
 
             lock (this.ValidationLock)
             {
@@ -320,20 +335,65 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                 if (validation != null && selectedDownloadMethod != null)
                 {
-                    validation.Titles.TryGetValue(selectedDownloadMethod, out title);
+                    validation.Infos.TryGetValue(selectedDownloadMethod, out info);
                 }
 
             }
 
-            if (title == null)
+            thumbnailControl.Image = null;
+            ObjectUtils.DisposeQuietly(this.ActiveThumbnailImage);
+
+            if (info == null)
             {
                 titleLabel.Text = "";
             }
             else
             {
-                titleLabel.Text = title;
+                titleLabel.Text = info.Title;
+
+                var thumbnail = info.Thumbnail;
+
+                if (thumbnail != null)
+                {
+                    using (var ms = new MemoryStream(thumbnail))
+                    {
+                        var image = new Bitmap(ms);
+                        this.ActiveThumbnailImage = image;
+                        thumbnailControl.Image = image;
+                    }
+
+                }
+
+                this.UpdateGalleryInfoControlsBounds();
             }
 
+        }
+
+        protected override void UpdateControlsBoundsPreferred(Size size)
+        {
+            base.UpdateControlsBoundsPreferred(size);
+
+            this.UpdateGalleryInfoControlsBounds();
+        }
+
+        private void UpdateGalleryInfoControlsBounds()
+        {
+            var titleLabel = this.TitleLabel;
+            var thumbnailControl = this.ThumbnailControl;
+
+            var downloadSelectGroupBox = this.DownloadSelectGroupBox;
+            var addMessageLabel = this.AddMessageLabel;
+
+            var thumbnailTop = downloadSelectGroupBox.Bottom + 10;
+            var thumbnailBottom = addMessageLabel.Top;
+            var thumbnailImageSize = thumbnailControl.Image?.Size ?? new Size();
+            var thumbnailHeight = thumbnailBottom - thumbnailTop;
+            var thumbnailWidth = (int)(thumbnailImageSize.Width * ((float)thumbnailHeight / thumbnailImageSize.Height));
+
+            thumbnailControl.Bounds = new Rectangle(downloadSelectGroupBox.Left, thumbnailTop, thumbnailWidth, thumbnailHeight);
+            titleLabel.Bounds = Rectangle.FromLTRB(thumbnailControl.Right, thumbnailControl.Top, downloadSelectGroupBox.Right, thumbnailControl.Bottom);
+
+            titleLabel.Font = DoujinshiDownloader.Instance.FontManager.FindMatch(titleLabel.Text, new FontMatchFormat() { ProposedSize = titleLabel.Size, Size = 12, Style = FontStyle.Regular });
         }
 
         private void UpdateVerifyMessageLabel(string message, bool invalid)
@@ -383,8 +443,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             var addMessageLabelSize = new Size(layoutBounds.Width, 21);
             var addMessageLabelBounds = map[addMessageLabel] = DrawingUtils2.PlaceByDirection(cancelButtonBounds, addMessageLabelSize, PlaceDirection.Top, 5);
 
-            var titleLabel = this.TitleLabel;
-            map[titleLabel] = Rectangle.FromLTRB(layoutBounds.Left, downloadSelectGroupBox.Bottom + 10, layoutBounds.Right, addMessageLabelBounds.Top);
 
             return map;
         }
@@ -392,11 +450,11 @@ namespace Giselle.DoujinshiDownloader.Forms
         private class ValidationInformation
         {
             public DownloadInput DownloadInput { get; set; } = default;
-            public Dictionary<DownloadMethod, string> Titles { get; } = null;
+            public Dictionary<DownloadMethod, GalleryInfo> Infos { get; } = null;
 
             public ValidationInformation()
             {
-                this.Titles = new Dictionary<DownloadMethod, string>();
+                this.Infos = new Dictionary<DownloadMethod, GalleryInfo>();
             }
 
         }

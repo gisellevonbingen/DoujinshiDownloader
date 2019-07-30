@@ -150,8 +150,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
                     if (coverNode != null)
                     {
+                        var uri = new Uri(url);
                         var coverImgNode = coverNode.Descendants().FirstOrDefault(n => n.Name.Equals("img"));
-                        info.Thumbnail = coverImgNode.GetAttributeValue("src", null);
+                        info.Thumbnail =  uri.Scheme + ":" + coverImgNode.GetAttributeValue("src", null);
                     }
 
                 }

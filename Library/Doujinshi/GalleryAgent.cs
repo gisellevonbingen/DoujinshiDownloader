@@ -41,6 +41,29 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public abstract RequestParameter GetGalleryImageDownloadRequest(string url, DownloadGalleryParameter galleryParameter);
 
+        public virtual byte[] GetGalleryThumbnail(string thumbnailUrl)
+        {
+            var req = this.CreateRequestParameter();
+            req.URL = thumbnailUrl;
+            req.Method = "GET";
+
+            using (var res = this.Explorer.Request(req))
+            {
+                using (var rs = res.ReadToStream())
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        rs.CopyTo(ms);
+                        var bytes = ms.ToArray();
+                        return bytes;
+                    }
+
+                }
+
+            }
+
+        }
+
     }
 
 }
