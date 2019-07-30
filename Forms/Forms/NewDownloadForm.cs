@@ -103,7 +103,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.ResumeLayout(false);
 
-            this.ClientSize = new Size(500, 400);
+            this.ClientSize = new Size(500, 500);
             this.UpdateControlsBoundsPreferred();
         }
 
