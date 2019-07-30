@@ -88,6 +88,13 @@ namespace Giselle.DoujinshiDownloader.Forms
             task.StateChanged += this.OnTaskStateChanged;
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            ObjectUtils.DisposeQuietly(this.ThumbnailControl.Image);
+        }
+
         protected override void UpdateControlsBoundsPreferred(Rectangle layoutBounds)
         {
             base.UpdateControlsBoundsPreferred(layoutBounds);
