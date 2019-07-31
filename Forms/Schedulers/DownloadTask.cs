@@ -25,7 +25,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         private readonly List<CancellationTokenSource> CancelSources = null;
 
         private TaskState _State = TaskState.NotStarted;
-        public TaskState State { get { lock (this.StateLock) { return this._State; } } }
+        public TaskState State { get { return this._State; } }
         public event EventHandler StateChanged = null;
         private readonly object StateLock = new object();
 
