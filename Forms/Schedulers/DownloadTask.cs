@@ -285,16 +285,20 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 {
                     imageView.State = ViewState.Downloading;
                     this.OnProgressing(new TaskProgressingEventArgs(index, imageView));
-                    imageView.State = this.Download(imageView);
+
+                    var exceptionMessage = this.Download(imageView);
+                    imageView.State = string.IsNullOrWhiteSpace(exceptionMessage) ? ViewState.Success : ViewState.Exception;
+                    imageView.ExceptionMessage = exceptionMessage;
                 }
                 catch (TaskCancelingException)
                 {
                     return;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     imageView.State = ViewState.Exception;
-                    Console.WriteLine(e);
+                    imageView.ExceptionMessage = "Unknown";
+                    return;
                 }
 
                 lock (this.IndexLock)
@@ -323,14 +327,14 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         }
 
-        private ViewState Download(ImageView view)
+        private string Download(ImageView view)
         {
             var agent = this.Agent;
             var image = agent.GetGalleryImage(view.Url);
 
             if (image.ImageUrl == null)
             {
-                return ViewState.RequestNotCreate;
+                return "RequestNotCreate";
             }
             else
             {
@@ -342,10 +346,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                 for (int k = 0; k < retryCount; k++)
                 {
-                    this.ThrowIfCanceling();
-
                     try
                     {
+                        this.ThrowIfCanceling();
+
                         if (string.IsNullOrWhiteSpace(image.ReloadUrl) == false)
                         {
                             image = agent.ReloadImage(image.ImageUrl, image.ReloadUrl, this.GalleryParameter);
@@ -355,19 +359,15 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                         using (var localStream = new MemoryStream())
                         {
-                            var result = this.Download(agent, downloadRequest, localStream);
+                            this.Download(agent, downloadRequest, localStream);
 
-                            if (result == ViewState.Success)
+                            lock (this.DownloadFile)
                             {
-                                lock (this.DownloadFile)
-                                {
-                                    localStream.Position = 0L;
-                                    this.DownloadFile.Write(fileName, localStream);
-                                }
-
-                                return result;
+                                localStream.Position = 0L;
+                                this.DownloadFile.Write(fileName, localStream);
                             }
 
+                            return null;
                         }
 
                     }
@@ -377,9 +377,11 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     }
                     catch (Exception e)
                     {
+                        Console.WriteLine(e);
+
                         if (k + 1 == retryCount)
                         {
-                            throw new Exception(image.ImageUrl, e);
+                            return "Network";
                         }
 
                     }
@@ -388,10 +390,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             }
 
-            return ViewState.Exception;
+            return "Unknown";
         }
 
-        private ViewState Download(GalleryAgent agent, RequestParameter downloadRequest, Stream stream)
+        private void Download(GalleryAgent agent, RequestParameter downloadRequest, Stream stream)
         {
             using (var source = new CancellationTokenSource())
             {
@@ -410,8 +412,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         using (var responseStream = response.ReadToStream())
                         {
                             responseStream.CopyTo(stream);
-
-                            return ViewState.Success;
                         }
 
                     }

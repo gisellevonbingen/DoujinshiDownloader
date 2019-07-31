@@ -364,8 +364,14 @@ Regenerates At A Rate Of {=Regenerates} Per Minute</value>
   <data name="Download.Detail.State.Exception" xml:space="preserve">
     <value>Exception</value>
   </data>
-  <data name="Download.Detail.State.RequestNotCreate" xml:space="preserve">
+  <data name="Download.Detail.Exception.Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Download.Detail.Exception.RequestNotCreate" xml:space="preserve">
     <value>File Not Found</value>
+  </data>
+  <data name="Download.Detail.Exception.Network" xml:space="preserve">
+    <value>Network Error</value>
   </data>
   <data name="Download.OpenDirectory" xml:space="preserve">
     <value>Open</value>

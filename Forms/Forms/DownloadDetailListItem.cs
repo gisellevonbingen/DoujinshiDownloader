@@ -47,16 +47,16 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             var view = this.ImageView;
             var state = view.State;
+            var detailMessage = view.ExceptionMessage.Execute(v => $" : {SR.Get("Download.Detail.Exception." + v)}");
 
             var stateLabel = this.StateLabel;
-            stateLabel.Text = $"{this.Index} : {SR.Get($"Download.Detail.State.{state.ToString()}")}";
-            stateLabel.ForeColor = (state == ViewState.Exception || state == ViewState.RequestNotCreate) ? Color.Red : Color.Black;
+            stateLabel.Text = $"{this.Index} : {SR.Get($"Download.Detail.State.{state.ToString()}")}" + detailMessage;
+            stateLabel.ForeColor = (state == ViewState.Exception) ? Color.Red : Color.Black;
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-
 
             using (var pen = new Pen(Brushes.Black, 1.0F))
             {

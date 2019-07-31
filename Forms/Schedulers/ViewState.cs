@@ -14,7 +14,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         Complete = 1 << 2,
         Success = 1 << 3 | Complete,
         Exception = 1 << 4 | Complete,
-        RequestNotCreate = 1 << 5 | Exception,
     }
 
 }

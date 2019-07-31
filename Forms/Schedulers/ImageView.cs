@@ -10,11 +10,13 @@ namespace Giselle.DoujinshiDownloader.Schedulers
     {
         public ViewState State { get; set; }
         public string Url { get; set; }
+        public string ExceptionMessage { get; set; }
 
         public ImageView()
         {
             this.State = ViewState.StandBy;
             this.Url = null;
+            this.ExceptionMessage = null;
         }
 
     }
