@@ -373,6 +373,9 @@ Regenerates At A Rate Of {=Regenerates} Per Minute</value>
   <data name="Download.Detail.Exception.Network" xml:space="preserve">
     <value>Network Error</value>
   </data>
+  <data name="Download.Detail.Exception.ImageLimit" xml:space="preserve">
+    <value>Image Limit Exceeded</value>
+  </data>
   <data name="Download.OpenDirectory" xml:space="preserve">
     <value>Open</value>
   </data>

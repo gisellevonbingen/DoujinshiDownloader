@@ -244,6 +244,19 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return this.GetGalleryImage(reloadUrl);
         }
 
+        public override RequestParameter CreateImageRequest(string imageUrl, DownloadGalleryParameter galleryParameter)
+        {
+            var uri = new Uri(imageUrl);
+            var fileName = uri.GetFileName();
+
+            if (fileName.Equals("509.gif") == true)
+            {
+                throw new ImageRequestCreateException("ImageLimit");
+            }
+
+            return base.CreateImageRequest(imageUrl, galleryParameter);
+        }
+
     }
 
 }

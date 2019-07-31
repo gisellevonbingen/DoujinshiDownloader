@@ -70,6 +70,7 @@
     <Compile Include="Doujinshi\GalleryInfo.cs" />
     <Compile Include="Doujinshi\HitomiAgent.cs" />
     <Compile Include="Doujinshi\HitomiRemovedGalleryException.cs" />
+    <Compile Include="Doujinshi\ImageRequestCreateException.cs" />
     <Compile Include="Doujinshi\Site.cs" />
     <Compile Include="Doujinshi\SiteE_Hentai.cs" />
     <Compile Include="Doujinshi\SiteExHentai.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ObjectUtils2.cs" />
     <Compile Include="Utils\StringUtils.cs" />
+    <Compile Include="Utils\UriUtils.cs" />
     <Compile Include="Web\NetworkException.cs" />
     <Compile Include="Web\ProxySettings.cs" />
     <Compile Include="Web\RequestParameter.cs" />

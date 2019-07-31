@@ -374,6 +374,9 @@ E-Hentai 서버를 통해 이미지를 가져올 때 마다,
   <data name="Download.Detail.Exception.Network" xml:space="preserve">
     <value>네트워크 에러</value>
   </data>
+  <data name="Download.Detail.Exception.ImageLimit" xml:space="preserve">
+    <value>이미지 제한 초과</value>
+  </data>
   <data name="Download.OpenDirectory" xml:space="preserve">
     <value>폴더 열기</value>
   </data>

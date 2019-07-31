@@ -338,7 +338,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             }
             else
             {
-                var fileName = this.GetFileName(image.ImageUrl);
+                var fileName = new Uri(image.ImageUrl).GetFileName();
 
                 var dd = DoujinshiDownloader.Instance;
                 var config = dd.Config.Values;
@@ -365,6 +365,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                             return null;
                         }
 
+                    }
+                    catch (ImageRequestCreateException e)
+                    {
+                        return e.Message;
                     }
                     catch (TaskCancelingException)
                     {
@@ -431,19 +435,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             }
 
-        }
-
-        private string GetFileName(string url)
-        {
-            var fileName = new Uri(url).LocalPath;
-            int slashIndex = fileName.LastIndexOf('/');
-
-            if (slashIndex > -1)
-            {
-                fileName = fileName.Substring(slashIndex + 1);
-            }
-
-            return fileName;
         }
 
     }
