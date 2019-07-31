@@ -287,6 +287,22 @@ Are You Sure You Want To Quit?</value>
   <data name="Settings.ExHentaiAccount.Fail" xml:space="preserve">
     <value>Verify Fail</value>
   </data>
+  <data name="Settings.ExHentaiAccount.Information" xml:space="preserve">
+	<value>Account Information</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Information.None" xml:space="preserve">
+	<value>Require Verify Account</value>
+  </data>
+  <data name="Settings.ExHentaiAccount.Information.ImageLimit" xml:space="preserve">
+    <value>E-Hentai Image Limit
+    Current : {=Current}
+    Limit : {=Limit}
+
+Increase When Bring Image From E-Hentai Server
+
+If Current Exceed Limit, Can't Bring Image
+Regenerates At A Rate Of {=Regenerates} Per Minute</value>
+  </data>
   <data name="Settings.Network.Title" xml:space="preserve">
     <value>Network</value>
   </data>

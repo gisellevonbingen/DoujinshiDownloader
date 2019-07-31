@@ -22,8 +22,14 @@ namespace Giselle.DoujinshiDownloader.Forms
         private Button VerifyButton = null;
         private Label MessageLabel = null;
 
+        private AccountInfoGroupBox AccountInfoGroupBox = null;
+
         private readonly object ThreadLock = new object();
         private Thread VerifyThread = null;
+
+        private bool Verifing = false;
+        private bool VerifySuccess = false;
+        private ImageLimit ImageLimit = null;
 
         public ExHentaiAccountSettingsControl()
         {
@@ -60,7 +66,11 @@ namespace Giselle.DoujinshiDownloader.Forms
             messageLabel.Font = fm[12, FontStyle.Regular];
             this.Controls.Add(messageLabel);
 
+            var accountInformationGroupBox = this.AccountInfoGroupBox = new AccountInfoGroupBox();
+            this.Controls.Add(accountInformationGroupBox);
+
             this.KeyDown += this.OnControlKeyDown;
+            this.AccountInfoGroupBox.Bind(null);
 
             this.ResumeLayout(false);
         }
@@ -79,25 +89,24 @@ namespace Giselle.DoujinshiDownloader.Forms
             var dd = DoujinshiDownloader.Instance;
             var agent = new ExHentaiAgent();
 
-            var memberIdControl = this.MemberIdControl;
-            var passHashControl = this.PassHashControl;
-            var verifyButton = this.VerifyButton;
-            var messageLabel = this.MessageLabel;
-
-            bool result = false;
-
             try
             {
-                ControlUtils.InvokeIfNeed(messageLabel, () =>
-                {
-                    MemberIdControl.TextBox.Enabled = false;
-                    passHashControl.TextBox.Enabled = false;
-                    verifyButton.Enabled = false;
-                    messageLabel.ForeColor = Color.Black;
-                    messageLabel.Text = SR.Get("Settings.ExHentaiAccount.Verifying");
-                });
+                this.Verifing = true;
+                this.VerifySuccess = false;
+                this.ImageLimit = null;
+                ControlUtils.InvokeIfNeed(this, this.UpdateVerifyControl);
 
-                result = agent.CheckAccount(this.ParseAccount());
+                var account = this.ParseAccount();
+                var result = agent.CheckAccount(account);
+
+                this.VerifySuccess = result;
+
+                if (result == true)
+                {
+                    this.ImageLimit = agent.GetImageLimit(account);
+                }
+
+                this.Verifing = false;
             }
             catch (Exception e)
             {
@@ -107,26 +116,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 try
                 {
-
-                    ControlUtils.InvokeIfNeed(messageLabel, (o1) =>
-                    {
-                        MemberIdControl.TextBox.Enabled = true;
-                        passHashControl.TextBox.Enabled = true;
-                        verifyButton.Enabled = true;
-
-                        if (o1 == true)
-                        {
-                            messageLabel.ForeColor = Color.Green;
-                            messageLabel.Text = SR.Get("Settings.ExHentaiAccount.Success");
-                        }
-                        else
-                        {
-                            messageLabel.ForeColor = Color.Red;
-                            messageLabel.Text = SR.Get("Settings.ExHentaiAccount.Fail");
-                        }
-
-                    }, result);
-
+                    ControlUtils.InvokeIfNeed(this, this.UpdateVerifyControl);
                 }
                 catch (Exception)
                 {
@@ -136,6 +126,49 @@ namespace Giselle.DoujinshiDownloader.Forms
                 lock (this.ThreadLock)
                 {
                     this.VerifyThread = null;
+                }
+
+            }
+
+        }
+
+        private void UpdateVerifyControl()
+        {
+            var memberIdControl = this.MemberIdControl;
+            var passHashControl = this.PassHashControl;
+            var verifyButton = this.VerifyButton;
+            var messageLabel = this.MessageLabel;
+
+            var verifing = this.Verifing;
+            var success = this.VerifySuccess;
+
+            if (verifing == true)
+            {
+                memberIdControl.TextBox.Enabled = false;
+                passHashControl.TextBox.Enabled = false;
+                verifyButton.Enabled = false;
+                messageLabel.ForeColor = Color.Black;
+                messageLabel.Text = SR.Get("Settings.ExHentaiAccount.Verifying");
+            }
+            else
+            {
+                memberIdControl.TextBox.Enabled = true;
+                passHashControl.TextBox.Enabled = true;
+                verifyButton.Enabled = true;
+
+                if (success == true)
+                {
+                    messageLabel.ForeColor = Color.Green;
+                    messageLabel.Text = SR.Get("Settings.ExHentaiAccount.Success");
+
+                    this.AccountInfoGroupBox.Bind(this.ImageLimit);
+                }
+                else
+                {
+                    messageLabel.ForeColor = Color.Red;
+                    messageLabel.Text = SR.Get("Settings.ExHentaiAccount.Fail");
+
+                    this.AccountInfoGroupBox.Bind(null);
                 }
 
             }
@@ -213,6 +246,9 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var messageLabel = this.MessageLabel;
             var messageLabelBounds = map[messageLabel] = DrawingUtils2.PlaceByDirection(passHashControlBounds, new Size(layoutBounds.Width, 21), PlaceDirection.Bottom, 5);
+
+            var accountInformationGroupBox = this.AccountInfoGroupBox;
+            map[accountInformationGroupBox] = Rectangle.FromLTRB(layoutBounds.Left, messageLabelBounds.Bottom, layoutBounds.Right, layoutBounds.Bottom);
 
             return map;
         }

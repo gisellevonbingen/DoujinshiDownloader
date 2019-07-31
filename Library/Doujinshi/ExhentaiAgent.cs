@@ -58,13 +58,34 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             var parameter = this.CreateRequestParameter(account);
             parameter.URL = "https://e-hentai.org/bounce_login.php?b=d&bt=1-1";
             parameter.Method = "GET";
-            parameter.Referer = "https://e-hentai.org/";
-            parameter.KeepAlive = false;
 
             using (var response = this.Explorer.Request(parameter))
             {
                 var loc = response.Impl.Headers["location"];
                 return string.IsNullOrWhiteSpace(loc) == false;
+            }
+
+        }
+
+        public ImageLimit GetImageLimit(ExHentaiAccount account)
+        {
+            var parameter = this.CreateRequestParameter(account);
+            parameter.URL = "https://e-hentai.org/home.php";
+            parameter.Method = "GET";
+
+            using (var response = this.Explorer.Request(parameter))
+            {
+                var document = response.ReadToDocument();
+                var stuffboxDivNode = document.DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("stuffbox"));
+                var homeboxDivNode = stuffboxDivNode.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("homebox"));
+                var cuts = homeboxDivNode.InnerText.Cut("You are currently at ", " towards a limit of ", ". This regenerates at a rate of ", " per minute.");
+
+                var imageLimit = new ImageLimit();
+                imageLimit.Current = NumberUtils.ToInt(cuts[0]);
+                imageLimit.Limit = NumberUtils.ToInt(cuts[1]);
+                imageLimit.Regenerates = NumberUtils.ToInt(cuts[2]);
+
+                return imageLimit;
             }
 
         }
