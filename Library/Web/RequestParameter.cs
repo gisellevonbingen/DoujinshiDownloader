@@ -42,6 +42,9 @@ namespace Giselle.DoujinshiDownloader.Web
         private ProxySettings _Proxy = null;
         public ProxySettings Proxy { get { return this._Proxy; } set { this._Proxy = value; } }
 
+        private bool _KeepAlive = true;
+        public bool KeepAlive { get { return this._KeepAlive; } set { this._KeepAlive = value; } }
+
         public RequestParameter()
         {
 

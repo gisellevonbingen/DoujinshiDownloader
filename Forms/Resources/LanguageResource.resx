@@ -273,7 +273,7 @@ Are You Sure You Want To Quit?</value>
     <value>Confirm Before Cancel/Remvoe Download</value>
   </data>
   <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
-    <value>ExHentai Account</value>
+    <value>E-Hentai/ExHentai Account</value>
   </data>
   <data name="Settings.ExHentaiAccount.Verify" xml:space="preserve">
     <value>Verify Account</value>

@@ -37,26 +37,34 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
             if (account != null)
             {
-                var uri = new Uri("https://exhentai.org/");
-                account.MemberId.Execute(v => cookies.Add(uri, new Cookie("ipb_member_id", v, "/", ".exhentai.org")));
-                account.PassHash.Execute(v => cookies.Add(uri, new Cookie("ipb_pass_hash", v, "/", ".exhentai.org")));
+                this.SetCookie("e-hentai.org", cookies, account);
+                this.SetCookie("exhentai.org", cookies, account);
             }
 
 
             return parameter;
         }
 
+        public void SetCookie(string origin, CookieContainer cookies, ExHentaiAccount account)
+        {
+            var uri = new Uri($"https://{origin}/");
+            var cookieOrigin = $".{origin}";
+            account.MemberId.Execute(v => cookies.Add(uri, new Cookie("ipb_member_id", v, "/", cookieOrigin)));
+            account.PassHash.Execute(v => cookies.Add(uri, new Cookie("ipb_pass_hash", v, "/", cookieOrigin)));
+        }
+
         public bool CheckAccount(ExHentaiAccount account)
         {
             var parameter = this.CreateRequestParameter(account);
-            parameter.URL = "https://exhentai.org";
+            parameter.URL = "https://e-hentai.org/bounce_login.php?b=d&bt=1-1";
             parameter.Method = "GET";
+            parameter.Referer = "https://e-hentai.org/";
+            parameter.KeepAlive = false;
 
             using (var response = this.Explorer.Request(parameter))
             {
-                var document = response.ReadToDocument();
-                var title = document.DocumentNode.Descendants().FirstOrDefault(n => n.Name.Equals("title"));
-                return title != null && title.InnerText.Equals("ExHentai.org");
+                var loc = response.Impl.Headers["location"];
+                return string.IsNullOrWhiteSpace(loc) == false;
             }
 
         }
@@ -212,7 +220,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override GalleryImage ReloadImage(string requestUrl, string reloadUrl, DownloadGalleryParameter galleryParameter)
         {
-            return  this.GetGalleryImage(reloadUrl);
+            return this.GetGalleryImage(reloadUrl);
         }
 
     }

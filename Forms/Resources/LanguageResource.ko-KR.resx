@@ -273,7 +273,7 @@
     <value>다운로드 제거/취소시 확인</value>
   </data>
   <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
-    <value>ExHentai 계정</value>
+    <value>E-Hentai/ExHentai 계정</value>
   </data>
   <data name="Settings.ExHentaiAccount.Verify" xml:space="preserve">
     <value>계정 확인</value>
