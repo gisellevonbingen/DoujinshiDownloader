@@ -46,12 +46,6 @@
     <Reference Include="Giselle.Commons">
       <HintPath>..\Libs\Giselle.Commons.dll</HintPath>
     </Reference>
-    <Reference Include="Giselle.Databases">
-      <HintPath>..\Libs\Giselle.Databases.dll</HintPath>
-    </Reference>
-    <Reference Include="Giselle.Databases.SQLite">
-      <HintPath>..\Libs\Giselle.Databases.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="Giselle.Drawing">
       <HintPath>..\Libs\Giselle.Drawing.dll</HintPath>
     </Reference>
@@ -138,6 +132,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\FontMatchFormat.cs" />
+    <Compile Include="Resources\LanguageResource.ko-KR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LanguageResource.ko-KR.resx</DependentUpon>
+    </Compile>
     <Compile Include="Schedulers\ImageView.cs" />
     <Compile Include="Schedulers\ImageViews.cs" />
     <Compile Include="Schedulers\TaskCancelingException.cs" />
