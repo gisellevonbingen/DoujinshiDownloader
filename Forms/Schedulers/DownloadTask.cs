@@ -161,11 +161,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             }
             catch (Exception e)
             {
-                lock (this.StateLock)
-                {
-                    this.Exception = e;
-                    this.UpdateState(TaskState.Completed | TaskState.Excepted);
-                }
+                this.Exception = e;
+                this.UpdateState(TaskState.Completed | TaskState.Excepted);
 
                 DoujinshiDownloader.Instance.ShowCrashMessageBox(e);
             }

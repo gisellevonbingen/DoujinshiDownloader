@@ -122,7 +122,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 task.StateChanged -= this.OnTaskStateChanged;
 
-                if (state.HasFlag(TaskState.Cancelled) == false)
+                if (state.HasFlag(TaskState.Cancelled) == false && state.HasFlag(TaskState.Excepted) == false)
                 {
                     var config = DoujinshiDownloader.Instance.Config.Values.Program;
 

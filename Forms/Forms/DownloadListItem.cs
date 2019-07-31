@@ -82,10 +82,11 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.ResumeLayout(false);
 
             this.Padding = new Padding(0, 0, 0, 1);
-            this.HandleTaskStateChanged();
-
             task.Progressed += this.OnTaskProgressed;
             task.StateChanged += this.OnTaskStateChanged;
+
+            this.HandleTaskStateChanged();
+
         }
 
         protected override void Dispose(bool disposing)
@@ -150,6 +151,10 @@ namespace Giselle.DoujinshiDownloader.Forms
             else if (state.HasFlag(TaskState.Cancelled) == true)
             {
                 this.OnRemoveRequest(new EventArgs());
+            }
+            else if (state.HasFlag(TaskState.Excepted) == true)
+            {
+
             }
             else if (state.HasFlag(TaskState.Completed) == true)
             {
