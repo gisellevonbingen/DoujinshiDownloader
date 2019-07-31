@@ -350,11 +350,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     {
                         this.ThrowIfCanceling();
 
-                        if (string.IsNullOrWhiteSpace(image.ReloadUrl) == false)
-                        {
-                            image = agent.ReloadImage(image.ImageUrl, image.ReloadUrl, this.GalleryParameter);
-                        }
-
                         var downloadRequest = agent.CreateImageRequest(image.ImageUrl, this.GalleryParameter);
 
                         using (var localStream = new MemoryStream())
@@ -382,6 +377,14 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         if (k + 1 == retryCount)
                         {
                             return "Network";
+                        }
+                        else
+                        {
+                            if (string.IsNullOrWhiteSpace(image.ReloadUrl) == false)
+                            {
+                                image = agent.ReloadImage(image.ImageUrl, image.ReloadUrl, this.GalleryParameter);
+                            }
+
                         }
 
                     }
