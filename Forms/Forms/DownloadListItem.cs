@@ -43,7 +43,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var thumbnailControl = this.ThumbnailControl = new PictureBox();
             thumbnailControl.SizeMode = PictureBoxSizeMode.StretchImage;
-            thumbnailControl.Image = thumbnailImage;
+            this.ChangeThumbnail(thumbnailControl, thumbnailImage);
             this.Controls.Add(thumbnailControl);
 
             var titleLabel = this.TitleLabel = new SelectAllableTextBox();
@@ -84,9 +84,16 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Padding = new Padding(0, 0, 0, 1);
             task.Progressed += this.OnTaskProgressed;
             task.StateChanged += this.OnTaskStateChanged;
+            task.ImageDownload += this.OnTaskImageDownload;
 
             this.HandleTaskStateChanged();
 
+        }
+
+        private void ChangeThumbnail(PictureBox control, Image image)
+        {
+            ObjectUtils.DisposeQuietly(control.Image);
+            control.Image = image;
         }
 
         protected override void Dispose(bool disposing)
@@ -172,6 +179,29 @@ namespace Giselle.DoujinshiDownloader.Forms
             }
 
             progressBar.Text = text;
+        }
+
+        private void OnTaskImageDownload(object sender, TaskImageDownloadEventArgs e)
+        {
+            var control = this.ThumbnailControl;
+
+            lock (control)
+            {
+                var index = e.Index;
+
+                if (control.Image == null && index == 0)
+                {
+                    ControlUtils.InvokeIfNeed(this, () =>
+                    {
+                        var thumbnailImage = ImageUtils.FromBytes(e.Data);
+                        this.ChangeThumbnail(control, thumbnailImage);
+                        this.UpdateControlsBoundsPreferred();
+                    });
+
+                }
+
+            }
+
         }
 
         private void OnOpenButtonClick(object sender, EventArgs e)
