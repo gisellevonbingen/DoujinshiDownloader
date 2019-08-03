@@ -294,11 +294,11 @@ Are You Sure You Want To Quit?</value>
 	<value>Require Verify Account</value>
   </data>
   <data name="Settings.ExHentaiAccount.Information.ImageLimit" xml:space="preserve">
-    <value>E-Hentai Image Limit
+    <value>E-Hentai/ExHentai Image Limit
     Current : {=Current}
     Limit : {=Limit}
 
-Increase When Bring Image From E-Hentai Server
+Increase When Bring Image From E-Hentai/ExHentai Server
 
 If Current Exceed Limit, Can't Bring Image
 Regenerates At A Rate Of {=Regenerates} Per Minute</value>

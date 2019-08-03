@@ -294,11 +294,11 @@
 	<value>계정 확인이 필요합니다</value>
   </data>
   <data name="Settings.ExHentaiAccount.Information.ImageLimit" xml:space="preserve">
-    <value>E-Hentai 이미지 제한
+    <value>E-Hentai/ExHentai 이미지 제한
     현재 점수 : {=Current}
     점수 제한 : {=Limit}
 
-E-Hentai 서버를 통해 이미지를 가져올 때 마다,
+E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
 점수가 증가합니다
 
 점수가 제한 값에 도달하면 이미지를 가져올 수 없습니다
