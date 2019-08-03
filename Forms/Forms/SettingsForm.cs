@@ -70,7 +70,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.ListBox.SelectedIndex = 0;
 
-            this.ClientSize = new Size(700, 500);
+            this.ClientSize = new Size(750, 500);
 
         }
 
