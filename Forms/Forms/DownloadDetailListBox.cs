@@ -116,11 +116,12 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             var panel = this.Panel;
             panel.Size = layoutBounds.Size;
+            var prev = panel.AutoScrollPosition;
             panel.AutoScrollPosition = new Point(0, 0);
-            panel.Refresh();
 
             base.UpdateControlsBoundsPreferred(layoutBounds);
-            base.UpdateControlsBoundsPreferred(layoutBounds);
+
+            panel.AutoScrollPosition = new Point(prev.X, Math.Abs(prev.Y));
         }
 
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)
