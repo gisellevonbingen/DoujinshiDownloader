@@ -17,6 +17,9 @@ namespace Giselle.DoujinshiDownloader.Forms
         private List<DownloadDetailListItem> Items = null;
         private Panel Panel = null;
 
+        private ViewState[] _ActiveStates;
+        public ViewState[] ActiveStates { get => this._ActiveStates; set { this._ActiveStates = value; this.OnActiveStatesChanged(); } }
+
         public DownloadDetailListBox()
         {
             this.Items = new List<DownloadDetailListItem>();
@@ -29,6 +32,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             controls.Add(panel);
 
             this.ResumeLayout(false);
+
+            this.ActiveStates = new ViewState[0];
         }
 
         protected override void Dispose(bool disposing)
@@ -64,12 +69,48 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                 items.Add(item);
                 controls.Add(item);
+                item.Visible = false;
             }
 
             task.Progressed += this.OnTaskProgressed;
 
             this.UpdateControlsBoundsPreferred();
+            this.UpdateItemsVisible();
         }
+
+        private void OnActiveStatesChanged()
+        {
+            this.UpdateItemsVisible();
+        }
+
+        public void UpdateItemsVisible()
+        {
+            var activeStates = this.ActiveStates;
+            var items = this.Items;
+
+            var any = activeStates.Length == 0;
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                var state = item.ImageView.State;
+                item.Visible = any || Array.IndexOf(activeStates, state) > -1;
+            }
+
+            this.UpdateControlsBoundsPreferred();
+        }
+
+        public void UpdateItemVisible(DownloadDetailListItem item)
+        {
+            var activeStates = this.ActiveStates;
+            var any = activeStates.Length == 0;
+
+            var state = item.ImageView.State;
+            item.Visible = any || Array.IndexOf(activeStates, state) > -1;
+
+            this.UpdateControlsBoundsPreferred();
+        }
+
 
         protected override void UpdateControlsBoundsPreferred(Rectangle layoutBounds)
         {
@@ -93,9 +134,13 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             foreach (var item in items)
             {
-                var size = item.GetPreferredSize(new Size(layoutBounds.Width - 17, 0));
-                var itemBounds = map[item] = new Rectangle(layoutBounds.Left, top, size.Width, size.Height);
-                top = itemBounds.Bottom;
+                if (item.Visible == true)
+                {
+                    var size = item.GetPreferredSize(new Size(layoutBounds.Width - 17, 0));
+                    var itemBounds = map[item] = new Rectangle(layoutBounds.Left, top, size.Width, size.Height);
+                    top = itemBounds.Bottom;
+                }
+
             }
 
             return map;
@@ -103,7 +148,13 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void OnTaskProgressed(object sender, TaskProgressingEventArgs _e)
         {
-            ControlUtils.InvokeIfNeed(this, e => this.Items[e.Index].UpdateState(), _e);
+            ControlUtils.InvokeIfNeed(this, e =>
+            {
+                var item = this.Items[e.Index];
+                item.UpdateState();
+                this.UpdateItemVisible(item);
+            }, _e);
+
         }
 
     }
