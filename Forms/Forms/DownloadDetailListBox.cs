@@ -141,14 +141,19 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             map[this.Panel] = layoutBounds;
 
+            var items = this.Items;
             var visibles = this.VisibleItems;
             int top = 0;
 
-            foreach (var item in visibles)
+            foreach (var item in items)
             {
-                var size = item.GetPreferredSize(new Size(layoutBounds.Width - 17, 0));
-                var itemBounds = map[item] = new Rectangle(layoutBounds.Left, top, size.Width, size.Height);
-                top = itemBounds.Bottom;
+                if (visibles.Contains(item) == true)
+                {
+                    var size = item.GetPreferredSize(new Size(layoutBounds.Width - 17, 0));
+                    var itemBounds = map[item] = new Rectangle(layoutBounds.Left, top, size.Width, size.Height);
+                    top = itemBounds.Bottom;
+                }
+
             }
 
             return map;
