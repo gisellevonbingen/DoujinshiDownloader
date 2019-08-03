@@ -15,6 +15,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         private DownloadTask Task = null;
 
         private List<DownloadDetailListItem> Items = null;
+        private List<DownloadDetailListItem> VisibleItems = null;
         private Panel Panel = null;
 
         private ViewState[] _ActiveStates;
@@ -23,6 +24,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         public DownloadDetailListBox()
         {
             this.Items = new List<DownloadDetailListItem>();
+            this.VisibleItems = new List<DownloadDetailListItem>();
 
             this.SuspendLayout();
             var controls = this.Controls;
@@ -66,15 +68,14 @@ namespace Giselle.DoujinshiDownloader.Forms
                 var imageView = task.ImageViews[i];
                 var item = new DownloadDetailListItem(i, imageView);
                 item.Font = fm[9.0F, FontStyle.Regular];
+                item.Visible = false;
 
                 items.Add(item);
                 controls.Add(item);
-                item.Visible = false;
             }
 
             task.Progressed += this.OnTaskProgressed;
 
-            this.UpdateControlsBoundsPreferred();
             this.UpdateItemsVisible();
         }
 
@@ -85,16 +86,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public void UpdateItemsVisible()
         {
-            var activeStates = this.ActiveStates;
             var items = this.Items;
-
-            var any = activeStates.Length == 0;
 
             for (int i = 0; i < items.Count; i++)
             {
                 var item = items[i];
-                var state = item.ImageView.State;
-                item.Visible = any || Array.IndexOf(activeStates, state) > -1;
+                this.UpdateItemVisible(item);
             }
 
             this.UpdateControlsBoundsPreferred();
@@ -103,12 +100,26 @@ namespace Giselle.DoujinshiDownloader.Forms
         public void UpdateItemVisible(DownloadDetailListItem item)
         {
             var activeStates = this.ActiveStates;
+            var visibles = this.VisibleItems;
             var any = activeStates.Length == 0;
 
             var state = item.ImageView.State;
-            item.Visible = any || Array.IndexOf(activeStates, state) > -1;
 
-            this.UpdateControlsBoundsPreferred();
+            if (any || Array.IndexOf(activeStates, state) > -1)
+            {
+                if (visibles.Contains(item) == false)
+                {
+                    visibles.Add(item);
+                    item.Visible = true;
+                }
+
+            }
+            else
+            {
+                visibles.Remove(item);
+                item.Visible = false;
+            }
+
         }
 
 
@@ -130,18 +141,14 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             map[this.Panel] = layoutBounds;
 
-            var items = this.Items;
+            var visibles = this.VisibleItems;
             int top = 0;
 
-            foreach (var item in items)
+            foreach (var item in visibles)
             {
-                if (item.Visible == true)
-                {
-                    var size = item.GetPreferredSize(new Size(layoutBounds.Width - 17, 0));
-                    var itemBounds = map[item] = new Rectangle(layoutBounds.Left, top, size.Width, size.Height);
-                    top = itemBounds.Bottom;
-                }
-
+                var size = item.GetPreferredSize(new Size(layoutBounds.Width - 17, 0));
+                var itemBounds = map[item] = new Rectangle(layoutBounds.Left, top, size.Width, size.Height);
+                top = itemBounds.Bottom;
             }
 
             return map;
@@ -154,6 +161,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 var item = this.Items[e.Index];
                 item.UpdateState();
                 this.UpdateItemVisible(item);
+                this.UpdateControlsBoundsPreferred();
             }, _e);
 
         }
