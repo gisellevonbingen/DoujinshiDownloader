@@ -43,6 +43,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         private readonly object IndexLock = null;
 
+        public event EventHandler<TaskImageDownloadEventArgs> ImageDownload;
+
         public DownloadTask(DownloadRequest request)
         {
             this.Request = request;
@@ -283,7 +285,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     imageView.State = ViewState.Downloading;
                     this.OnProgressing(new TaskProgressingEventArgs(index, imageView));
 
-                    var exceptionMessage = this.Download(imageView);
+                    var exceptionMessage = this.Download(index, imageView);
                     imageView.State = string.IsNullOrWhiteSpace(exceptionMessage) ? ViewState.Success : ViewState.Exception;
                     imageView.ExceptionMessage = exceptionMessage;
                 }
@@ -324,7 +326,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         }
 
-        private string Download(ImageView view)
+        private string Download(int index, ImageView view)
         {
             var agent = this.Agent;
             var image = agent.GetGalleryImage(view.Url);
@@ -341,7 +343,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 var config = dd.Config.Values;
                 var retryCount = config.Network.RetryCount;
 
-                for (int k = 0; k < retryCount; k++)
                 for (int k = 0; k < retryCount + 1; k++)
                 {
                     try
@@ -349,20 +350,15 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         this.ThrowIfCanceling();
 
                         var downloadRequest = agent.CreateImageRequest(image.ImageUrl, this.GalleryParameter);
+                        var bytes = this.Download(agent, downloadRequest);
+                        this.OnImageDownload(new TaskImageDownloadEventArgs(this, view, image, bytes, index, k));
 
-                        using (var localStream = new MemoryStream())
+                        lock (this.DownloadFile)
                         {
-                            this.Download(agent, downloadRequest, localStream);
-
-                            lock (this.DownloadFile)
-                            {
-                                localStream.Position = 0L;
-                                this.DownloadFile.Write(fileName, localStream);
-                            }
-
-                            return null;
+                            this.DownloadFile.Write(fileName, bytes);
                         }
 
+                        return null;
                     }
                     catch (ImageRequestCreateException e)
                     {
@@ -398,7 +394,12 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             return "Unknown";
         }
 
-        private void Download(GalleryAgent agent, RequestParameter downloadRequest, Stream stream)
+        protected virtual void OnImageDownload(TaskImageDownloadEventArgs e)
+        {
+            this.ImageDownload?.Invoke(this, e);
+        }
+
+        private byte[] Download(GalleryAgent agent, RequestParameter downloadRequest)
         {
             using (var source = new CancellationTokenSource())
             {
@@ -416,7 +417,12 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     {
                         using (var responseStream = response.ReadToStream())
                         {
-                            responseStream.CopyTo(stream);
+                            using (var ms = new MemoryStream())
+                            {
+                                responseStream.CopyTo(ms);
+                                return ms.ToArray();
+                            }
+
                         }
 
                     }

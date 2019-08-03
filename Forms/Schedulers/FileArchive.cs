@@ -16,7 +16,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         }
 
-        public abstract void Write(string fileName, Stream stream);
+        public abstract void Write(string fileName, byte[] bytes);
 
         ~FileArchive()
         {

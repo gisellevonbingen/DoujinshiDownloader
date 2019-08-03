@@ -22,11 +22,11 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this.Stream = new ZipOutputStream(this.BaseStream);
         }
 
-        public override void Write(string fileName, Stream stream)
+        public override void Write(string fileName, byte[] bytes)
         {
             var zipEntry = new ZipEntry(fileName);
             this.Stream.PutNextEntry(zipEntry);
-            stream.CopyTo(this.Stream);
+            this.Stream.Write(bytes, 0, bytes.Length);
             this.Stream.CloseEntry();
         }
 
