@@ -298,7 +298,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     Console.WriteLine(e);
 
                     imageView.State = ViewState.Exception;
-                    imageView.ExceptionMessage = e.Message;
+                    imageView.ExceptionMessage = e.GetType().Name + " : " + e.Message;
 
                     return;
                 }
