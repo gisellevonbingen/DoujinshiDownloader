@@ -36,7 +36,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             foreach (var view in this.Views)
             {
-                if (view.State.HasFlag(flag) == true)
+                if (flag.HasFlag(view.State) == true)
                 {
                     count++;
                 }

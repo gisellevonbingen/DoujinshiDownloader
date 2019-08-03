@@ -9,11 +9,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
     [Flags]
     public enum ViewState : byte
     {
-        StandBy = 0,
+        StandBy = 1 << 0,
         Downloading = 1 << 1,
-        Complete = 1 << 2,
-        Success = 1 << 3 | Complete,
-        Exception = 1 << 4 | Complete,
+        Success = 1 << 2,
+        Exception = 1 << 3,
     }
 
 }

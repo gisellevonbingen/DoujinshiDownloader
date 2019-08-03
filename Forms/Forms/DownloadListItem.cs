@@ -145,7 +145,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var progressBar = this.ProgressBar;
             progressBar.Minimum = 0;
             progressBar.Maximum = task.Count;
-            progressBar.Value = task.ImageViews?.CountState(ViewState.Complete) ?? 0;
+            progressBar.Value = task.ImageViews?.CountState(ViewState.Success | ViewState.Exception) ?? 0;
 
             var states = EnumUtils.GetValues<TaskState>();
             var text = string.Join(", ", states.Where(v => state.HasFlag(v)).Select(v => SR.Get($"Downlaod.State.{v.ToString()}")));
