@@ -293,10 +293,13 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 {
                     return;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Console.WriteLine(e);
+
                     imageView.State = ViewState.Exception;
-                    imageView.ExceptionMessage = "Unknown";
+                    imageView.ExceptionMessage = e.Message;
+
                     return;
                 }
 
