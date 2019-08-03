@@ -342,6 +342,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 var retryCount = config.Network.RetryCount;
 
                 for (int k = 0; k < retryCount; k++)
+                for (int k = 0; k < retryCount + 1; k++)
                 {
                     try
                     {
