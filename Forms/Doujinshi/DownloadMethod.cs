@@ -12,7 +12,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         private static readonly List<DownloadMethod> _Knowns = new List<DownloadMethod>();
 
         public static DownloadMethod Hitomi { get; } = _Knowns.AddAndGet(new DownloadMethodHitomi("Hitomi"));
-        public static DownloadMethod HitomiRemoved { get; } = _Knowns.AddAndGet(new DownloadMethodHitomiRemoved("Hitomi_Removed"));
         public static DownloadMethod E_Hentai { get; } = _Knowns.AddAndGet(new DownloadMethodE_Hentai("E-Hentai"));
         public static DownloadMethod ExHentai { get; } = _Knowns.AddAndGet(new DownloadMethodExHentai("ExHentai"));
         public static DownloadMethod ExHentaiOriginal { get; } = _Knowns.AddAndGet(new DownloadMethodExHentaiOriginal("ExHentai_Original"));

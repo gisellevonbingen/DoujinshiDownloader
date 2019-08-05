@@ -160,6 +160,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 var linfo = agent.GetGalleryInfo(url);
                 var finfo = new GalleryInfo2();
+                finfo.RedirectUrl = linfo.RedirectUrl;
                 finfo.Title = linfo.Title;
 
                 if (string.IsNullOrWhiteSpace(linfo.Thumbnail) == false)

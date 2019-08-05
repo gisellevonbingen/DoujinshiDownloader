@@ -17,7 +17,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override GalleryAgent CreateAgent()
         {
-            return new HitomiAgent() { Removed = false };
+            return new HitomiAgent();
         }
 
     }

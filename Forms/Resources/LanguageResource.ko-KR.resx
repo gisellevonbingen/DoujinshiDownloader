@@ -204,10 +204,7 @@
     <value>서버 선택</value>
   </data>
   <data name="DownloadSelect.Method.Hitomi" xml:space="preserve">
-    <value>Hitomi 1</value>
-  </data>
-  <data name="DownloadSelect.Method.Hitomi_Removed" xml:space="preserve">
-    <value>Hitomi 2</value>
+    <value>Hitomi</value>
   </data>
   <data name="DownloadSelect.Method.E-Hentai" xml:space="preserve">
     <value>E-Hentai</value>

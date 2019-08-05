@@ -15,8 +15,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class HitomiAgent : GalleryAgent
     {
-        public bool Removed { get; set; } = false;
-
         public HitomiAgent()
         {
 
@@ -71,9 +69,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         }
 
 
-        private string GetReaderTitle(RequestParameter parameter)
+        private string GetReaderTitle(string url)
         {
-            using (var response = this.Explorer.Request(parameter))
+            var request = this.CreateRequestParameter();
+            request.URL = url;
+            request.Method = "GET";
+
+            using (var response = this.Explorer.Request(request))
             {
                 if (response.Impl.StatusCode != HttpStatusCode.OK)
                 {
@@ -100,21 +102,20 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             parameter.URL = url;
             parameter.Method = "GET";
 
-            var info = new GalleryInfo();
+            var info = new HitomiGalleryInfo();
 
-            if (this.Removed == true)
+            using (var response = this.Explorer.Request(parameter))
             {
-                info.Title = this.GetReaderTitle(parameter);
-            }
-            else
-            {
-                using (var response = this.Explorer.Request(parameter))
+                if (response.Impl.StatusCode != HttpStatusCode.OK)
                 {
-                    if (response.Impl.StatusCode != HttpStatusCode.OK)
-                    {
-                        throw new HitomiRemovedGalleryException();
-                    }
-
+                    var readerUrl = this.ToReaderURL(url);
+                    info.RedirectUrl = readerUrl;
+                    info.Removed = true;
+                    info.Title = this.GetReaderTitle(readerUrl);
+                }
+                else
+                {
+                    info.Removed = false;
                     var document = response.ReadToDocument();
 
                     var infoNode = document.DocumentNode.Descendants().FirstOrDefault(n =>
@@ -147,7 +148,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                     {
                         var uri = new Uri(url);
                         var coverImgNode = coverNode.Descendants().FirstOrDefault(n => n.Name.Equals("img"));
-                        info.Thumbnail =  uri.Scheme + ":" + coverImgNode.GetAttributeValue("src", null);
+                        info.Thumbnail = uri.Scheme + ":" + coverImgNode.GetAttributeValue("src", null);
                     }
 
                 }

@@ -94,7 +94,6 @@
     <Compile Include="Doujinshi\DownloadMethodExHentaiOriginal.cs" />
     <Compile Include="Doujinshi\DownloadMethodE_Hentai.cs" />
     <Compile Include="Doujinshi\DownloadMethodHitomi.cs" />
-    <Compile Include="Doujinshi\DownloadMethodHitomiRemoved.cs" />
     <Compile Include="Forms\AccountInfoGroupBox.cs">
       <SubType>Component</SubType>
     </Compile>

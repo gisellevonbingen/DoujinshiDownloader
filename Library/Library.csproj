@@ -64,6 +64,7 @@
     <Compile Include="Doujinshi\ExHentaiAccount.cs" />
     <Compile Include="Doujinshi\ExHentaiAccountException.cs" />
     <Compile Include="Doujinshi\ExHentaiAgent.cs" />
+    <Compile Include="Doujinshi\HitomiGalleryInfo.cs" />
     <Compile Include="Doujinshi\ImageLimit.cs" />
     <Compile Include="Doujinshi\GalleryAgent.cs" />
     <Compile Include="Doujinshi\GalleryImage.cs" />
