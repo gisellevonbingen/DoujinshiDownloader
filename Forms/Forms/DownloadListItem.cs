@@ -48,7 +48,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var titleLabel = this.TitleLabel = new SelectAllableTextBox();
             titleLabel.ReadOnly = true;
-            titleLabel.Text = task.Request.DownloadMethod.Site.ToURL(task.Request.DownloadInput) + Environment.NewLine + task.Request.Info.Title;
+            titleLabel.Text = task.Request.DownloadMethod.Site.ToUrl(task.Request.DownloadInput) + Environment.NewLine + task.Request.Info.Title;
             titleLabel.Multiline = true;
             titleLabel.BackColor = this.BackColor;
             titleLabel.BorderStyle = BorderStyle.None;

@@ -73,10 +73,6 @@
     <Compile Include="Doujinshi\HitomiRemovedGalleryException.cs" />
     <Compile Include="Doujinshi\ImageRequestCreateException.cs" />
     <Compile Include="Doujinshi\Site.cs" />
-    <Compile Include="Doujinshi\SiteE_Hentai.cs" />
-    <Compile Include="Doujinshi\SiteExHentai.cs" />
-    <Compile Include="Doujinshi\SiteHitomi.cs" />
-    <Compile Include="Doujinshi\SiteHitomiRemoved.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ObjectUtils2.cs" />
     <Compile Include="Utils\StringUtils.cs" />

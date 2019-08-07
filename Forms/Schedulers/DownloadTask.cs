@@ -182,7 +182,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             var request = this.Request;
             var method = request.DownloadMethod;
-            var galleryURL = method.Site.ToURL(request.DownloadInput);
+            var galleryURL = method.Site.ToUrl(request.DownloadInput);
             var agent = method.CreateAgent();
 
             var downloadToArchive = config.Content.DownloadToArchive;

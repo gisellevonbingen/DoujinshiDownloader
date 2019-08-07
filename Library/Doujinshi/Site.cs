@@ -7,25 +7,22 @@ using Giselle.DoujinshiDownloader.Doujinshi;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
-    public abstract class Site
+    public class Site
     {
         private static readonly List<Site> _Knowns = new List<Site>();
 
         public static Site Hitomi { get; }
-
         public static Site HitomiRemoved { get; }
-
         public static Site E_Hentai { get; }
-
         public static Site ExHentai { get; }
 
         static Site()
         {
             var knownSites = _Knowns = new List<Site>();
-            knownSites.Add(Hitomi = new SiteHitomi());
-            knownSites.Add(HitomiRemoved = new SiteHitomiRemoved());
-            knownSites.Add(E_Hentai = new SiteE_Hentai());
-            knownSites.Add(ExHentai = new SiteExHentai());
+            knownSites.Add(Hitomi = new Site("Hitomi", "https://hitomi.la/galleries/", ".html", false));
+            knownSites.Add(HitomiRemoved = new Site("Hitomi Removed", "https://hitomi.la/reader/", ".html", false));
+            knownSites.Add(E_Hentai = new Site("E-Hentai", "https://e-hentai.org/g/", null, true));
+            knownSites.Add(ExHentai = new Site("ExHentai", "https://exhentai.org/g/", null, true));
         }
 
         public static Site[] Knowns { get { return _Knowns.ToArray(); } }
@@ -35,11 +32,20 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public abstract string Name { get; }
-        public abstract string Prefix { get; }
-        public abstract string Suffix { get; }
+        public string Name { get; }
+        public string Prefix { get; }
+        public string Suffix { get; }
+        public bool RequireKey { get; }
 
-        public string ToURL(DownloadInput input)
+        public Site(string name, string prefix, string suffix, bool requireKey)
+        {
+            this.Name = name;
+            this.Prefix = prefix;
+            this.Suffix = suffix;
+            this.RequireKey = requireKey;
+        }
+
+        public string ToUrl(DownloadInput input)
         {
             var list = new List<string>();
             list.Add(this.Prefix);
@@ -60,9 +66,29 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return builder.ToString();
         }
 
-        public abstract bool IsAcceptable(DownloadInput input);
+        public virtual bool IsAcceptable(DownloadInput input)
+        {
+            if (this.RequireKey == true)
+            {
+                return input.Key != null;
+            }
 
-        public abstract string SelectDownloadInput(DownloadInput input);
+            return true;
+        }
+
+        public string SelectDownloadInput(DownloadInput input)
+        {
+            var builder = new StringBuilder();
+            builder.Append(input.Number);
+
+            if (this.RequireKey == true)
+            {
+                builder.Append(DownloadInput.KeyDelimiter);
+                builder.Append(input.Key);
+            }
+
+            return builder.ToString();
+        }
 
     }
 

@@ -9,6 +9,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public struct DownloadInput : IEquatable<DownloadInput>, IComparable<DownloadInput>
     {
+        public static string KeyDelimiter { get; } = "/";
+
         public static bool operator ==(DownloadInput a, DownloadInput b)
         {
             return a.Equals(b) == true;
@@ -73,7 +75,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 s = splitting;
             }
 
-            var splited = s.Split('/');
+            var splited = s.Split(KeyDelimiter);
             string numberToString = null;
             string keyToString = null;
 

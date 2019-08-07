@@ -153,7 +153,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.NotSupported"));
             }
 
-            var url = site.ToURL(downloadInput);
+            var url = site.ToUrl(downloadInput);
             var agent = downloadMethod.CreateAgent();
 
             try
