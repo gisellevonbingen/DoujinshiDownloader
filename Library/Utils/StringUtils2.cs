@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Utils
 {
-    public static class StringUtils
+    public static class StringUtils2
     {
         public static string[] Cut(this string text, params string[] keywords)
         {
@@ -42,20 +42,30 @@ namespace Giselle.DoujinshiDownloader.Utils
                 return null;
             }
 
-            var s = text.IndexOf(prefix, startIndex);
+            int s = 0;
+            var e = text.Length;
 
-            if (s == -1)
+            if (string.IsNullOrWhiteSpace(prefix) == false)
             {
-                throw new IndexOutOfRangeException();
+                s = text.IndexOf(prefix, startIndex);
+
+                if (s == -1)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+
+                s += prefix.Length;
             }
 
-            s += prefix.Length;
-
-            var e = text.IndexOf(suffix, s);
-
-            if (e == -1)
+            if (string.IsNullOrWhiteSpace(suffix) == false)
             {
-                throw new IndexOutOfRangeException();
+                e = text.IndexOf(suffix, s);
+
+                if (e == -1)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+
             }
 
             endIndex = e;

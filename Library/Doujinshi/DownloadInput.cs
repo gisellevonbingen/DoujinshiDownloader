@@ -1,4 +1,5 @@
 ﻿using Giselle.Commons;
+using Giselle.DoujinshiDownloader.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,27 +53,16 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 var suffix = site.Suffix;
                 var splitting = s;
 
-                if (prefix != null)
+                if (string.IsNullOrWhiteSpace(prefix) || s.Contains(prefix) == true)
                 {
-                    if (splitting.StartsWith(prefix) == false)
+                    if (string.IsNullOrWhiteSpace(suffix) || s.Contains(suffix) == true)
                     {
-                        continue;
+                        s = s.Substring(prefix, suffix);
+                        break;
                     }
 
-                    splitting = splitting.Substring(prefix.Length);
                 }
 
-                if (suffix != null)
-                {
-                    if (splitting.EndsWith(suffix) == false)
-                    {
-                        continue;
-                    }
-
-                    splitting = splitting.Substring(0, splitting.Length - suffix.Length);
-                }
-
-                s = splitting;
             }
 
             var splited = s.Split(KeyDelimiter);

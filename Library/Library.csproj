@@ -75,7 +75,7 @@
     <Compile Include="Doujinshi\Site.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ObjectUtils2.cs" />
-    <Compile Include="Utils\StringUtils.cs" />
+    <Compile Include="Utils\StringUtils2.cs" />
     <Compile Include="Utils\UriUtils.cs" />
     <Compile Include="Utils\WebResponseUtils.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
