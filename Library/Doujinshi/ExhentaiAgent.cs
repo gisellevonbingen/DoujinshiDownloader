@@ -98,11 +98,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public virtual Site GetSite()
-        {
-            return Site.ExHentai;
-        }
-
         public override GalleryInfo GetGalleryInfo(string url)
         {
             var parameter = this.CreateRequestParameter();

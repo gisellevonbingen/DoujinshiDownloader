@@ -315,8 +315,13 @@ namespace Giselle.DoujinshiDownloader.Forms
             var agent = parameter.Agent;
             var site = parameter.Site;
             var downloadInput = parameter.DownloadInput;
-            var url = site.ToUrl(downloadInput);
 
+            if (site.IsAcceptable(downloadInput) == false)
+            {
+                return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.NotSupported"));
+            }
+
+            var url = site.ToUrl(downloadInput);
             var info = agent.GetGalleryInfo(url);
             var exception = info.Exception;
 
