@@ -109,7 +109,6 @@
     <Compile Include="Forms\DownloadDetailListItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Doujinshi\GalleryInfo2.cs" />
     <Compile Include="Forms\ListItemWrapper.cs" />
     <Compile Include="Forms\OptimizedProgressBar.cs">
       <SubType>Component</SubType>

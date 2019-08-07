@@ -38,8 +38,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.SuspendLayout();
 
-            var thumbnailBytes = task.Request.Info.Thumbnail;
-            var thumbnailImage = ImageUtils.FromBytes(thumbnailBytes);
+            var thumbnailImage = ImageUtils.FromBytes(task.Request.GalleryThumbnail);
 
             var thumbnailControl = this.ThumbnailControl = new PictureBox();
             thumbnailControl.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -48,7 +47,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var titleLabel = this.TitleLabel = new SelectAllableTextBox();
             titleLabel.ReadOnly = true;
-            titleLabel.Text = task.Request.DownloadMethod.Site.ToUrl(task.Request.DownloadInput) + Environment.NewLine + task.Request.Info.Title;
+            titleLabel.Text = task.Request.GalleryUrl + Environment.NewLine + task.Request.GalleryTitle;
             titleLabel.Multiline = true;
             titleLabel.BackColor = this.BackColor;
             titleLabel.BorderStyle = BorderStyle.None;

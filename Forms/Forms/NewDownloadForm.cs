@@ -14,6 +14,7 @@ using Giselle.DoujinshiDownloader.Schedulers;
 using System.IO;
 using Giselle.DoujinshiDownloader.Resources;
 using Giselle.DoujinshiDownloader.Utils;
+using static Giselle.DoujinshiDownloader.Forms.DownloadSelectGroupBox;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -32,7 +33,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         private Button AddButton = null;
         private new Button CancelButton = null;
 
-        private ValidationInformation LastValidation = null;
+        private DownloadInputValidation LastValidation = null;
         private readonly object ValidationLock = new object();
 
         private readonly object VerifyInputThreadLock = new object();
@@ -118,7 +119,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var downloadSelectGroupBox = this.DownloadSelectGroupBox;
             var selectedMethod = downloadSelectGroupBox.SelectedDownloadMethod;
 
-            ValidationInformation validation = null;
+            DownloadInputValidation validation = null;
 
             lock (this.ValidationLock)
             {
@@ -135,10 +136,13 @@ namespace Giselle.DoujinshiDownloader.Forms
             }
             else
             {
+                var gv = validation.Infos[selectedMethod];
                 var request = this.Request = new DownloadRequest();
-                request.DownloadInput = validation.DownloadInput;
-                request.DownloadMethod = selectedMethod;
-                request.Info = validation.Infos[selectedMethod];
+                request.Agent = gv.Agent;
+                request.GalleryTitle = gv.Info.GalleryTitle;
+                request.GalleryThumbnail = gv.ThumbnailData;
+                request.GalleryUrl = gv.Info.GalleryUrl;
+                request.FileName = PathUtils.FilterInvalids(gv.Info.GalleryTitle);
 
                 this.DialogResult = DialogResult.OK;
             }
@@ -248,7 +252,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                     lock (this.ValidationLock)
                     {
-                        var validation = new ValidationInformation();
+                        var validation = new DownloadInputValidation();
                         validation.DownloadInput = downloadInput;
                         DictionaryUtils.PutAll(validation.Infos, galleryInfos);
                         this.LastValidation = validation;
@@ -326,7 +330,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var titleLabel = this.TitleLabel;
             var thumbnailControl = this.ThumbnailControl;
             var selectedDownloadMethod = this.DownloadSelectGroupBox.SelectedDownloadMethod;
-            GalleryInfo2 info = null;
+            GalleryValidation gv = null;
 
             lock (this.ValidationLock)
             {
@@ -334,7 +338,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                 if (validation != null && selectedDownloadMethod != null)
                 {
-                    validation.Infos.TryGetValue(selectedDownloadMethod, out info);
+                    validation.Infos.TryGetValue(selectedDownloadMethod, out gv);
                 }
 
             }
@@ -342,16 +346,15 @@ namespace Giselle.DoujinshiDownloader.Forms
             ObjectUtils.DisposeQuietly(thumbnailControl.Image);
             thumbnailControl.Image = null;
 
-            if (info == null)
+            if (gv == null)
             {
                 titleLabel.Text = "";
             }
             else
             {
-                titleLabel.Text = info.Title;
-
-                var thumbnailBytes = info.Thumbnail;
-                var image = ImageUtils.FromBytes(thumbnailBytes);
+                titleLabel.Text = gv.Info.GalleryTitle;
+                
+                var image = ImageUtils.FromBytes(gv.ThumbnailData);
                 thumbnailControl.Image = image;
 
                 this.UpdateGalleryInfoControlsBounds();
@@ -437,14 +440,14 @@ namespace Giselle.DoujinshiDownloader.Forms
             return map;
         }
 
-        private class ValidationInformation
+        private class DownloadInputValidation
         {
             public DownloadInput DownloadInput { get; set; } = default;
-            public Dictionary<DownloadMethod, GalleryInfo2> Infos { get; } = null;
+            public Dictionary<DownloadMethod, GalleryValidation> Infos { get; } = null;
 
-            public ValidationInformation()
+            public DownloadInputValidation()
             {
-                this.Infos = new Dictionary<DownloadMethod, GalleryInfo2>();
+                this.Infos = new Dictionary<DownloadMethod, GalleryValidation>();
             }
 
         }

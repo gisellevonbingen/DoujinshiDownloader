@@ -181,15 +181,14 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             var config = dd.Config.Values;
 
             var request = this.Request;
-            var method = request.DownloadMethod;
-            var galleryURL = method.Site.ToUrl(request.DownloadInput);
-            var agent = method.CreateAgent();
+            var galleryUrl = request.GalleryUrl;
+            var agent = request.Agent;
 
             var downloadToArchive = config.Content.DownloadToArchive;
             var downloadDirectory = config.Content.DownloadDirectory;
             Directory.CreateDirectory(downloadDirectory);
 
-            var downloadPath = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.Info.Title));
+            var downloadPath = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.FileName));
 
             if (downloadToArchive == true)
             {
@@ -200,12 +199,12 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 this.DownloadFile = new FileArchiveDirectory(downloadPath);
             }
 
-            var imageViewUrls = agent.GetGalleryImageViewURLs(galleryURL);
+            var imageViewUrls = agent.GetGalleryImageViewURLs(galleryUrl);
             var imageViews = this.ImageViews = new ImageViews(imageViewUrls);
             this.Count = imageViews.Count;
             this.Index = 0;
             this.Agent = agent;
-            this.GalleryParameter = agent.CreateGalleryParameter(galleryURL);
+            this.GalleryParameter = agent.CreateGalleryParameter(galleryUrl);
         }
 
         private void Download()

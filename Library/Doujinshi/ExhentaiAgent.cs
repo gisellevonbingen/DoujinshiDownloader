@@ -106,19 +106,20 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 }
 
                 var info = new GalleryInfo();
+                info.GalleryUrl = url;
 
                 var document = response.ReadAsDocument();
                 var gmDivElement = document.DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("gm"));
 
                 var gd2Elements = gmDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gd2")).ChildNodes;
                 var gnElement = gd2Elements.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gn"));
-                info.Title = gnElement.InnerText;
+                info.GalleryTitle = gnElement.InnerText;
 
                 var gleftElements = gmDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gleft")).ChildNodes;
                 var gd1Elements = gleftElements.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gd1")).ChildNodes;
                 var thumbnailElement = gd1Elements.FirstOrDefault(n => n.Name.Equals("div"));
                 var style = thumbnailElement.GetAttributeValue("style", string.Empty);
-                info.Thumbnail = style.Substring("url(", ")");
+                info.ThumbnailUrl = style.Substring("url(", ")");
 
                 return info;
             }

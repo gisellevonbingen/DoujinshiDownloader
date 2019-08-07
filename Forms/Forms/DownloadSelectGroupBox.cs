@@ -85,12 +85,10 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
-        public Dictionary<DownloadMethod, GalleryInfo2> Validate(DownloadInput downloadInput)
+        public Dictionary<DownloadMethod, GalleryValidation> Validate(DownloadInput downloadInput)
         {
             var radioButtons = this.RadioButtons;
-
-            var titles = new Dictionary<DownloadMethod, GalleryInfo2>();
-            var taskPairs = new Dictionary<RadioButton, Task<ValidateResult>>();
+            var taskPairs = new Dictionary<RadioButton, Task<GalleryValidation>>();
 
             foreach (var pair in radioButtons)
             {
@@ -107,6 +105,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             Task.WaitAll(taskPairs.Values.ToArray());
 
+            var titles = new Dictionary<DownloadMethod, GalleryValidation>();
+
             foreach (var pair in taskPairs)
             {
                 var radioButton = pair.Key;
@@ -116,32 +116,33 @@ namespace Giselle.DoujinshiDownloader.Forms
                 titles[downloadMethod] = null;
 
                 var result = task.Result;
+                var errorMessage = result.ErrorMessage;
 
-                if (result.IsError == false)
+                if (errorMessage == null)
                 {
-                    titles[downloadMethod] = result.Info;
+                    titles[downloadMethod] = result;
                 }
 
-                ControlUtils.InvokeIfNeed(radioButton, r =>
+                ControlUtils.InvokeIfNeed(radioButton, () =>
                 {
-                    radioButton.Enabled = r.IsError == false;
+                    radioButton.Enabled = errorMessage == null;
 
-                    string textSuffix = "";
+                    var textSuffix = "";
 
-                    if (r.IsError == true)
+                    if (errorMessage != null)
                     {
-                        textSuffix = " (" + r.ErrorMessage + ")";
+                        textSuffix = " (" + errorMessage + ")";
                     }
 
                     radioButton.Text = radioButton.Name + textSuffix;
 
-                }, result);
+                });
             }
 
             return titles;
         }
 
-        private ValidateResult Validate0(object o)
+        private GalleryValidation Validate0(object o)
         {
             var tuple = (DownloadParamater)o;
             var downloadMethod = tuple.DownloadMethod;
@@ -150,7 +151,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             if (site.IsAcceptable(downloadInput) == false)
             {
-                return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.NotSupported"));
+                return GalleryValidation.CreateByError(SR.Get("DownloadSelect.Verify.NotSupported"));
             }
 
             var url = site.ToUrl(downloadInput);
@@ -158,55 +159,60 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             try
             {
-                var linfo = agent.GetGalleryInfo(url);
-                var finfo = new GalleryInfo2();
-                finfo.RedirectUrl = linfo.RedirectUrl;
-                finfo.Title = linfo.Title;
+                var info = agent.GetGalleryInfo(url);
+                var thumbnailData = DownloadThumbnail(agent, info.ThumbnailUrl);
 
-                if (string.IsNullOrWhiteSpace(linfo.Thumbnail) == false)
-                {
-                    try
-                    {
-                        finfo.Thumbnail = agent.GetGalleryThumbnail(linfo.Thumbnail);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
-
-                }
-
-                if (linfo.Title == null)
+                if (info.GalleryTitle == null)
                 {
                     throw new Exception();
                 }
                 else
                 {
-                    return ValidateResult.CreateByInfo(finfo);
+                    return GalleryValidation.CreateByInfo(agent, info, thumbnailData);
                 }
 
             }
             catch (WebNetworkException e)
             {
                 Console.WriteLine(e);
-                return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.NetworkError"));
+                return GalleryValidation.CreateByError(SR.Get("DownloadSelect.Verify.NetworkError"));
             }
             catch (ExHentaiAccountException e)
             {
                 Console.WriteLine(e);
-                return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.ExHentaiAccountError"));
+                return GalleryValidation.CreateByError(SR.Get("DownloadSelect.Verify.ExHentaiAccountError"));
             }
             catch (HitomiRemovedGalleryException e)
             {
                 Console.WriteLine(e);
-                return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.GalleryRemoved"));
+                return GalleryValidation.CreateByError(SR.Get("DownloadSelect.Verify.GalleryRemoved"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.TitleError"));
+                return GalleryValidation.CreateByError(SR.Get("DownloadSelect.Verify.TitleError"));
             }
 
+        }
+
+        private static byte[] DownloadThumbnail(GalleryAgent agent, string thumbnailUrl)
+        {
+            byte[] thumbnailData = null;
+
+            if (string.IsNullOrWhiteSpace(thumbnailUrl) == false)
+            {
+                try
+                {
+                    thumbnailData = agent.GetGalleryThumbnail(thumbnailUrl);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
+            }
+
+            return thumbnailData;
         }
 
         private RadioButton Register(string text, DownloadMethod downloadMethod)
@@ -280,31 +286,32 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
-        private class ValidateResult
+        public class GalleryValidation
         {
-            public bool IsError { get; private set; } = false;
+            public GalleryAgent Agent { get; private set; } = null;
             public string ErrorMessage { get; private set; } = null;
-            public GalleryInfo2 Info { get; private set; } = null;
+            public GalleryInfo Info { get; private set; } = null;
+            public byte[] ThumbnailData { get; private set; } = null;
 
-            private ValidateResult()
+            private GalleryValidation()
             {
 
             }
 
-            public static ValidateResult CreateByError(string errorMessage)
+            public static GalleryValidation CreateByError(string errorMessage)
             {
-                var value = new ValidateResult();
-                value.IsError = true;
+                var value = new GalleryValidation();
                 value.ErrorMessage = errorMessage;
 
                 return value;
             }
 
-            public static ValidateResult CreateByInfo(GalleryInfo2 info)
+            public static GalleryValidation CreateByInfo(GalleryAgent agent, GalleryInfo info, byte[] thumbnailData)
             {
-                var value = new ValidateResult();
-                value.IsError = false;
+                var value = new GalleryValidation();
+                value.Agent = agent;
                 value.Info = info;
+                value.ThumbnailData = thumbnailData;
 
                 return value;
             }

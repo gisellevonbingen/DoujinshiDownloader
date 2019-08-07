@@ -109,12 +109,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 if (response.Impl.StatusCode != HttpStatusCode.OK)
                 {
                     var readerUrl = this.ToReaderURL(url);
-                    info.RedirectUrl = readerUrl;
+                    info.GalleryUrl = readerUrl;
                     info.Removed = true;
-                    info.Title = this.GetReaderTitle(readerUrl);
+                    info.GalleryTitle = this.GetReaderTitle(readerUrl);
                 }
                 else
                 {
+                    info.GalleryUrl = url;
                     info.Removed = false;
                     var document = response.ReadAsDocument();
 
@@ -132,12 +133,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
                         if (artist0 == null)
                         {
-                            info.Title = title;
+                            info.GalleryTitle = title;
                         }
                         else
                         {
                             var artist = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(artist0);
-                            info.Title = $"[{artist}] {title}";
+                            info.GalleryTitle = $"[{artist}] {title}";
                         }
 
                     }
@@ -148,7 +149,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                     {
                         var uri = new Uri(url);
                         var coverImgNode = coverNode.Descendants().FirstOrDefault(n => n.Name.Equals("img"));
-                        info.Thumbnail = uri.Scheme + ":" + coverImgNode.GetAttributeValue("src", null);
+                        info.ThumbnailUrl = uri.Scheme + ":" + coverImgNode.GetAttributeValue("src", null);
                     }
 
                 }
