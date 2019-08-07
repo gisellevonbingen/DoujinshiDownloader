@@ -8,15 +8,11 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class GalleryInfo
     {
-        public string RedirectUrl { get; set; } = null;
+        public string GalleryUrl { get; set; } = null;
         public string Title { get; set; } = null;
-        public string Thumbnail { get; set; } = null;
-
-        public GalleryInfo()
-        {
-                
-        }
-
+        public string ThumbnailUrl { get; set; } = null;
+        public List<GalleryParameterType> ParameterTypes { get; } = new List<GalleryParameterType>();
+        public Exception Exception { get; set; } = null;
     }
 
 }

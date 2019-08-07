@@ -37,7 +37,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         public int Index { get; private set; } = 0;
         public GalleryAgent Agent { get; private set; } = null;
 
-        public DownloadGalleryParameter GalleryParameter { get; private set; } = null;
 
         private int NextIndex = 0;
 
@@ -181,15 +180,15 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             var config = dd.Config.Values;
 
             var request = this.Request;
-            var method = request.DownloadMethod;
-            var galleryURL = method.Site.ToUrl(request.DownloadInput);
-            var agent = method.CreateAgent();
+            var agent = request.Agent;
+            var galleryUrl = request.GalleryUrl;
+            var galleryValues = request.GalleryParameterValues;
 
             var downloadToArchive = config.Content.DownloadToArchive;
             var downloadDirectory = config.Content.DownloadDirectory;
             Directory.CreateDirectory(downloadDirectory);
 
-            var downloadPath = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.Info.Title));
+            var downloadPath = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.FileName));
 
             if (downloadToArchive == true)
             {
@@ -200,12 +199,11 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 this.DownloadFile = new FileArchiveDirectory(downloadPath);
             }
 
-            var imageViewUrls = agent.GetGalleryImageViewURLs(galleryURL);
+            var imageViewUrls = agent.GetGalleryImageViewURLs(galleryUrl, galleryValues);
             var imageViews = this.ImageViews = new ImageViews(imageViewUrls);
             this.Count = imageViews.Count;
             this.Index = 0;
             this.Agent = agent;
-            this.GalleryParameter = agent.CreateGalleryParameter(galleryURL);
         }
 
         private void Download()
@@ -262,6 +260,9 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         private void DownloadThreading()
         {
+            var request = this.Request;
+            var values = request.GalleryParameterValues;
+
             while (true)
             {
                 var index = 0;
@@ -285,7 +286,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     imageView.State = ViewState.Downloading;
                     this.OnProgressing(new TaskProgressingEventArgs(index, imageView));
 
-                    var exceptionMessage = this.Download(index, imageView);
+                    var exceptionMessage = this.Download(index, imageView, values);
                     imageView.State = string.IsNullOrWhiteSpace(exceptionMessage) ? ViewState.Success : ViewState.Exception;
                     imageView.ExceptionMessage = exceptionMessage;
                 }
@@ -327,10 +328,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         }
 
-        private string Download(int index, ImageView view)
+        private string Download(int index, ImageView view, GalleryParameterValues values)
         {
             var agent = this.Agent;
-            var image = agent.GetGalleryImage(view.Url);
+            var image = agent.GetGalleryImage(view.Url, values);
 
             if (image.ImageUrl == null)
             {
@@ -350,7 +351,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     {
                         this.ThrowIfCanceling();
 
-                        var downloadRequest = agent.CreateImageRequest(image.ImageUrl, this.GalleryParameter);
+                        var downloadRequest = agent.CreateImageRequest(image.ImageUrl, values);
                         var bytes = this.Download(agent, downloadRequest);
                         this.OnImageDownload(new TaskImageDownloadEventArgs(this, view, image, bytes, index, k));
 
@@ -381,7 +382,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         {
                             if (string.IsNullOrWhiteSpace(image.ReloadUrl) == false)
                             {
-                                image = agent.ReloadImage(image.ImageUrl, image.ReloadUrl, this.GalleryParameter);
+                                image = agent.ReloadImage(image.ImageUrl, image.ReloadUrl, values);
                             }
 
                         }

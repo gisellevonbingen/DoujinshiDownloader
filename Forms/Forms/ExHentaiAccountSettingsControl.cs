@@ -219,7 +219,10 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public override void Apply(Configuration config)
         {
-            config.Agent.ExHentaiAccount = this.ParseAccount();
+            var account = this.ParseAccount();
+            config.Agent.ExHentaiAccount = account;
+
+            DoujinshiDownloader.Instance.GalleryAgentManager.ExHentai.Account = account;
         }
 
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)

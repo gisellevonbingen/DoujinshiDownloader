@@ -30,16 +30,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return requeset;
         }
 
+        public abstract List<Site> GetSupportSites();
+
         public abstract GalleryInfo GetGalleryInfo(string url);
 
-        public abstract List<string> GetGalleryImageViewURLs(string url);
+        public abstract List<string> GetGalleryImageViewURLs(string galleryUrl, GalleryParameterValues values);
 
-        public virtual DownloadGalleryParameter CreateGalleryParameter(string url)
-        {
-            return new DownloadGalleryParameter { Referer = url };
-        }
-
-        public abstract GalleryImage GetGalleryImage(string viewUrl);
+        public abstract GalleryImage GetGalleryImage(string viewUrl, GalleryParameterValues values);
 
         public virtual byte[] GetGalleryThumbnail(string thumbnailUrl)
         {
@@ -64,17 +61,16 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public virtual WebRequestParameter CreateImageRequest(string imageUrl, DownloadGalleryParameter galleryParameter)
+        public virtual WebRequestParameter CreateImageRequest(string imageUrl, GalleryParameterValues values)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
             parameter.Uri = imageUrl;
-            parameter.Referer = galleryParameter.Referer;
 
             return parameter;
         }
 
-        public abstract GalleryImage ReloadImage(string requestUrl, string reloadUrl, DownloadGalleryParameter galleryParameter);
+        public abstract GalleryImage ReloadImage(string requestUrl, string reloadUrl, GalleryParameterValues values);
 
     }
 

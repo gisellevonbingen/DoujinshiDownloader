@@ -18,7 +18,7 @@ namespace Giselle.DoujinshiDownloader
         public MenuItem MenuItemMainFormHide { get; }
         public MenuItem MenuItemDispose { get; }
 
-        public NotifyIconManager(DoujinshiDownloader dd)
+        public NotifyIconManager()
         {
             var impl = this.Impl = new NotifyIcon();
             impl.Icon = Icon.FromHandle(Properties.Resources.NotifyIcon.GetHicon());
@@ -38,7 +38,7 @@ namespace Giselle.DoujinshiDownloader
 
             impl.Visible = true;
 
-            dd.MainFormVisibleChanged += this.OnMainFormVisibleChanged;
+            DoujinshiDownloader.Instance.MainFormVisibleChanged += this.OnMainFormVisibleChanged;
             this.UpdateItemState(false);
         }
 

@@ -14,6 +14,7 @@ using Giselle.DoujinshiDownloader.Schedulers;
 using System.IO;
 using Giselle.DoujinshiDownloader.Resources;
 using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Commons.Web;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -31,9 +32,6 @@ namespace Giselle.DoujinshiDownloader.Forms
         private Label AddMessageLabel = null;
         private Button AddButton = null;
         private new Button CancelButton = null;
-
-        private ValidationInformation LastValidation = null;
-        private readonly object ValidationLock = new object();
 
         private readonly object VerifyInputThreadLock = new object();
         private Thread VerifyInputThread = null;
@@ -67,7 +65,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Controls.Add(verifyMessageLabel);
 
             var downloadSelectGroupBox = this.DownloadSelectGroupBox = new DownloadSelectGroupBox();
-            downloadSelectGroupBox.SelectedDownloadMethodChanged += this.OnDownloadSelectGroupBoxSelectedDownloadMethodChanged;
+            downloadSelectGroupBox.SelectedGalleryChanged += this.OnDownloadSelectGroupBoxSelectedGalleryChanged;
             this.Controls.Add(downloadSelectGroupBox);
 
             var thumbnailControl = this.ThumbnailControl = new PictureBox();
@@ -116,29 +114,29 @@ namespace Giselle.DoujinshiDownloader.Forms
         private void OnAddButtonClick(object sender, EventArgs e)
         {
             var downloadSelectGroupBox = this.DownloadSelectGroupBox;
-            var selectedMethod = downloadSelectGroupBox.SelectedDownloadMethod;
+            var selectedGallery = downloadSelectGroupBox.SelectedGallery;
 
-            ValidationInformation validation = null;
-
-            lock (this.ValidationLock)
-            {
-                validation = this.LastValidation;
-            }
-
-            if (validation == null)
+            if (selectedGallery == null)
             {
                 this.UpdateAddMessageLabel(true, SR.Get("DownloadSelect.Add.MissingInput"));
             }
-            else if (selectedMethod == null)
+            else if (selectedGallery == null)
+            {
+                this.UpdateAddMessageLabel(true, SR.Get("DownloadSelect.Add.MissingServer"));
+            }
+            else if (selectedGallery.Info == null)
             {
                 this.UpdateAddMessageLabel(true, SR.Get("DownloadSelect.Add.MissingServer"));
             }
             else
             {
                 var request = this.Request = new DownloadRequest();
-                request.DownloadInput = validation.DownloadInput;
-                request.DownloadMethod = selectedMethod;
-                request.Info = validation.Infos[selectedMethod];
+                request.Agent = selectedGallery.Agent;
+                request.GalleryTitle = selectedGallery.Info.Title;
+                request.GalleryThumbnail = selectedGallery.ThumbnailData;
+                request.GalleryUrl = selectedGallery.Info.GalleryUrl;
+                //request.GalleryParameterValues
+                request.FileName = PathUtils.FilterInvalids(selectedGallery.Info.Title);
 
                 this.DialogResult = DialogResult.OK;
             }
@@ -157,7 +155,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.DialogResult = DialogResult.Cancel;
         }
 
-        private void OnDownloadSelectGroupBoxSelectedDownloadMethodChanged(object sender, EventArgs e)
+        private void OnDownloadSelectGroupBoxSelectedGalleryChanged(object sender, EventArgs e)
         {
             this.UpdateGalleryInfoControls();
 
@@ -221,11 +219,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 var downloadSelectGroupBox = this.DownloadSelectGroupBox;
 
-                lock (this.ValidationLock)
-                {
-                    this.LastValidation = null;
-                }
-
                 ControlUtils.InvokeIfNeed(this, () =>
                 {
                     inputTextBox.Enabled = false;
@@ -243,21 +236,12 @@ namespace Giselle.DoujinshiDownloader.Forms
                 else
                 {
                     this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Verifying"), false);
-
-                    var galleryInfos = downloadSelectGroupBox.Validate(downloadInput);
-
-                    lock (this.ValidationLock)
-                    {
-                        var validation = new ValidationInformation();
-                        validation.DownloadInput = downloadInput;
-                        DictionaryUtils.PutAll(validation.Infos, galleryInfos);
-                        this.LastValidation = validation;
-                    }
+                    var validateResults = this.VerifyDownloadInput(downloadInput);
 
                     ControlUtils.InvokeIfNeed(this, () =>
                     {
                         downloadSelectGroupBox.Enabled = true;
-                        this.SelectFirstDownloadMethod();
+                        downloadSelectGroupBox.Bind(validateResults);
                         this.UpdateGalleryInfoControls();
 
                         this.AddButton.Select();
@@ -291,70 +275,109 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
-        private void SelectFirstDownloadMethod()
+        private DownloadInputValidation VerifyDownloadInput(DownloadInput downloadInput)
         {
-            DownloadMethod selectedDownloadMethod = null;
+            var tasks = new List<Task<GalleryValidation>>();
+            var agents = DoujinshiDownloader.Instance.GalleryAgentManager.GetAgents();
 
-            lock (this.ValidationLock)
+            foreach (var agent in agents)
             {
-                var titles = this.LastValidation?.Infos;
+                var sites = agent.GetSupportSites();
 
-                if (titles != null)
+                foreach (var site in sites)
                 {
-                    foreach (var pair in titles)
-                    {
-                        var downloadMethod = pair.Key;
-                        var title = pair.Value;
+                    var parameter = new AgentGetGelleryInfosParameter();
+                    parameter.Agent = agent;
+                    parameter.Site = site;
+                    parameter.DownloadInput = downloadInput;
 
-                        if (title != null)
-                        {
-                            selectedDownloadMethod = downloadMethod;
-                            break;
-                        }
-
-                    }
-
+                    var task = Task.Factory.StartNew(this.VerifyGallery, parameter);
+                    tasks.Add(task);
                 }
 
             }
 
-            this.DownloadSelectGroupBox.SelectedDownloadMethod = selectedDownloadMethod;
+            Task.WaitAll(tasks.ToArray());
+
+            var result = new DownloadInputValidation();
+
+            foreach (var task in tasks)
+            {
+                result.Galleries.Add(task.Result);
+            }
+
+            return result;
+        }
+
+        private GalleryValidation VerifyGallery(object o)
+        {
+            var parameter = o as AgentGetGelleryInfosParameter;
+            var agent = parameter.Agent;
+            var site = parameter.Site;
+            var downloadInput = parameter.DownloadInput;
+            var url = site.ToUrl(downloadInput);
+
+            var info = agent.GetGalleryInfo(url);
+            var exception = info.Exception;
+
+            if (exception != null)
+            {
+                Console.WriteLine(exception);
+
+                if (exception is WebNetworkException)
+                {
+                    return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.NetworkError"));
+                }
+                else if (exception is ExHentaiAccountException)
+                {
+                    return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.ExHentaiAccountError"));
+                }
+                else
+                {
+                    return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.TitleError"));
+                }
+
+            }
+            else if (info.Title == null)
+            {
+                return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.TitleError"));
+            }
+            else
+            {
+                var thumbnailData = this.DownloadThumbnail(agent, info.ThumbnailUrl);
+                return GalleryValidation.CreateByInfo(site, agent, info, thumbnailData);
+            }
+
         }
 
         private void UpdateGalleryInfoControls()
         {
             var titleLabel = this.TitleLabel;
             var thumbnailControl = this.ThumbnailControl;
-            var selectedDownloadMethod = this.DownloadSelectGroupBox.SelectedDownloadMethod;
-            GalleryInfo2 info = null;
 
-            lock (this.ValidationLock)
+            var galleryValidation = this.DownloadSelectGroupBox.SelectedGallery;
+
+            if (galleryValidation != null)
             {
-                var validation = this.LastValidation;
+                var info = galleryValidation.Info;
 
-                if (validation != null && selectedDownloadMethod != null)
+                ObjectUtils.DisposeQuietly(thumbnailControl.Image);
+                thumbnailControl.Image = null;
+
+                if (info == null)
                 {
-                    validation.Infos.TryGetValue(selectedDownloadMethod, out info);
+                    titleLabel.Text = "";
+                }
+                else
+                {
+                    titleLabel.Text = info.Title;
+
+                    var image = ImageUtils.FromBytes(galleryValidation.ThumbnailData);
+                    thumbnailControl.Image = image;
+
+                    this.UpdateGalleryInfoControlsBounds();
                 }
 
-            }
-
-            ObjectUtils.DisposeQuietly(thumbnailControl.Image);
-            thumbnailControl.Image = null;
-
-            if (info == null)
-            {
-                titleLabel.Text = "";
-            }
-            else
-            {
-                titleLabel.Text = info.Title;
-
-                var thumbnailBytes = info.Thumbnail;
-                var image = ImageUtils.FromBytes(thumbnailBytes);
-                thumbnailControl.Image = image;
-
-                this.UpdateGalleryInfoControlsBounds();
             }
 
         }
@@ -437,16 +460,72 @@ namespace Giselle.DoujinshiDownloader.Forms
             return map;
         }
 
-        private class ValidationInformation
+        private byte[] DownloadThumbnail(GalleryAgent agent, string thubnailUrl)
         {
-            public DownloadInput DownloadInput { get; set; } = default;
-            public Dictionary<DownloadMethod, GalleryInfo2> Infos { get; } = null;
-
-            public ValidationInformation()
+            if (string.IsNullOrWhiteSpace(thubnailUrl) == false)
             {
-                this.Infos = new Dictionary<DownloadMethod, GalleryInfo2>();
+                try
+                {
+                    return agent.GetGalleryThumbnail(thubnailUrl);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
             }
 
+            return null;
+        }
+
+        private class AgentGetGelleryInfosParameter
+        {
+            public GalleryAgent Agent { get; set; }
+            public Site Site { get; set; }
+            public DownloadInput DownloadInput { get; set; }
+        }
+
+        public class GalleryValidation
+        {
+            public Site Site { get; private set; } = null;
+            public GalleryAgent Agent { get; private set; } = null;
+            public bool IsError { get; private set; } = false;
+            public string ErrorMessage { get; private set; } = null;
+            public GalleryInfo Info { get; private set; } = null;
+            public byte[] ThumbnailData { get; private set; } = null;
+
+            private GalleryValidation()
+            {
+
+            }
+
+            public static GalleryValidation CreateByError(Site site, string errorMessage)
+            {
+                var value = new GalleryValidation();
+                value.Site = site;
+                value.IsError = true;
+                value.ErrorMessage = errorMessage;
+
+                return value;
+            }
+
+            public static GalleryValidation CreateByInfo(Site site, GalleryAgent agent, GalleryInfo info, byte[] thumbnailData)
+            {
+                var value = new GalleryValidation();
+                value.Site = site;
+                value.Agent = agent;
+                value.IsError = false;
+                value.Info = info;
+                value.ThumbnailData = thumbnailData;
+
+                return value;
+            }
+
+        }
+
+        public class DownloadInputValidation
+        {
+            public List<GalleryValidation> Galleries { get; } = new List<GalleryValidation>();
         }
 
     }

@@ -20,7 +20,14 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override GalleryImage GetGalleryImage(string viewUrl)
+        public override List<Site> GetSupportSites()
+        {
+            var sites = new List<Site>();
+            sites.Add(Site.HitomiGallery);
+            return sites;
+        }
+
+        public override GalleryImage GetGalleryImage(string viewUrl, GalleryParameterValues values)
         {
             return new GalleryImage() { ImageUrl = viewUrl };
         }
@@ -30,17 +37,17 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return url;
         }
 
-        public override List<string> GetGalleryImageViewURLs(string url)
+        public override List<string> GetGalleryImageViewURLs(string galleryUrl, GalleryParameterValues values)
         {
-            int number = DownloadInput.Parse(url).Number;
+            int number = DownloadInput.Parse(galleryUrl).Number;
             int bonus = (number % 10 == 1) ? 0 : (number % 2);
             var c = (char)(97 + bonus);
 
             var list = new List<string>();
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
-            parameter.Uri = this.ToReaderURL(url);
-            parameter.Referer = url;
+            parameter.Uri = this.ToReaderURL(galleryUrl);
+            parameter.Referer = galleryUrl;
 
             using (var response = this.Explorer.Request(parameter))
             {
@@ -102,20 +109,19 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             parameter.Uri = url;
             parameter.Method = "GET";
 
-            var info = new HitomiGalleryInfo();
+            var info = new GalleryInfo();
+            info.GalleryUrl = url;
 
             using (var response = this.Explorer.Request(parameter))
             {
                 if (response.Impl.StatusCode != HttpStatusCode.OK)
                 {
                     var readerUrl = this.ToReaderURL(url);
-                    info.RedirectUrl = readerUrl;
-                    info.Removed = true;
+                    info.GalleryUrl = readerUrl;
                     info.Title = this.GetReaderTitle(readerUrl);
                 }
                 else
                 {
-                    info.Removed = false;
                     var document = response.ReadAsDocument();
 
                     var infoNode = document.DocumentNode.Descendants().FirstOrDefault(n =>
@@ -148,7 +154,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                     {
                         var uri = new Uri(url);
                         var coverImgNode = coverNode.Descendants().FirstOrDefault(n => n.Name.Equals("img"));
-                        info.Thumbnail = uri.Scheme + ":" + coverImgNode.GetAttributeValue("src", null);
+                        info.ThumbnailUrl = uri.Scheme + ":" + coverImgNode.GetAttributeValue("src", null);
                     }
 
                 }
@@ -158,7 +164,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return info;
         }
 
-        public override GalleryImage ReloadImage(string requestUrl, string reloadUrl, DownloadGalleryParameter galleryParameter)
+        public override GalleryImage ReloadImage(string requestUrl, string reloadUrl, GalleryParameterValues values)
         {
             throw new NotImplementedException();
         }

@@ -10,9 +10,12 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 {
     public class DownloadRequest : IEquatable<DownloadRequest>
     {
-        public DownloadInput DownloadInput { get; set; } = default;
-        public DownloadMethod DownloadMethod { get; set; } = null;
-        public GalleryInfo2 Info { get; set; } = null;
+        public GalleryAgent Agent { get; set; } = null;
+        public string GalleryTitle { get; set; } = null;
+        public byte[] GalleryThumbnail { get; set; } = null;
+        public string GalleryUrl { get; set; } = null;
+        public GalleryParameterValues GalleryParameterValues { get; } = new GalleryParameterValues();
+        public string FileName { get; set; } = null;
 
         public DownloadRequest()
         {
@@ -26,7 +29,14 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         public override int GetHashCode()
         {
-            return this.Info.Title.GetHashCode();
+            var hash = 17;
+            hash *= 31 + this.Agent?.GetHashCode() ?? 0;
+            hash *= 31 + this.GalleryTitle?.GetHashCode() ?? 0;
+            hash *= 31 + this.GalleryThumbnail?.GetHashCode() ?? 0;
+            hash *= 31 + this.GalleryUrl?.GetHashCode() ?? 0;
+            hash *= 31 + this.GalleryParameterValues?.GetHashCode() ?? 0;
+            hash *= 31 + this.FileName?.GetHashCode() ?? 0;
+            return hash;
         }
 
         public bool Equals(DownloadRequest other)
@@ -36,12 +46,32 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 return false;
             }
 
-            if (this.DownloadInput.Equals(other.DownloadInput) == false)
+            if (GalleryAgent.Equals(this.Agent, other.Agent) == false)
             {
                 return false;
             }
 
-            if (object.Equals(this.DownloadMethod, other.DownloadMethod) == false)
+            if (string.Equals(this.GalleryTitle, other.GalleryTitle) == false)
+            {
+                return false;
+            }
+
+            if (Array.Equals(this.GalleryThumbnail, other.GalleryThumbnail) == false)
+            {
+                return false;
+            }
+
+            if (string.Equals(this.GalleryUrl, other.GalleryUrl) == false)
+            {
+                return false;
+            }
+
+            if (GalleryParameterValues.Equals(this.GalleryParameterValues, other.GalleryParameterValues) == false)
+            {
+                return false;
+            }
+
+            if (string.Equals(this.FileName, other.FileName) == false)
             {
                 return false;
             }

@@ -76,6 +76,7 @@ namespace Giselle.DoujinshiDownloader
         public ConfigurationManager Config { get; }
         public FontManager FontManager { get; }
         public NotifyIconManager NotifyIconManager { get; }
+        public GalleryAgentManager GalleryAgentManager { get; }
         public DownloadScheduler Scheduler { get; }
 
         public MainForm MainForm { get; private set; }
@@ -96,7 +97,8 @@ namespace Giselle.DoujinshiDownloader
 
             this.Config = new ConfigurationManager(PathUtils.GetPath("Configuration.json"));
             this.FontManager = new FontManager();
-            this.NotifyIconManager = new NotifyIconManager(this);
+            this.NotifyIconManager = new NotifyIconManager();
+            this.GalleryAgentManager = new GalleryAgentManager();
             this.Scheduler = new DownloadScheduler();
 
             this.MainForm = null;

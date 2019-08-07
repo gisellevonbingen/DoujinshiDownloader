@@ -75,7 +75,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public void Bind(DownloadTask task)
         {
-            this.Text = task.Request.Info.Title;
+            this.Text = task.Request.GalleryTitle;
 
             var listBox = this.ListBox;
             listBox.Bind(task);

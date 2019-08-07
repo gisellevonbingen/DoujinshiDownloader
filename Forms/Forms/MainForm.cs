@@ -131,7 +131,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                         ControlUtils.InvokeIfNeed(this, t =>
                         {
                             var title = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Title");
-                            var text = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Text", "Title", t.Request.Info.Title);
+                            var text = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Text", "Title", t.Request.GalleryTitle);
                             DoujinshiDownloader.Instance.NotifyIconManager.Show(title, text, ToolTipIcon.Info);
                         }, task);
 
