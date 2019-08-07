@@ -9,12 +9,11 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 {
     public class DownloadRequestEventArgs : EventArgs
     {
-        private DownloadRequest _Request = null;
-        public DownloadRequest Request { get { return this._Request; } }
+        public DownloadRequest Request { get; }
 
         public DownloadRequestEventArgs(DownloadRequest request)
         {
-            this._Request = request;
+            this.Request = request;
         }
 
     }
