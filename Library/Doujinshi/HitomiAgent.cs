@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.DoujinshiDownloader.Web;
+using Giselle.DoujinshiDownloader.Utils;
 using HtmlAgilityPack;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
@@ -39,12 +39,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             var list = new List<string>();
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
-            parameter.URL = this.ToReaderURL(url);
+            parameter.Uri = this.ToReaderURL(url);
             parameter.Referer = url;
 
             using (var response = this.Explorer.Request(parameter))
             {
-                var document = response.ReadToDocument();
+                var document = response.ReadAsDocument();
 
                 var nodes = document.DocumentNode.Descendants().ToArray();
 
@@ -72,7 +72,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         private string GetReaderTitle(string url)
         {
             var request = this.CreateRequestParameter();
-            request.URL = url;
+            request.Uri = url;
             request.Method = "GET";
 
             using (var response = this.Explorer.Request(request))
@@ -82,7 +82,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                     return null;
                 }
 
-                var document = response.ReadToDocument();
+                var document = response.ReadAsDocument();
                 var titleTag = document.DocumentNode.Descendants().FirstOrDefault(n => n.Name.Equals("title", StringComparison.OrdinalIgnoreCase));
 
                 if (titleTag != null)
@@ -99,7 +99,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public override GalleryInfo GetGalleryInfo(string url)
         {
             var parameter = this.CreateRequestParameter();
-            parameter.URL = url;
+            parameter.Uri = url;
             parameter.Method = "GET";
 
             var info = new HitomiGalleryInfo();
@@ -116,7 +116,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 else
                 {
                     info.Removed = false;
-                    var document = response.ReadToDocument();
+                    var document = response.ReadAsDocument();
 
                     var infoNode = document.DocumentNode.Descendants().FirstOrDefault(n =>
                     {

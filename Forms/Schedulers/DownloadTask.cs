@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Giselle.Commons;
+using Giselle.Commons.Web;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Utils;
-using Giselle.DoujinshiDownloader.Web;
 
 namespace Giselle.DoujinshiDownloader.Schedulers
 {
@@ -400,7 +400,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this.ImageDownload?.Invoke(this, e);
         }
 
-        private byte[] Download(GalleryAgent agent, RequestParameter downloadRequest)
+        private byte[] Download(GalleryAgent agent, WebRequestParameter downloadRequest)
         {
             using (var source = new CancellationTokenSource())
             {
@@ -414,9 +414,9 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         cancelSources.Add(source);
                     }
 
-                    using (var response = agent.Explorer.Request(downloadRequest, source.Token))
+                    using (var response = agent.Explorer.Request(downloadRequest, source))
                     {
-                        using (var responseStream = response.ReadToStream())
+                        using (var responseStream = response.ReadAsStream())
                         {
                             using (var ms = new MemoryStream())
                             {

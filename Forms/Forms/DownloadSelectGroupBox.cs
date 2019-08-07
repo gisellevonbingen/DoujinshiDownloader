@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.Commons.Web;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms.Utils;
-using Giselle.DoujinshiDownloader.Web;
 using Giselle.Drawing;
 
 namespace Giselle.DoujinshiDownloader.Forms
@@ -186,7 +186,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 }
 
             }
-            catch (NetworkException e)
+            catch (WebNetworkException e)
             {
                 Console.WriteLine(e);
                 return ValidateResult.CreateByError(SR.Get("DownloadSelect.Verify.NetworkError"));

@@ -7,14 +7,14 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Giselle.Commons;
-using Giselle.DoujinshiDownloader.Web;
+using Giselle.Commons.Web;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public abstract class GalleryAgent
     {
         public WebExplorer Explorer { get; }
-        public ProxySettings Proxy { get; set; }
+        public WebProxySettings Proxy { get; set; }
 
         public GalleryAgent()
         {
@@ -22,9 +22,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             this.Proxy = null;
         }
 
-        public virtual RequestParameter CreateRequestParameter()
+        public virtual WebRequestParameter CreateRequestParameter()
         {
-            var requeset = new RequestParameter();
+            var requeset = new WebRequestParameter();
             requeset.Proxy = this.Proxy;
 
             return requeset;
@@ -44,12 +44,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public virtual byte[] GetGalleryThumbnail(string thumbnailUrl)
         {
             var req = this.CreateRequestParameter();
-            req.URL = thumbnailUrl;
+            req.Uri = thumbnailUrl;
             req.Method = "GET";
 
             using (var res = this.Explorer.Request(req))
             {
-                using (var rs = res.ReadToStream())
+                using (var rs = res.ReadAsStream())
                 {
                     using (var ms = new MemoryStream())
                     {
@@ -64,11 +64,11 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public virtual RequestParameter CreateImageRequest(string imageUrl, DownloadGalleryParameter galleryParameter)
+        public virtual WebRequestParameter CreateImageRequest(string imageUrl, DownloadGalleryParameter galleryParameter)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
-            parameter.URL = imageUrl;
+            parameter.Uri = imageUrl;
             parameter.Referer = galleryParameter.Referer;
 
             return parameter;

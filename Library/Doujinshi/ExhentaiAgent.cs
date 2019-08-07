@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Giselle.Commons;
+using Giselle.Commons.Web;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Utils;
-using Giselle.DoujinshiDownloader.Web;
 using HtmlAgilityPack;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
@@ -24,13 +24,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override RequestParameter CreateRequestParameter()
+        public override WebRequestParameter CreateRequestParameter()
         {
             var account = this.Account;
             return this.CreateRequestParameter(account);
         }
 
-        public RequestParameter CreateRequestParameter(ExHentaiAccount account)
+        public WebRequestParameter CreateRequestParameter(ExHentaiAccount account)
         {
             var parameter = base.CreateRequestParameter();
             var cookies = parameter.CookieContainer = new CookieContainer();
@@ -56,7 +56,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public bool CheckAccount(ExHentaiAccount account)
         {
             var parameter = this.CreateRequestParameter(account);
-            parameter.URL = "https://e-hentai.org/bounce_login.php?b=d&bt=1-1";
+            parameter.Uri = "https://e-hentai.org/bounce_login.php?b=d&bt=1-1";
             parameter.Method = "GET";
 
             using (var response = this.Explorer.Request(parameter))
@@ -70,12 +70,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public ImageLimit GetImageLimit(ExHentaiAccount account)
         {
             var parameter = this.CreateRequestParameter(account);
-            parameter.URL = "https://e-hentai.org/home.php";
+            parameter.Uri = "https://e-hentai.org/home.php";
             parameter.Method = "GET";
 
             using (var response = this.Explorer.Request(parameter))
             {
-                var document = response.ReadToDocument();
+                var document = response.ReadAsDocument();
                 var stuffboxDivNode = document.DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("stuffbox"));
                 var homeboxDivNode = stuffboxDivNode.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("homebox"));
                 var cuts = homeboxDivNode.InnerText.Cut("You are currently at ", " towards a limit of ", ". This regenerates at a rate of ", " per minute.");
@@ -93,7 +93,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public override GalleryInfo GetGalleryInfo(string url)
         {
             var parameter = this.CreateRequestParameter();
-            parameter.URL = url;
+            parameter.Uri = url;
             parameter.Method = "GET";
 
             using (var response = this.Explorer.Request(parameter))
@@ -107,7 +107,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
                 var info = new GalleryInfo();
 
-                var document = response.ReadToDocument();
+                var document = response.ReadAsDocument();
                 var gmDivElement = document.DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("gm"));
 
                 var gd2Elements = gmDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gd2")).ChildNodes;
@@ -128,12 +128,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public int GetGalleryPageCount(string url)
         {
             var parameter = this.CreateRequestParameter();
-            parameter.URL = url;
+            parameter.Uri = url;
             parameter.Method = "GET";
 
             using (var response = this.Explorer.Request(parameter))
             {
-                var gtbDivElement = response.ReadToDocument().DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("gtb"));
+                var gtbDivElement = response.ReadAsDocument().DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("gtb"));
                 var pageElements = gtbDivElement.ChildNodes["table"].ChildNodes["tr"].ChildNodes.ToList();
                 var lastpageElement = pageElements[pageElements.Count - 2];
 
@@ -145,12 +145,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public List<string> GetGalleryImageViewsPath(string url, int page)
         {
             var parameter = this.CreateRequestParameter();
-            parameter.URL = url + "?p=" + page;
+            parameter.Uri = url + "?p=" + page;
             parameter.Method = "GET";
 
             using (var response = this.Explorer.Request(parameter))
             {
-                var gdtDivElement = response.ReadToDocument().DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gdt"));
+                var gdtDivElement = response.ReadAsDocument().DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gdt"));
                 var gdtmElements = gdtDivElement.ChildNodes.Where(n => n.GetAttributeValue("class", string.Empty).Equals("gdtm"));
 
                 List<string> list = new List<string>();
@@ -183,12 +183,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public override GalleryImage GetGalleryImage(string viewUrl)
         {
             var parameter = this.CreateRequestParameter();
-            parameter.URL = viewUrl;
+            parameter.Uri = viewUrl;
             parameter.Method = "GET";
 
             using (var response = this.Explorer.Request(parameter))
             {
-                var bodyElement = response.ReadToDocument().DocumentNode.ChildNodes["html"].ChildNodes["body"];
+                var bodyElement = response.ReadAsDocument().DocumentNode.ChildNodes["html"].ChildNodes["body"];
                 var mainDivElement = bodyElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i1"));
 
                 var image = new GalleryImage();
@@ -222,7 +222,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 }
 
                 var parameter2 = this.CreateRequestParameter();
-                parameter2.URL = url2;
+                parameter2.Uri = url2;
                 parameter2.Method = "GET";
 
                 using (var response2 = this.Explorer.Request(parameter2))
@@ -244,7 +244,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return this.GetGalleryImage(reloadUrl);
         }
 
-        public override RequestParameter CreateImageRequest(string imageUrl, DownloadGalleryParameter galleryParameter)
+        public override WebRequestParameter CreateImageRequest(string imageUrl, DownloadGalleryParameter galleryParameter)
         {
             var uri = new Uri(imageUrl);
             var fileName = uri.GetFileName();
