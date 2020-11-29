@@ -47,11 +47,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public string ToUrl(DownloadInput input)
         {
-            var list = new List<string>();
-            list.Add(this.Prefix);
-            list.Add(this.SelectDownloadInput(input));
-            list.Add(this.Suffix);
-
+            var list = new List<string>() { this.Prefix, this.SelectDownloadInput(input), this.Suffix };
             var builder = new StringBuilder();
 
             foreach (var str in list)

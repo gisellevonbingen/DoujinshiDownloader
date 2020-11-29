@@ -10,6 +10,8 @@ using Giselle.Drawing;
 using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Utils;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using Giselle.Forms;
+using Giselle.Drawing.Drawing;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -25,8 +27,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.SuspendLayout();
 
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
+            var fm = this.FontManager;
 
             this.Text = SR.Get("Settings.Download.Title");
 

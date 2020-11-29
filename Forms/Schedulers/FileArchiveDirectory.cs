@@ -21,7 +21,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         public override void Write(string fileName, byte[] bytes)
         {
-            using (var localStream = new FileStream(Path.Combine(this.Directory, fileName), FileMode.Create))
+            var directory = this.Directory;
+            System.IO.Directory.CreateDirectory(directory);
+
+            using (var localStream = new FileStream(Path.Combine(directory, fileName), FileMode.Create))
             {
                 localStream.Write(bytes, 0, bytes.Length);
             }

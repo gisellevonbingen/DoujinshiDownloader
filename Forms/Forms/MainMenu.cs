@@ -12,25 +12,24 @@ using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Drawing;
+using Giselle.Forms;
 using static System.Windows.Forms.LinkLabel;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class MainMenu : OptimizedControl
     {
-        private Button SettingsButton = null;
-        private Button DownloadDirectoryButton = null;
+        private readonly Button SettingsButton = null;
+        private readonly Button DownloadDirectoryButton = null;
 
-        private LinkLabel LinkLabel = null;
+        private readonly LinkLabel LinkLabel = null;
 
-        private Button NewDownloadButton = null;
+        private readonly Button NewDownloadButton = null;
 
         public event EventHandler<DownloadRequestEventArgs> DownloadRequested = null;
 
         public MainMenu()
         {
-            var dd = DoujinshiDownloader.Instance;
-
             this.SuspendLayout();
 
             var settingsButton = this.SettingsButton = new Button();

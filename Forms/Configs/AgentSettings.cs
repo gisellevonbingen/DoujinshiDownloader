@@ -1,4 +1,5 @@
 ﻿using Giselle.DoujinshiDownloader.Doujinshi;
+using Giselle.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Configs
 {
-    public class AgentSettings
+    public class AgentSettings : IJsonObject
     {
         public ExHentaiAccount ExHentaiAccount { get; set; } = null;
 
@@ -17,14 +18,14 @@ namespace Giselle.DoujinshiDownloader.Configs
             this.ExHentaiAccount = new ExHentaiAccount();
         }
 
-        public void Read(JToken jToken)
+        public void Read(JToken json)
         {
-            this.ExHentaiAccount.Deserialize(jToken.Value<JObject>("ExHentaiAccount") ?? new JObject());
+            this.ExHentaiAccount = json.Read<ExHentaiAccount>("ExHentaiAccount");
         }
 
-        public void Write(JToken jToken)
+        public void Write(JToken json)
         {
-            jToken["ExHentaiAccount"] = this.ExHentaiAccount.Serialize();
+            json["ExHentaiAccount"] = this.ExHentaiAccount.Write();
         }
 
     }

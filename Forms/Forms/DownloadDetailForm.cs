@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons;
+using Giselle.Commons.Enums;
 using Giselle.DoujinshiDownloader.Schedulers;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -23,7 +25,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.SuspendLayout();
 
-            var fm = DoujinshiDownloader.Instance.FontManager;
+            var fm = this.FontManager;
             this.StartPosition = FormStartPosition.CenterParent;
 
             var controls = this.Controls;
@@ -37,7 +39,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             closeButton.Click += this.OnCloseButtonClick;
             controls.Add(closeButton);
 
-            var states = EnumUtils.GetValues<ViewState>();
+            var states = EnumUtils.Values<ViewState>();
             var stateLabels = this.StateLabels = new LinkLabel[states.Length];
 
             for (int i = 0; i < stateLabels.Length; i++)
@@ -75,7 +77,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public void Bind(DownloadTask task)
         {
-            this.Text = task.Request.GalleryTitle;
+            this.Text = task.Request.Validation.Info.Title;
 
             var listBox = this.ListBox;
             listBox.Bind(task);

@@ -1,4 +1,5 @@
 ﻿using Giselle.DoujinshiDownloader.Configs;
+using Giselle.Forms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,8 +16,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.SuspendLayout();
 
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
+            var fm = this.FontManager;
             this.Font = fm[12, FontStyle.Regular];
 
             this.ResumeLayout(false);

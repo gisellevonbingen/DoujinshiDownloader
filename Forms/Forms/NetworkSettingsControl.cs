@@ -14,9 +14,9 @@ namespace Giselle.DoujinshiDownloader.Forms
 {
     public class NetworkSettingsControl : SettingControl
     {
-        private SettingTrackBar TimeoutControl = null;
-        private SettingTrackBar ThreadCountControl = null;
-        private SettingTrackBar RetryCountControl = null;
+        private readonly SettingTrackBar TimeoutControl = null;
+        private readonly SettingTrackBar ThreadCountControl = null;
+        private readonly SettingTrackBar RetryCountControl = null;
 
         public NetworkSettingsControl()
         {
@@ -89,10 +89,12 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             base.UpdateControlsBoundsPreferred(layoutBounds);
 
-            var list = new List<SettingTrackBar>();
-            list.Add(this.TimeoutControl);
-            list.Add(this.ThreadCountControl);
-            list.Add(this.RetryCountControl);
+            var list = new List<SettingTrackBar>()
+            {
+                this.TimeoutControl,
+                this.ThreadCountControl,
+                this.RetryCountControl
+            };
 
             var width = list.Max(l => l.Label.PreferredWidth);
 
@@ -118,7 +120,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var retryCountControl = this.RetryCountControl;
             var retryCountControlSize = new Size(layoutBounds.Width, 25);
-            var retryCountControlBounds = map[retryCountControl] = DrawingUtils2.PlaceByDirection(threadCountControlBounds, retryCountControlSize, PlaceDirection.Bottom);
+            map[retryCountControl] = DrawingUtils2.PlaceByDirection(threadCountControlBounds, retryCountControlSize, PlaceDirection.Bottom);
 
             return map;
         }

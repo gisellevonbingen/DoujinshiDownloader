@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -128,12 +129,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                     if (config.NotifyMessageRules.DownlaodComplete == true)
                     {
-                        ControlUtils.InvokeIfNeed(this, t =>
+                        ControlUtils.InvokeFNeeded(this, () =>
                         {
                             var title = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Title");
-                            var text = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Text", "Title", t.Request.GalleryTitle);
+                            var text = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Text", "Title", task.Request.Validation.Info.Title);
                             DoujinshiDownloader.Instance.NotifyIconManager.Show(title, text, ToolTipIcon.Info);
-                        }, task);
+                        });
 
                     }
 

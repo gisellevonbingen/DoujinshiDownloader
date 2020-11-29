@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Giselle.DoujinshiDownloader.Doujinshi;
+using Giselle.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Giselle.DoujinshiDownloader.Configs
@@ -21,40 +22,40 @@ namespace Giselle.DoujinshiDownloader.Configs
 
         }
 
-        public void Read(JToken jToken)
+        public void Read(JToken json)
         {
-            var version = jToken.Value<int>("Version");
+            var version = json.Value<int>("Version");
 
             if (version == 0)
             {
-                this.Agent.ExHentaiAccount.Deserialize(jToken.Value<JObject>("Account") ?? new JObject());
+                this.Agent.ExHentaiAccount = json.Read<ExHentaiAccount>("Account");
 
-                this.Network.Timeout = jToken.Value<int?>("Timeout") ?? 60 * 1000;
-                this.Network.ThreadCount = jToken.Value<int?>("ThreadCount") ?? 4;
-                this.Network.RetryCount = jToken.Value<int?>("RetryCount") ?? 2;
+                this.Network.Timeout = json.Value<int?>("Timeout") ?? 60 * 1000;
+                this.Network.ThreadCount = json.Value<int?>("ThreadCount") ?? 4;
+                this.Network.RetryCount = json.Value<int?>("RetryCount") ?? 2;
 
-                this.Content.DownloadDirectory = jToken.Value<string>("DownloadDirectory") ?? "Downloads";
-                this.Content.DownloadCompleteAutoRemove = jToken.Value<bool?>("DownloadCompleteAutoRemove") ?? false;
-                this.Content.DownloadToArchive = jToken.Value<bool?>("DownloadToArchive") ?? false;
+                this.Content.DownloadDirectory = json.Value<string>("DownloadDirectory") ?? "Downloads";
+                this.Content.DownloadCompleteAutoRemove = json.Value<bool?>("DownloadCompleteAutoRemove") ?? false;
+                this.Content.DownloadToArchive = json.Value<bool?>("DownloadToArchive") ?? false;
             }
             else
             {
-                this.Program.Read(jToken.Value<JObject>("Program") ?? new JObject());
-                this.Agent.Read(jToken.Value<JObject>("Agent") ?? new JObject());
-                this.Network.Read(jToken.Value<JObject>("Network") ?? new JObject());
-                this.Content.Read(jToken.Value<JObject>("Content") ?? new JObject());
+                this.Program.Read(json.Value<JObject>("Program") ?? new JObject());
+                this.Agent.Read(json.Value<JObject>("Agent") ?? new JObject());
+                this.Network.Read(json.Value<JObject>("Network") ?? new JObject());
+                this.Content.Read(json.Value<JObject>("Content") ?? new JObject());
             }
 
         }
 
-        public void Write(JToken jToken)
+        public void Write(JToken json)
         {
-            jToken["Version"] = 1;
+            json["Version"] = 1;
 
-            this.Program.Write(jToken["Program"] = new JObject());
-            this.Agent.Write(jToken["Agent"] = new JObject());
-            this.Network.Write(jToken["Network"] = new JObject());
-            this.Content.Write(jToken["Content"] = new JObject());
+            this.Program.Write(json["Program"] = new JObject());
+            this.Agent.Write(json["Agent"] = new JObject());
+            this.Network.Write(json["Network"] = new JObject());
+            this.Content.Write(json["Content"] = new JObject());
         }
 
     }

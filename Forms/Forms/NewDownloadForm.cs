@@ -12,26 +12,26 @@ using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
 using System.IO;
-using Giselle.DoujinshiDownloader.Resources;
 using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Commons.Web;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class NewDownloadForm : OptimizedForm
     {
-        private LabeledTextBox InputControl = null;
-        private Button VerifyButton = null;
-        private Label VerifyMessageLabel = null;
+        private readonly LabeledTextBox InputControl = null;
+        private readonly Button VerifyButton = null;
+        private readonly Label VerifyMessageLabel = null;
 
-        private DownloadSelectGroupBox DownloadSelectGroupBox = null;
+        private readonly DownloadSelectGroupBox DownloadSelectGroupBox = null;
 
-        private PictureBox ThumbnailControl = null;
-        private SelectAllableTextBox TitleLabel = null;
+        private readonly PictureBox ThumbnailControl = null;
+        private readonly SelectAllableTextBox TitleLabel = null;
 
-        private Label AddMessageLabel = null;
-        private Button AddButton = null;
-        private new Button CancelButton = null;
+        private readonly Label AddMessageLabel = null;
+        private readonly Button AddButton = null;
+        private readonly new Button CancelButton = null;
 
         private readonly object VerifyInputThreadLock = new object();
         private Thread VerifyInputThread = null;
@@ -40,13 +40,11 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public NewDownloadForm()
         {
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
-
             this.SuspendLayout();
 
             this.Text = SR.Get("NewDownload.Title");
             this.StartPosition = FormStartPosition.CenterParent;
+            var fm = this.FontManager;
 
             var inputControl = this.InputControl = new LabeledTextBox();
             inputControl.Label.Text = SR.Get("NewDownload.Input");
@@ -65,6 +63,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Controls.Add(verifyMessageLabel);
 
             var downloadSelectGroupBox = this.DownloadSelectGroupBox = new DownloadSelectGroupBox();
+            downloadSelectGroupBox.GalleryListChanged += this.OnDownloadSelectGroupBoxGalleryListChanged;
             downloadSelectGroupBox.SelectedGalleryChanged += this.OnDownloadSelectGroupBoxSelectedGalleryChanged;
             this.Controls.Add(downloadSelectGroupBox);
 
@@ -104,6 +103,13 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.UpdateControlsBoundsPreferred();
         }
 
+        private void OnDownloadSelectGroupBoxGalleryListChanged(object sender, EventArgs e)
+        {
+            var layoutBounds = this.GetLayoutBounds();
+            var downloadSelectGroupBox = this.DownloadSelectGroupBox;
+            downloadSelectGroupBox.Size = downloadSelectGroupBox.GetPreferredSize(new Size(layoutBounds.Width, 0));
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -131,11 +137,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             else
             {
                 var request = this.Request = new DownloadRequest();
-                request.Agent = selectedGallery.Agent;
-                request.GalleryTitle = selectedGallery.Info.Title;
-                request.GalleryThumbnail = selectedGallery.ThumbnailData;
-                request.GalleryUrl = selectedGallery.Info.GalleryUrl;
-                //request.GalleryParameterValues
+                request.Validation = selectedGallery;
                 request.FileName = PathUtils.FilterInvalids(selectedGallery.Info.Title);
 
                 this.DialogResult = DialogResult.OK;
@@ -168,7 +170,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             base.OnShown(e);
 
             this.InputControl.TextBox.Focus();
-            this.DownloadSelectGroupBox.Enabled = false;
         }
 
         private void OnVerifyButtonClick(object sender, EventArgs e)
@@ -219,12 +220,13 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 var downloadSelectGroupBox = this.DownloadSelectGroupBox;
 
-                ControlUtils.InvokeIfNeed(this, () =>
+                ControlUtils.InvokeFNeeded(this, () =>
                 {
                     inputTextBox.Enabled = false;
                     verifyButton.Enabled = false;
                     addButton.Enabled = false;
                     downloadSelectGroupBox.Enabled = false;
+                    downloadSelectGroupBox.Clear();
                     this.UpdateGalleryInfoControls();
                 });
 
@@ -236,12 +238,17 @@ namespace Giselle.DoujinshiDownloader.Forms
                 else
                 {
                     this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Verifying"), false);
-                    var validateResults = this.VerifyDownloadInput(downloadInput);
-
-                    ControlUtils.InvokeIfNeed(this, () =>
+                    this.VerifyDownloadInput(downloadInput, galleryValidation =>
                     {
-                        downloadSelectGroupBox.Enabled = true;
-                        downloadSelectGroupBox.Bind(validateResults);
+                        ControlUtils.InvokeFNeeded(this, () =>
+                        {
+                            downloadSelectGroupBox.Add(galleryValidation);
+                        });
+
+                    });
+
+                    ControlUtils.InvokeFNeeded(this, () =>
+                    {
                         this.UpdateGalleryInfoControls();
 
                         this.AddButton.Select();
@@ -251,11 +258,12 @@ namespace Giselle.DoujinshiDownloader.Forms
                     this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Verified"), false);
                 }
 
-                ControlUtils.InvokeIfNeed(this, () =>
+                ControlUtils.InvokeFNeeded(this, () =>
                 {
                     inputTextBox.Enabled = true;
                     verifyButton.Enabled = true;
                     addButton.Enabled = true;
+                    downloadSelectGroupBox.Enabled = true;
                 });
 
             }
@@ -275,43 +283,31 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
-        private DownloadInputValidation VerifyDownloadInput(DownloadInput downloadInput)
+        private void VerifyDownloadInput(DownloadInput downloadInput, Action<GalleryValidation> action)
         {
-            var tasks = new List<Task<GalleryValidation>>();
-            var agents = DoujinshiDownloader.Instance.GalleryAgentManager.GetAgents();
+            var tasks = new List<Task>();
 
-            foreach (var agent in agents)
+            foreach (var method in DownloadMethod.Knowns)
             {
-                var sites = agent.GetSupportSites();
+                var parameter = new AgentGetGelleryInfosParameter();
+                parameter.Agent = method.CreateAgent();
+                parameter.Site = method.Site;
+                parameter.DownloadInput = downloadInput;
 
-                foreach (var site in sites)
+                var task = Task.Factory.StartNew(() =>
                 {
-                    var parameter = new AgentGetGelleryInfosParameter();
-                    parameter.Agent = agent;
-                    parameter.Site = site;
-                    parameter.DownloadInput = downloadInput;
+                    var galleryValidation = this.VerifyGallery(parameter);
+                    action(galleryValidation);
+                });
 
-                    var task = Task.Factory.StartNew(this.VerifyGallery, parameter);
-                    tasks.Add(task);
-                }
-
+                tasks.Add(task);
             }
 
             Task.WaitAll(tasks.ToArray());
-
-            var result = new DownloadInputValidation();
-
-            foreach (var task in tasks)
-            {
-                result.Galleries.Add(task.Result);
-            }
-
-            return result;
         }
 
-        private GalleryValidation VerifyGallery(object o)
+        private GalleryValidation VerifyGallery(AgentGetGelleryInfosParameter parameter)
         {
-            var parameter = o as AgentGetGelleryInfosParameter;
             var agent = parameter.Agent;
             var site = parameter.Site;
             var downloadInput = parameter.DownloadInput;
@@ -321,8 +317,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.NotSupported"));
             }
 
-            var url = site.ToUrl(downloadInput);
-            var info = agent.GetGalleryInfo(url);
+            var info = agent.GetGalleryInfo(site, downloadInput);
             var exception = info.Exception;
 
             if (exception != null)
@@ -350,7 +345,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             else
             {
                 var thumbnailData = this.DownloadThumbnail(agent, info.ThumbnailUrl);
-                return GalleryValidation.CreateByInfo(site, agent, info, thumbnailData);
+                return GalleryValidation.CreateByInfo(site, downloadInput, agent, info, thumbnailData);
             }
 
         }
@@ -358,7 +353,11 @@ namespace Giselle.DoujinshiDownloader.Forms
         private void UpdateGalleryInfoControls()
         {
             var titleLabel = this.TitleLabel;
+            titleLabel.Text = string.Empty;
+
             var thumbnailControl = this.ThumbnailControl;
+            ObjectUtils.DisposeQuietly(thumbnailControl.Image);
+            thumbnailControl.Image = null;
 
             var galleryValidation = this.DownloadSelectGroupBox.SelectedGallery;
 
@@ -366,15 +365,9 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 var info = galleryValidation.Info;
 
-                ObjectUtils.DisposeQuietly(thumbnailControl.Image);
-                thumbnailControl.Image = null;
-
-                if (info == null)
+                if (info != null)
                 {
-                    titleLabel.Text = "";
-                }
-                else
-                {
+                    this.UpdateGalleryInfoControlsBounds();
                     titleLabel.Text = info.Title;
 
                     var image = ImageUtils.FromBytes(galleryValidation.ThumbnailData);
@@ -387,9 +380,9 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
-        protected override void UpdateControlsBoundsPreferred(Rectangle layoutBounds)
+        protected override void UpdateControlsBoundsPreferred(Size size)
         {
-            base.UpdateControlsBoundsPreferred(layoutBounds);
+            base.UpdateControlsBoundsPreferred(size);
 
             this.UpdateGalleryInfoControlsBounds();
         }
@@ -405,24 +398,24 @@ namespace Giselle.DoujinshiDownloader.Forms
             var thumbnailTop = downloadSelectGroupBox.Bottom + 10;
             var thumbnailBottom = addMessageLabel.Top;
             var thumbnailImageSize = thumbnailControl.Image?.Size ?? new Size();
-            var thumbnailHeight = thumbnailBottom - thumbnailTop;
-            var thumbnailWidth = (int)(thumbnailImageSize.Width * ((float)thumbnailHeight / thumbnailImageSize.Height));
+            var originalHeight = thumbnailBottom - thumbnailTop;
+            var originalWidth = (int)(thumbnailImageSize.Width * ((float)originalHeight / thumbnailImageSize.Height));
+            var scaledWidth = Math.Min(originalWidth, downloadSelectGroupBox.Width - 200);
+            var scaledHeight = (int)(originalHeight * (scaledWidth / (double)originalWidth));
 
-            thumbnailControl.Bounds = new Rectangle(downloadSelectGroupBox.Left, thumbnailTop, thumbnailWidth, thumbnailHeight);
+            thumbnailControl.Bounds = new Rectangle(downloadSelectGroupBox.Left, thumbnailTop, scaledWidth, scaledHeight);
             titleLabel.Bounds = Rectangle.FromLTRB(thumbnailControl.Right, thumbnailControl.Top, downloadSelectGroupBox.Right, thumbnailControl.Bottom);
-
-            titleLabel.Font = DoujinshiDownloader.Instance.FontManager.FindMatch(titleLabel.Text, new FontMatchFormat() { ProposedSize = titleLabel.Size, Size = 12, Style = FontStyle.Regular });
         }
 
         private void UpdateVerifyMessageLabel(string message, bool invalid)
         {
             var verifyMessageLabel = this.VerifyMessageLabel;
 
-            ControlUtils.InvokeIfNeed(verifyMessageLabel, (o1) =>
+            ControlUtils.InvokeFNeeded(verifyMessageLabel, () =>
             {
-                verifyMessageLabel.ForeColor = o1 ? Color.Red : Color.Black;
+                verifyMessageLabel.ForeColor = invalid ? Color.Red : Color.Black;
                 verifyMessageLabel.Text = message;
-            }, invalid);
+            });
 
         }
 
@@ -445,22 +438,20 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var downloadSelectGroupBox = this.DownloadSelectGroupBox;
             var downloadSelectGroupBoxSize = downloadSelectGroupBox.GetPreferredSize(new Size(layoutBounds.Width, 0));
-            var downloadSelectGroupBoxBounds = map[downloadSelectGroupBox] = DrawingUtils2.PlaceByDirection(verifyMessageLabelBounds, downloadSelectGroupBoxSize, PlaceDirection.Bottom);
-
+            map[downloadSelectGroupBox] = DrawingUtils2.PlaceByDirection(verifyMessageLabelBounds, downloadSelectGroupBoxSize, PlaceDirection.Bottom);
 
             var resultButtonSize = new Size((layoutBounds.Width - 10) / 2, 30);
             var resultButtonTop = layoutBounds.Bottom - resultButtonSize.Height;
 
             var addButton = this.AddButton;
-            var addButtonBounds = map[addButton] = new Rectangle(new Point(layoutBounds.Right - resultButtonSize.Width, resultButtonTop), resultButtonSize);
+            map[addButton] = new Rectangle(new Point(layoutBounds.Right - resultButtonSize.Width, resultButtonTop), resultButtonSize);
 
             var cancelButton = this.CancelButton;
             var cancelButtonBounds = map[cancelButton] = new Rectangle(new Point(layoutBounds.Left, resultButtonTop), resultButtonSize);
 
             var addMessageLabel = this.AddMessageLabel;
             var addMessageLabelSize = new Size(layoutBounds.Width, 21);
-            var addMessageLabelBounds = map[addMessageLabel] = DrawingUtils2.PlaceByDirection(cancelButtonBounds, addMessageLabelSize, PlaceDirection.Top, 5);
-
+            map[addMessageLabel] = DrawingUtils2.PlaceByDirection(cancelButtonBounds, addMessageLabelSize, PlaceDirection.Top, 5);
 
             return map;
         }
@@ -488,49 +479,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             public GalleryAgent Agent { get; set; }
             public Site Site { get; set; }
             public DownloadInput DownloadInput { get; set; }
-        }
-
-        public class GalleryValidation
-        {
-            public Site Site { get; private set; } = null;
-            public GalleryAgent Agent { get; private set; } = null;
-            public bool IsError { get; private set; } = false;
-            public string ErrorMessage { get; private set; } = null;
-            public GalleryInfo Info { get; private set; } = null;
-            public byte[] ThumbnailData { get; private set; } = null;
-
-            private GalleryValidation()
-            {
-
-            }
-
-            public static GalleryValidation CreateByError(Site site, string errorMessage)
-            {
-                var value = new GalleryValidation();
-                value.Site = site;
-                value.IsError = true;
-                value.ErrorMessage = errorMessage;
-
-                return value;
-            }
-
-            public static GalleryValidation CreateByInfo(Site site, GalleryAgent agent, GalleryInfo info, byte[] thumbnailData)
-            {
-                var value = new GalleryValidation();
-                value.Site = site;
-                value.Agent = agent;
-                value.IsError = false;
-                value.Info = info;
-                value.ThumbnailData = thumbnailData;
-
-                return value;
-            }
-
-        }
-
-        public class DownloadInputValidation
-        {
-            public List<GalleryValidation> Galleries { get; } = new List<GalleryValidation>();
         }
 
     }

@@ -24,19 +24,14 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public virtual WebRequestParameter CreateRequestParameter()
         {
-            var requeset = new WebRequestParameter();
-            requeset.Proxy = this.Proxy;
-
-            return requeset;
+            return new WebRequestParameter { Proxy = this.Proxy };
         }
 
-        public abstract List<Site> GetSupportSites();
+        public abstract GalleryInfo GetGalleryInfo(Site site, DownloadInput input);
 
-        public abstract GalleryInfo GetGalleryInfo(string url);
+        public abstract List<GalleryImageView> GetGalleryImageViews(Site site, DownloadInput input, GalleryParameterValues values);
 
-        public abstract List<string> GetGalleryImageViewURLs(string galleryUrl, GalleryParameterValues values);
-
-        public abstract GalleryImage GetGalleryImage(string viewUrl, GalleryParameterValues values);
+        public abstract GalleryImagePath GetGalleryImage(Site site, DownloadInput input, string viewUrl, GalleryParameterValues values);
 
         public virtual byte[] GetGalleryThumbnail(string thumbnailUrl)
         {
@@ -61,7 +56,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public virtual WebRequestParameter CreateImageRequest(string imageUrl, GalleryParameterValues values)
+        public virtual WebRequestParameter CreateImageRequest(Site site, DownloadInput input, string imageUrl, GalleryParameterValues values)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
@@ -70,7 +65,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return parameter;
         }
 
-        public abstract GalleryImage ReloadImage(string requestUrl, string reloadUrl, GalleryParameterValues values);
+        public abstract GalleryImagePath ReloadImage(Site site, DownloadInput input, string requestUrl, string reloadUrl, GalleryParameterValues values);
 
     }
 
