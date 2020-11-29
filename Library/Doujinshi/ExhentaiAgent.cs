@@ -107,7 +107,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 }
 
                 var document = response.ReadAsDocument();
-                var gmDivElement = document.DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("gm"));
+                var gmDivElement = document.DocumentNode.ChildNodes["html"]?.ChildNodes["body"]?.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("gm"));
+
+                if (gmDivElement == null)
+                {
+                    throw new ExHentaiAccountException();
+                }
 
                 var gd2Elements = gmDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gd2")).ChildNodes;
                 var gnElement = gd2Elements.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gn"));

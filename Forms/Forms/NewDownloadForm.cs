@@ -317,10 +317,22 @@ namespace Giselle.DoujinshiDownloader.Forms
                 return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.NotSupported"));
             }
 
-            var info = agent.GetGalleryInfo(site, downloadInput);
-            var exception = info.Exception;
+            try
+            {
+                var info = agent.GetGalleryInfo(site, downloadInput);
 
-            if (exception != null)
+                if (info.Title == null)
+                {
+                    return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.TitleError"));
+                }
+                else
+                {
+                    var thumbnailData = this.DownloadThumbnail(agent, info.ThumbnailUrl);
+                    return GalleryValidation.CreateByInfo(site, downloadInput, agent, info, thumbnailData);
+                }
+
+            }
+            catch (Exception exception)
             {
                 Console.WriteLine(exception);
 
@@ -337,15 +349,6 @@ namespace Giselle.DoujinshiDownloader.Forms
                     return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.TitleError"));
                 }
 
-            }
-            else if (info.Title == null)
-            {
-                return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.TitleError"));
-            }
-            else
-            {
-                var thumbnailData = this.DownloadThumbnail(agent, info.ThumbnailUrl);
-                return GalleryValidation.CreateByInfo(site, downloadInput, agent, info, thumbnailData);
             }
 
         }

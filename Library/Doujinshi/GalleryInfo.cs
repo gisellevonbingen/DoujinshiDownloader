@@ -12,7 +12,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public string Title { get; set; } = null;
         public string ThumbnailUrl { get; set; } = null;
         public List<GalleryParameterType> ParameterTypes { get; } = new List<GalleryParameterType>();
-        public Exception Exception { get; set; } = null;
     }
 
 }
