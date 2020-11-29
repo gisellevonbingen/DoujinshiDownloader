@@ -19,12 +19,10 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         {
             var agent = new ExHentaiAgent();
             agent.Account = null;
-            agent.Original = false;
 
             return agent;
         }
 
-        public virtual bool Original { get; }
 
     }
 

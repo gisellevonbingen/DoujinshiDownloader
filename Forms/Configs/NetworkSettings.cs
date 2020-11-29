@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Giselle.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Configs
 {
-    public class NetworkSettings
+    public class NetworkSettings : IJsonObject
     {
         public int Timeout { get; set; } = 60 * 1000;
         public int ThreadCount { get; set; } = 4;
@@ -18,18 +19,18 @@ namespace Giselle.DoujinshiDownloader.Configs
 
         }
 
-        public void Read(JToken jToken)
+        public void Read(JToken json)
         {
-            this.Timeout = jToken.Value<int?>("Timeout") ?? this.Timeout;
-            this.ThreadCount = jToken.Value<int?>("ThreadCount") ?? this.ThreadCount;
-            this.RetryCount = jToken.Value<int?>("RetryCount") ?? this.RetryCount;
+            this.Timeout = json.Value<int?>("Timeout") ?? this.Timeout;
+            this.ThreadCount = json.Value<int?>("ThreadCount") ?? this.ThreadCount;
+            this.RetryCount = json.Value<int?>("RetryCount") ?? this.RetryCount;
         }
 
-        public void Write(JToken jToken)
+        public void Write(JToken json)
         {
-            jToken["Timeout"] = this.Timeout;
-            jToken["ThreadCount"] = this.ThreadCount;
-            jToken["RetryCount"] = this.RetryCount;
+            json["Timeout"] = this.Timeout;
+            json["ThreadCount"] = this.ThreadCount;
+            json["RetryCount"] = this.RetryCount;
         }
 
     }

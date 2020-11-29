@@ -13,7 +13,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override Site Site { get { return Site.Hitomi; } }
+        public override Site Site { get { return Site.HitomiGallery; } }
 
         public override GalleryAgent CreateAgent()
         {

@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class LabeledTrackBar : LabeledControl
     {
-        private OptimizedTrackBar _TrackBar = null;
-        public OptimizedTrackBar TrackBar { get { return this._TrackBar; } }
+        public OptimizedTrackBar TrackBar { get; } = null;
 
         public LabeledTrackBar()
         {
             this.SuspendLayout();
 
-            this._TrackBar = new OptimizedTrackBar();
+            this.TrackBar = new OptimizedTrackBar();
             this.Controls.Add(this.TrackBar);
 
             this.ResumeLayout(false);

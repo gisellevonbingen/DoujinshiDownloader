@@ -24,22 +24,14 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public virtual WebRequestParameter CreateRequestParameter()
         {
-            var requeset = new WebRequestParameter();
-            requeset.Proxy = this.Proxy;
-
-            return requeset;
+            return new WebRequestParameter { Proxy = this.Proxy };
         }
 
-        public abstract GalleryInfo GetGalleryInfo(string url);
+        public abstract GalleryInfo GetGalleryInfo(Site site, DownloadInput input);
 
-        public abstract List<string> GetGalleryImageViewURLs(string url);
+        public abstract List<GalleryImageView> GetGalleryImageViews(Site site, DownloadInput input, GalleryParameterValues values);
 
-        public virtual DownloadGalleryParameter CreateGalleryParameter(string url)
-        {
-            return new DownloadGalleryParameter { Referer = url };
-        }
-
-        public abstract GalleryImage GetGalleryImage(string viewUrl);
+        public abstract GalleryImagePath GetGalleryImage(Site site, DownloadInput input, string viewUrl, GalleryParameterValues values);
 
         public virtual byte[] GetGalleryThumbnail(string thumbnailUrl)
         {
@@ -64,17 +56,16 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public virtual WebRequestParameter CreateImageRequest(string imageUrl, DownloadGalleryParameter galleryParameter)
+        public virtual WebRequestParameter CreateImageRequest(Site site, DownloadInput input, string imageUrl, GalleryParameterValues values)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
             parameter.Uri = imageUrl;
-            parameter.Referer = galleryParameter.Referer;
 
             return parameter;
         }
 
-        public abstract GalleryImage ReloadImage(string requestUrl, string reloadUrl, DownloadGalleryParameter galleryParameter);
+        public abstract GalleryImagePath ReloadImage(Site site, DownloadInput input, string requestUrl, string reloadUrl, GalleryParameterValues values);
 
     }
 

@@ -39,12 +39,14 @@
     <Reference Include="Giselle.Commons">
       <HintPath>..\Libs\Giselle.Commons.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.6.15.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.6.15\lib\Net45\HtmlAgilityPack.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Giselle.Json">
+      <HintPath>..\Libs\Giselle.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Libs\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.11.28.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.28\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,18 +61,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Doujinshi\DownloadGalleryParameter.cs" />
     <Compile Include="Doujinshi\DownloadInput.cs" />
     <Compile Include="Doujinshi\ExHentaiAccount.cs" />
     <Compile Include="Doujinshi\ExHentaiAccountException.cs" />
     <Compile Include="Doujinshi\ExHentaiAgent.cs" />
-    <Compile Include="Doujinshi\HitomiGalleryInfo.cs" />
+    <Compile Include="Doujinshi\GalleryImageView.cs" />
+    <Compile Include="Doujinshi\GalleryParameterType.cs" />
+    <Compile Include="Doujinshi\GalleryParameterValues.cs" />
+    <Compile Include="Doujinshi\HitomiImageFile.cs" />
     <Compile Include="Doujinshi\ImageLimit.cs" />
     <Compile Include="Doujinshi\GalleryAgent.cs" />
-    <Compile Include="Doujinshi\GalleryImage.cs" />
+    <Compile Include="Doujinshi\GalleryImagePath.cs" />
     <Compile Include="Doujinshi\GalleryInfo.cs" />
     <Compile Include="Doujinshi\HitomiAgent.cs" />
-    <Compile Include="Doujinshi\HitomiRemovedGalleryException.cs" />
     <Compile Include="Doujinshi\ImageRequestCreateException.cs" />
     <Compile Include="Doujinshi\Site.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

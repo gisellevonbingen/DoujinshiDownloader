@@ -8,27 +8,26 @@ using System.Windows.Forms;
 using Giselle.Drawing;
 using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class SettingsForm : OptimizedForm
     {
-        private ListBox ListBox;
-        private OptimizedControl SettingBox;
-        private List<SettingControl> SettingControls;
+        private readonly ListBox ListBox;
+        private readonly OptimizedControl SettingBox;
+        private readonly List<SettingControl> SettingControls;
 
-        private Button SaveButton = null;
-        private new Button CancelButton = null;
+        private readonly Button SaveButton = null;
+        private readonly new Button CancelButton = null;
 
         public SettingsForm()
         {
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
-
             this.SuspendLayout();
 
             this.Text = SR.Get("Settings.Title");
             this.StartPosition = FormStartPosition.CenterParent;
+            var fm = this.FontManager;
 
             this.ListBox = new ListBox();
             this.ListBox.SelectedIndexChanged += this.OnListBoxSelectedIndexChanged;
@@ -38,11 +37,13 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.SettingBox.Paint += this.OnSettingBoxPaint;
             this.Controls.Add(this.SettingBox);
 
-            this.SettingControls = new List<SettingControl>();
-            this.SettingControls.Add(new ProgramSettingsControl());
-            this.SettingControls.Add(new ExHentaiAccountSettingsControl());
-            this.SettingControls.Add(new NetworkSettingsControl());
-            this.SettingControls.Add(new ContentsSettingControl());
+            this.SettingControls = new List<SettingControl>
+            {
+                new ProgramSettingsControl(),
+                new ExHentaiAccountSettingsControl(),
+                new NetworkSettingsControl(),
+                new ContentsSettingControl()
+            };
 
             foreach (var control in this.SettingControls)
             {
@@ -94,9 +95,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void OnListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            var item = this.ListBox.SelectedItem as ListItemWrapper<SettingControl>;
-
-            if (item != null)
+            if (this.ListBox.SelectedItem is ComboBoxItemWrapper<SettingControl> item)
             {
                 this.Select(item.Value);
             }
@@ -113,7 +112,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             foreach (var control in this.SettingControls)
             {
-                items.Add(new ListItemWrapper<SettingControl>(control.Text, control));
+                items.Add(new ComboBoxItemWrapper<SettingControl>(control, control.Text));
             }
 
             listBox.ResumeLayout(false);

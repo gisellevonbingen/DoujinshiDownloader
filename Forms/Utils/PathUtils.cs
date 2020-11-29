@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.Commons;
 
 namespace Giselle.DoujinshiDownloader.Utils
 {
@@ -38,9 +39,7 @@ namespace Giselle.DoujinshiDownloader.Utils
 
         public static string GetPath(params string[] paths)
         {
-            var list = new List<string>();
-            list.Add(Application.StartupPath);
-            list.AddRange(paths);
+            var list = ObjectUtils.InsertFirst(Application.StartupPath, paths);
             return Path.Combine(list.ToArray());
         }
 

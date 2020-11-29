@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -14,9 +15,9 @@ namespace Giselle.DoujinshiDownloader.Forms
     {
         private DownloadTask Task = null;
 
-        private List<DownloadDetailListItem> Items = null;
-        private List<DownloadDetailListItem> VisibleItems = null;
-        private Panel Panel = null;
+        private readonly List<DownloadDetailListItem> Items = null;
+        private readonly List<DownloadDetailListItem> VisibleItems = null;
+        private readonly Panel Panel = null;
 
         private ViewState[] _ActiveStates;
         public ViewState[] ActiveStates { get => this._ActiveStates; set { this._ActiveStates = value; this.OnActiveStatesChanged(); } }
@@ -54,9 +55,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.Task = task;
 
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
-
+            var fm = this.FontManager;
             var controls = this.Panel.Controls;
             var items = this.Items;
 
@@ -65,10 +64,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             for (int i = 0; i < taskCount; i++)
             {
-                var imageView = task.ImageViews[i];
-                var item = new DownloadDetailListItem(i, imageView);
-                item.Font = fm[9.0F, FontStyle.Regular];
-                item.Visible = false;
+                var imageView = task.ImageViewStates[i];
+                var item = new DownloadDetailListItem(i, imageView)
+                {
+                    Font = fm[9.0F, FontStyle.Regular],
+                    Visible = false
+                };
 
                 items.Add(item);
                 controls.Add(item);
@@ -159,15 +160,15 @@ namespace Giselle.DoujinshiDownloader.Forms
             return map;
         }
 
-        private void OnTaskProgressed(object sender, TaskProgressingEventArgs _e)
+        private void OnTaskProgressed(object sender, TaskProgressingEventArgs e)
         {
-            ControlUtils.InvokeIfNeed(this, e =>
+            ControlUtils.InvokeFNeeded(this, () =>
             {
                 var item = this.Items[e.Index];
                 item.UpdateState();
                 this.UpdateItemVisible(item);
                 this.UpdateControlsBoundsPreferred();
-            }, _e);
+            });
 
         }
 

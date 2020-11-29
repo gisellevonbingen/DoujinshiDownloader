@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Giselle.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
-    public class ExHentaiAccount
+    public class ExHentaiAccount : IJsonObject
     {
         public string MemberId { get; set; } = null;
         public string PassHash { get; set; } = null;
@@ -23,24 +24,16 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             this.PassHash = passHash;
         }
 
-        public ExHentaiAccount(JToken jToken)
+        public void Read(JToken token)
         {
-            this.Deserialize(jToken);
+            this.MemberId = token.Value<string>("MemberId");
+            this.PassHash = token.Value<string>("PassHash");
         }
 
-        public JToken Serialize()
+        public void Write(JToken token)
         {
-            var jObj = new JObject();
-            jObj["MemberId"] = this.MemberId;
-            jObj["PassHash"] = this.PassHash;
-
-            return jObj;
-        }
-
-        public void Deserialize(JToken jToken)
-        {
-            this.MemberId = jToken.Value<string>("MemberId");
-            this.PassHash = jToken.Value<string>("PassHash");
+            token["MemberId"] = this.MemberId;
+            token["PassHash"] = this.PassHash;
         }
 
     }

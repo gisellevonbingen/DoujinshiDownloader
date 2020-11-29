@@ -12,10 +12,9 @@ using Giselle.Commons;
 using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms;
-using Giselle.DoujinshiDownloader.Forms.Utils;
-using Giselle.DoujinshiDownloader.Resources;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader
 {
@@ -74,7 +73,6 @@ namespace Giselle.DoujinshiDownloader
         public CommandLineOptions CommandLineOptions { get; }
         public ResourceManager ResourceManager { get; }
         public ConfigurationManager Config { get; }
-        public FontManager FontManager { get; }
         public NotifyIconManager NotifyIconManager { get; }
         public DownloadScheduler Scheduler { get; }
 
@@ -95,8 +93,7 @@ namespace Giselle.DoujinshiDownloader
             FormUtils.DefaultIcon = Properties.Resources.Icon;
 
             this.Config = new ConfigurationManager(PathUtils.GetPath("Configuration.json"));
-            this.FontManager = new FontManager();
-            this.NotifyIconManager = new NotifyIconManager(this);
+            this.NotifyIconManager = new NotifyIconManager();
             this.Scheduler = new DownloadScheduler();
 
             this.MainForm = null;
@@ -153,7 +150,7 @@ namespace Giselle.DoujinshiDownloader
 
             if (mainForm != null)
             {
-                ControlUtils.InvokeIfNeed(this.MainForm, () =>
+                ControlUtils.InvokeFNeeded(this.MainForm, () =>
                 {
                     using (var form = new CrashReportForm(file, exception))
                     {
@@ -214,7 +211,7 @@ namespace Giselle.DoujinshiDownloader
             var scheduler = this.Scheduler;
             var tasks = scheduler.GetQueueCopy();
 
-            string text = null;
+            string text;
 
             if (scheduler.Busy == true || tasks.Count > 0)
             {
@@ -255,7 +252,6 @@ namespace Giselle.DoujinshiDownloader
             ObjectUtils.DisposeQuietly(this.MainForm);
             ObjectUtils.DisposeQuietly(this.Scheduler);
             ObjectUtils.DisposeQuietly(this.NotifyIconManager);
-            ObjectUtils.DisposeQuietly(this.FontManager);
         }
 
     }

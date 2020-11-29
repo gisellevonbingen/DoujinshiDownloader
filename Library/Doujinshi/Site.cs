@@ -11,16 +11,16 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
     {
         private static readonly List<Site> _Knowns = new List<Site>();
 
-        public static Site Hitomi { get; }
-        public static Site HitomiRemoved { get; }
+        public static Site HitomiGallery { get; }
+        public static Site HitomiReader { get; }
         public static Site E_Hentai { get; }
         public static Site ExHentai { get; }
 
         static Site()
         {
             var knownSites = _Knowns = new List<Site>();
-            knownSites.Add(Hitomi = new Site("Hitomi", "https://hitomi.la/galleries/", ".html", false));
-            knownSites.Add(HitomiRemoved = new Site("Hitomi Removed", "https://hitomi.la/reader/", ".html", false));
+            knownSites.Add(HitomiGallery = new Site("Hitomi.Gallery", "https://hitomi.la/galleries/", ".html", false));
+            knownSites.Add(HitomiReader = new Site("Hitomi.Reader", "https://hitomi.la/reader/", ".html", false));
             knownSites.Add(E_Hentai = new Site("E-Hentai", "https://e-hentai.org/g/", null, true));
             knownSites.Add(ExHentai = new Site("ExHentai", "https://exhentai.org/g/", null, true));
         }
@@ -47,11 +47,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public string ToUrl(DownloadInput input)
         {
-            var list = new List<string>();
-            list.Add(this.Prefix);
-            list.Add(this.SelectDownloadInput(input));
-            list.Add(this.Suffix);
-
+            var list = new List<string>() { this.Prefix, this.SelectDownloadInput(input), this.Suffix };
             var builder = new StringBuilder();
 
             foreach (var str in list)

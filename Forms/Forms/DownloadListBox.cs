@@ -6,17 +6,20 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.Commons;
+using Giselle.Commons.Collections;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Schedulers;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class DownloadListBox : OptimizedControl
     {
-        private List<DownloadListItem> Items = null;
-        private Panel Panel = null;
+        private readonly List<DownloadListItem> Items = null;
+        private readonly Panel Panel = null;
 
-        private MethodInfo OnMouseWheelMethod = null;
+        private readonly MethodInfo OnMouseWheelMethod = null;
 
         public DownloadListBox()
         {
@@ -39,13 +42,9 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Padding = new Padding(0);
         }
 
-        private List<Control> WithControls(Control control)
+        private Control[] WithControls(Control control)
         {
-            var list = new List<Control>();
-            list.Add(control);
-            list.AddRange(control.Controls.OfType<Control>());
-
-            return list;
+            return ObjectUtils.InsertFirst(control, control.Controls.OfType<Control>()).ToArray();
         }
 
         private void OnControlAdded(object sender, ControlEventArgs e)

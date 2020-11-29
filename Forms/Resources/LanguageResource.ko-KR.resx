@@ -201,19 +201,19 @@
     <value>취소</value>
   </data>
   <data name="DownloadSelect.Title" xml:space="preserve">
-    <value>서버 선택</value>
+    <value>다운로드 선택</value>
   </data>
-  <data name="DownloadSelect.Method.Hitomi" xml:space="preserve">
+  <data name="DownloadSelect.None" xml:space="preserve">
+    <value>선택가능한 다운로드가 존재하지 않습니다</value>
+  </data>
+  <data name="DownloadSelect.Site.Hitomi.Gallery" xml:space="preserve">
     <value>Hitomi</value>
   </data>
-  <data name="DownloadSelect.Method.E-Hentai" xml:space="preserve">
+  <data name="DownloadSelect.Site.E-Hentai" xml:space="preserve">
     <value>E-Hentai</value>
   </data>
-  <data name="DownloadSelect.Method.ExHentai" xml:space="preserve">
+  <data name="DownloadSelect.Site.ExHentai" xml:space="preserve">
     <value>ExHentai</value>
-  </data>
-  <data name="DownloadSelect.Method.ExHentai_Original" xml:space="preserve">
-    <value>ExHentai(원본 이미지)</value>
   </data>
   <data name="DownloadSelect.Verify.NotSupported" xml:space="preserve">
     <value>지원되지 않는 입력</value>

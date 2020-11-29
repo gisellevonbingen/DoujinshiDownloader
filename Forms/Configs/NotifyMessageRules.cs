@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Giselle.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Configs
 {
-    public class NotifyMessageRules
+    public class NotifyMessageRules : IJsonObject
     {
         public bool HideMainForm { get; set; } = true;
         public bool DownlaodComplete { get; set; } = true;
@@ -17,16 +18,16 @@ namespace Giselle.DoujinshiDownloader.Configs
 
         }
 
-        public void Read(JToken jToken)
+        public void Read(JToken json)
         {
-            this.HideMainForm = jToken.Value<bool?>("HideMainForm") ?? this.HideMainForm;
-            this.DownlaodComplete = jToken.Value<bool?>("DownlaodComplete") ?? this.DownlaodComplete;
+            this.HideMainForm = json.Value<bool?>("HideMainForm") ?? this.HideMainForm;
+            this.DownlaodComplete = json.Value<bool?>("DownlaodComplete") ?? this.DownlaodComplete;
         }
 
-        public void Write(JToken jToken)
+        public void Write(JToken json)
         {
-            jToken["HideMainForm"] = this.HideMainForm;
-            jToken["DownlaodComplete"] = this.DownlaodComplete;
+            json["HideMainForm"] = this.HideMainForm;
+            json["DownlaodComplete"] = this.DownlaodComplete;
         }
 
     }

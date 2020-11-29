@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.DoujinshiDownloader.Forms;
 using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader
 {

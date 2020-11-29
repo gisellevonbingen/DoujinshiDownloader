@@ -7,159 +7,182 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Giselle.Commons.Web;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Utils;
 using HtmlAgilityPack;
+using Newtonsoft.Json.Linq;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class HitomiAgent : GalleryAgent
     {
+        public static int HashLeastLength { get; } = 3;
+
         public HitomiAgent()
         {
 
         }
 
-        public override GalleryImage GetGalleryImage(string viewUrl)
+        public override GalleryImagePath GetGalleryImage(Site site, DownloadInput input, string viewUrl, GalleryParameterValues values)
         {
-            return new GalleryImage() { ImageUrl = viewUrl };
+            return new GalleryImagePath() { ImageUrl = viewUrl };
         }
 
-        public string GetRetval(string url)
+        public override WebRequestParameter CreateImageRequest(Site site, DownloadInput input, string imageUrl, GalleryParameterValues values)
         {
-            return url;
+            var request = base.CreateImageRequest(site, input, imageUrl, values);
+            request.Referer = Site.HitomiReader.ToUrl(input);
+
+            return request;
         }
 
-        public override List<string> GetGalleryImageViewURLs(string url)
+        public override List<GalleryImageView> GetGalleryImageViews(Site site, DownloadInput input, GalleryParameterValues values)
         {
-            int number = DownloadInput.Parse(url).Number;
-            int bonus = (number % 10 == 1) ? 0 : (number % 2);
-            var c = (char)(97 + bonus);
+            var json = this.GetGalleryInfo(input);
+            return this.GetGalleryImageFiles(json).Select(this.GetGalleryImageView).ToList();
+        }
 
-            var list = new List<string>();
-            var parameter = this.CreateRequestParameter();
-            parameter.Method = "GET";
-            parameter.Uri = this.ToReaderURL(url);
-            parameter.Referer = url;
+        public GalleryImageView GetGalleryImageView(HitomiImageFile file)
+        {
+            return new GalleryImageView() { Url = this.GetReaderImagePath(file), FileName = file.Name };
+        }
 
-            using (var response = this.Explorer.Request(parameter))
+        public JObject GetGalleryInfo(DownloadInput input)
+        {
+            var galleryParameter = this.CreateRequestParameter();
+            galleryParameter.Uri = $"https://ltn.hitomi.la/galleries/{input.Number}.js";
+            galleryParameter.Method = "GET";
+
+            using (var response = this.Explorer.Request(galleryParameter))
             {
-                var document = response.ReadAsDocument();
-
-                var nodes = document.DocumentNode.Descendants().ToArray();
-
-                var prefix = "https://" + c.ToString() + "a.";
-
-                var nodeInnerTexts = nodes.Where(n => n.GetAttributeValue("class", "").Equals("img-url")).Select(n => n.InnerText);
-
-                foreach (var nodeInnerText in nodeInnerTexts)
-                {
-                    string imageViewURL = nodeInnerText.Replace("//g.", prefix);
-                    list.Add(imageViewURL);
-                }
-
+                var script = response.ReadAsString();
+                var str = Commons.StringUtils.RemovePrefix(script, "var galleryinfo = ");
+                var json = JObject.Parse(str);
+                return json;
             }
 
-            return list;
         }
 
-        public string ToReaderURL(string url)
+        public string PathToHash(string hash)
         {
-            return url.Replace("galleries", "reader") + "#1";
-        }
+            var length = hash.Length;
 
-
-        private string GetReaderTitle(string url)
-        {
-            var request = this.CreateRequestParameter();
-            request.Uri = url;
-            request.Method = "GET";
-
-            using (var response = this.Explorer.Request(request))
+            if (length < HashLeastLength)
             {
-                if (response.Impl.StatusCode != HttpStatusCode.OK)
-                {
-                    return null;
-                }
-
-                var document = response.ReadAsDocument();
-                var titleTag = document.DocumentNode.Descendants().FirstOrDefault(n => n.Name.Equals("title", StringComparison.OrdinalIgnoreCase));
-
-                if (titleTag != null)
-                {
-                    var title = titleTag.InnerText.Replace(" | Hitomi.la", "");
-                    return title;
-                }
-
+                return hash;
             }
 
-            return null;
+            return $"{hash[length - 1]}/{this.GetG(hash)}/{hash}";
         }
 
-        public override GalleryInfo GetGalleryInfo(string url)
+        public string GetG(string hash)
         {
-            var parameter = this.CreateRequestParameter();
-            parameter.Uri = url;
-            parameter.Method = "GET";
+            var length = hash.Length;
 
-            var info = new HitomiGalleryInfo();
-
-            using (var response = this.Explorer.Request(parameter))
+            if (length < HashLeastLength)
             {
-                if (response.Impl.StatusCode != HttpStatusCode.OK)
-                {
-                    var readerUrl = this.ToReaderURL(url);
-                    info.GalleryUrl = readerUrl;
-                    info.Removed = true;
-                    info.GalleryTitle = this.GetReaderTitle(readerUrl);
-                }
-                else
-                {
-                    info.GalleryUrl = url;
-                    info.Removed = false;
-                    var document = response.ReadAsDocument();
-
-                    var infoNode = document.DocumentNode.Descendants().FirstOrDefault(n =>
-                    {
-                        var clazz = n.GetAttributeValue("class", string.Empty);
-                        return clazz.StartsWith("gallery \n") == true && clazz.Contains("-gallery\n") == true;
-                    });
-
-                    if (infoNode != null)
-                    {
-                        var nodes = infoNode.Descendants().ToArray();
-                        var title = nodes.FirstOrDefault(n => n.Name.Equals("h1")).Descendants().FirstOrDefault(n => n.Name.Equals("a")).InnerText;
-                        var artist0 = nodes.FirstOrDefault(n => n.Name.Equals("h2")).Descendants().FirstOrDefault(n => n.Name.Equals("a"))?.InnerText;
-
-                        if (artist0 == null)
-                        {
-                            info.GalleryTitle = title;
-                        }
-                        else
-                        {
-                            var artist = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(artist0);
-                            info.GalleryTitle = $"[{artist}] {title}";
-                        }
-
-                    }
-
-                    var coverNode = document.DocumentNode.Descendants().FirstOrDefault(n => n.Name.Equals("div") && n.HasClass("cover"));
-
-                    if (coverNode != null)
-                    {
-                        var uri = new Uri(url);
-                        var coverImgNode = coverNode.Descendants().FirstOrDefault(n => n.Name.Equals("img"));
-                        info.ThumbnailUrl = uri.Scheme + ":" + coverImgNode.GetAttributeValue("src", null);
-                    }
-
-                }
-
+                return hash;
             }
+
+            return hash.Substring(length - 3, 2);
+        }
+
+        public string GetSmallImagePath(string hash)
+        {
+            var p = this.PathToHash(hash);
+            return $"https://atn.hitomi.la/smalltn/{p}.jpg";
+        }
+
+        public string GetDomainPrefix(string hash, char? @base)
+        {
+            var c = 'b';
+
+            if (@base.HasValue == true)
+            {
+                c = @base.Value;
+            }
+
+            var number_of_frontends = 3;
+            var g = Convert.ToInt32(this.GetG(hash), 16);
+
+            if (g < 0x30)
+            {
+                number_of_frontends = 2;
+            }
+
+            if (g < 0x09)
+            {
+                g = 1;
+            }
+
+            var o = g % number_of_frontends;
+            var builder = new StringBuilder();
+            builder.Append((char)(97 + o));
+            builder.Append(c);
+            return builder.ToString();
+        }
+
+        public string GetReaderImagePath(HitomiImageFile file)
+        {
+            var hash = file.Hash;
+            var path = this.PathToHash(hash);
+            var @base = new char?();
+            string ext;
+            string subpath = null;
+
+            if (file.HasWebp == true)
+            {
+                ext = "webp";
+                @base = 'a';
+            }
+            else if (file.HasAvif == true)
+            {
+                ext = "avif";
+                @base = 'a';
+            }
+            else
+            {
+                ext = "jpg";
+                subpath = "images";
+            }
+
+            var prefix = this.GetDomainPrefix(hash, @base);
+            return $"https://{prefix}.hitomi.la/{subpath ?? ext}/{path}.{ext}";
+        }
+
+        public HitomiImageFile GetGalleryImageFile(JToken json)
+        {
+            return new HitomiImageFile()
+            {
+                HasAvif = json.Value<int>("hasavif") > 0,
+                HasAvifSmalltn = json.Value<int>("hasavifsmalltn") > 0,
+                HasWebp = json.Value<int>("haswebp") > 0,
+                Hash = json.Value<string>("hash"),
+                Name = json.Value<string>("name"),
+            };
+        }
+
+        public IEnumerable<HitomiImageFile> GetGalleryImageFiles(JToken json)
+        {
+            return json["files"].Values<JToken>().Select(this.GetGalleryImageFile);
+        }
+
+        public override GalleryInfo GetGalleryInfo(Site site, DownloadInput input)
+        {
+            var json = this.GetGalleryInfo(input);
+
+            var info = new GalleryInfo
+            {
+                GalleryUrl = site.ToUrl(input),
+                Title = json.Value<string>("title"),
+                ThumbnailUrl = this.GetSmallImagePath(this.GetGalleryImageFiles(json).FirstOrDefault().Hash)
+            };
 
             return info;
         }
 
-        public override GalleryImage ReloadImage(string requestUrl, string reloadUrl, DownloadGalleryParameter galleryParameter)
+        public override GalleryImagePath ReloadImage(Site site, DownloadInput input, string requestUrl, string reloadUrl, GalleryParameterValues values)
         {
             throw new NotImplementedException();
         }

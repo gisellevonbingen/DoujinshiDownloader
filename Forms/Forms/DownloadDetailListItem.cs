@@ -10,18 +10,19 @@ using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Drawing;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class DownloadDetailListItem : OptimizedControl
     {
         public int Index { get; }
-        public ImageView ImageView { get; }
+        public ImageViewState ImageView { get; }
 
-        private Label StateLabel;
-        private TextBox UrlTextBox;
+        private readonly Label StateLabel;
+        private readonly TextBox UrlTextBox;
 
-        public DownloadDetailListItem(int index, ImageView imageView)
+        public DownloadDetailListItem(int index, ImageViewState imageView)
         {
             this.Index = index;
             this.ImageView = imageView;
@@ -33,7 +34,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var urlTextBox = this.UrlTextBox = new TextBox();
             urlTextBox.ReadOnly = true;
-            urlTextBox.Text = imageView.Url;
+            urlTextBox.Text = imageView.View.Url;
             urlTextBox.BorderStyle = BorderStyle.None;
             this.Controls.Add(urlTextBox);
 

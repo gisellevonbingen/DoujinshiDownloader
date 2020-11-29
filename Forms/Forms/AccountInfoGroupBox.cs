@@ -1,4 +1,5 @@
 ﻿using Giselle.DoujinshiDownloader.Doujinshi;
+using Giselle.Forms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

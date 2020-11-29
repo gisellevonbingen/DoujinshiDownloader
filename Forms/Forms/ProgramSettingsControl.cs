@@ -9,18 +9,19 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.Drawing.Drawing;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class ProgramSettingsControl : SettingControl
     {
-        private CheckBox AllowBackgroundCheckBox;
-        private CheckBox AllowNotifyMessageCheckBox;
+        private readonly CheckBox AllowBackgroundCheckBox;
+        private readonly CheckBox AllowNotifyMessageCheckBox;
 
-        private Dictionary<PropertyInfo, CheckBox> NotifyMessageRuleCheckBoxs;
+        private readonly Dictionary<PropertyInfo, CheckBox> NotifyMessageRuleCheckBoxs;
 
-        private Label UserInterfaceRuleLabel;
-        private Dictionary<PropertyInfo, CheckBox> UserInterfaceRuleCheckBoxs;
+        private readonly Label UserInterfaceRuleLabel;
+        private readonly Dictionary<PropertyInfo, CheckBox> UserInterfaceRuleCheckBoxs;
 
         public ProgramSettingsControl()
         {

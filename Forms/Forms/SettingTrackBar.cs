@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -58,12 +59,9 @@ namespace Giselle.DoujinshiDownloader.Forms
             var e = new SettingTrackBarValueConstructEventArgs(value);
             this.OnValueConstructor(e);
 
-            var valueToString = e.ValueToString ?? value.ToString();
-
-            var unit = this.Unit;
-
             var valueLabel = this.ValueLabel;
-            valueLabel.Text = string.Concat(valueToString, unit);
+            var valueToString = e.ValueToString ?? value.ToString();
+            valueLabel.Text = string.Concat(valueToString, this.Unit);
         }
 
         protected override Control GetValueControl()
@@ -82,15 +80,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 
     public class SettingTrackBarValueConstructEventArgs : EventArgs
     {
-        private int _Value = 0;
-        public int Value { get { return this._Value; } }
-
-        private string _ValueToString = null;
-        public string ValueToString { get { return this._ValueToString; } set { this._ValueToString = value; } }
+        public int Value { get; } = 0;
+        public string ValueToString { get; set; } = null;
 
         public SettingTrackBarValueConstructEventArgs(int value)
         {
-            this._Value = value;
+            this.Value = value;
         }
 
     }

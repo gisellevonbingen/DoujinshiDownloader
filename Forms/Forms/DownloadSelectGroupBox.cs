@@ -1,24 +1,28 @@
-﻿using System;
+﻿using Giselle.Commons;
+using Giselle.DoujinshiDownloader.Doujinshi;
+using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Forms;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.Commons.Web;
-using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.DoujinshiDownloader.Forms.Utils;
-using Giselle.Drawing;
+using static Giselle.DoujinshiDownloader.Forms.NewDownloadForm;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class DownloadSelectGroupBox : OptimizedGroupBox
     {
-        private Dictionary<RadioButton, DownloadMethod> RadioButtons = null;
+        public event EventHandler GalleryListChanged;
+        public event EventHandler SelectedGalleryChanged;
 
-        public event EventHandler SelectedDownloadMethodChanged = null;
-        private bool SelectedDownloadMethodChanging = false;
+        private Label NoneLabel;
+        private List<RadioButton> RadioButtons;
+
+        private RadioButton _SelectedRadioButton;
+        private RadioButton SelectedRadioButton { get => this._SelectedRadioButton; set { this._SelectedRadioButton = value; this.OnSelectedGalleryChanged(EventArgs.Empty); } }
 
         public DownloadSelectGroupBox()
         {
@@ -26,216 +30,100 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.Text = SR.Get("DownloadSelect.Title");
 
-            this.RadioButtons = new Dictionary<RadioButton, DownloadMethod>();
+            this.NoneLabel = new Label();
+            this.NoneLabel.Text = SR.Get("DownloadSelect.None");
+            this.Controls.Add(this.NoneLabel);
 
-            foreach (var method in DownloadMethod.Knowns)
-            {
-                var radioButton = this.Register(SR.Get($"DownloadSelect.Method.{method.Name}"), method);
-            }
+            this.RadioButtons = new List<RadioButton>();
 
             this.ResumeLayout(false);
+
+            this.UpdateNoneLabelVisible();
+        }
+        public GalleryValidation SelectedGallery => this.SelectedRadioButton?.Tag as GalleryValidation;
+
+        protected virtual void OnSelectedGalleryChanged(EventArgs e)
+        {
+            this.SelectedGalleryChanged?.Invoke(this, e);
         }
 
-        protected virtual void OnSelectedDownloadMethodChanged(EventArgs e)
+        public void Clear()
         {
-            this.SelectedDownloadMethodChanged?.Invoke(this, e);
-        }
+            var buttons = this.RadioButtons;
 
-        public DownloadMethod SelectedDownloadMethod
-        {
-            get
+            lock (buttons)
             {
-                foreach (var pair in this.RadioButtons)
+                foreach (var button in buttons.ToArray())
                 {
-                    var radioButton = pair.Key;
-                    var downloadMethod = pair.Value;
-
-                    if (radioButton.Checked == true)
-                    {
-                        return downloadMethod;
-                    }
-
+                    this.RemoveImpl(button);
                 }
 
-                return null;
+                buttons.Clear();
             }
 
-            set
+            this.OnGalleryListChanged(new EventArgs());
+        }
+
+        protected virtual void RemoveImpl(RadioButton button)
+        {
+            var buttons = this.RadioButtons;
+
+            lock (buttons)
             {
-                try
+                button.CheckedChanged -= this.OnCheckedChanged;
+                buttons.Remove(button);
+                this.Controls.Remove(button);
+
+                if (this.SelectedRadioButton == button)
                 {
-                    this.SelectedDownloadMethodChanging = true;
-
-                    foreach (var pair in this.RadioButtons)
-                    {
-                        var radioButton = pair.Key;
-                        var downloadMethod = pair.Value;
-
-                        radioButton.Checked = downloadMethod == value;
-                    }
-
-                    this.OnSelectedDownloadMethodChanged(EventArgs.Empty);
-                }
-                finally
-                {
-                    this.SelectedDownloadMethodChanging = false;
+                    this.SelectedRadioButton = null;
                 }
 
             }
 
         }
 
-        public Dictionary<DownloadMethod, GalleryValidation> Validate(DownloadInput downloadInput)
+        public void Remove(RadioButton button)
         {
-            var radioButtons = this.RadioButtons;
-            var taskPairs = new Dictionary<RadioButton, Task<GalleryValidation>>();
-
-            foreach (var pair in radioButtons)
-            {
-                var radioButton = pair.Key;
-                var downloadMethod = pair.Value;
-                var tuple = new DownloadParamater(downloadInput, downloadMethod);
-
-                radioButton.Checked = false;
-                radioButton.Text = radioButton.Name;
-
-                var task = Task.Factory.StartNew(this.Validate0, tuple);
-                taskPairs[pair.Key] = task;
-            }
-
-            Task.WaitAll(taskPairs.Values.ToArray());
-
-            var titles = new Dictionary<DownloadMethod, GalleryValidation>();
-
-            foreach (var pair in taskPairs)
-            {
-                var radioButton = pair.Key;
-                var downloadMethod = radioButtons[radioButton];
-                var task = pair.Value;
-
-                titles[downloadMethod] = null;
-
-                var result = task.Result;
-                var errorMessage = result.ErrorMessage;
-
-                if (errorMessage == null)
-                {
-                    titles[downloadMethod] = result;
-                }
-
-                ControlUtils.InvokeIfNeed(radioButton, () =>
-                {
-                    radioButton.Enabled = errorMessage == null;
-
-                    var textSuffix = "";
-
-                    if (errorMessage != null)
-                    {
-                        textSuffix = " (" + errorMessage + ")";
-                    }
-
-                    radioButton.Text = radioButton.Name + textSuffix;
-
-                });
-            }
-
-            return titles;
+            this.RemoveImpl(button);
+            this.OnGalleryListChanged(new EventArgs());
         }
 
-        private GalleryValidation Validate0(object o)
+        public void Add(GalleryValidation validation)
         {
-            var tuple = (DownloadParamater)o;
-            var downloadMethod = tuple.DownloadMethod;
-            var downloadInput = tuple.DownloadInput;
-            var site = downloadMethod.Site;
-
-            if (site.IsAcceptable(downloadInput) == false)
+            var enabled = validation.IsError == false;
+            var button = new RadioButton
             {
-                return GalleryValidation.CreateByError(SR.Get("DownloadSelect.Verify.NotSupported"));
+                Text = $"{SR.Get($"DownloadSelect.Site.{validation.Site.Name}")}{validation.ErrorMessage.Execute(s => $"({s})")}",
+                Enabled = enabled,
+                Tag = validation,
+            };
+            button.CheckedChanged += this.OnCheckedChanged;
+
+            var buttons = this.RadioButtons;
+
+            lock (buttons)
+            {
+                buttons.Add(button);
+                this.Controls.Add(button);
             }
 
-            var url = site.ToUrl(downloadInput);
-            var agent = downloadMethod.CreateAgent();
+            this.OnGalleryListChanged(new EventArgs());
 
-            try
+            if (this.SelectedGallery == null && enabled == true)
             {
-                var info = agent.GetGalleryInfo(url);
-                var thumbnailData = DownloadThumbnail(agent, info.ThumbnailUrl);
-
-                if (info.GalleryTitle == null)
-                {
-                    throw new Exception();
-                }
-                else
-                {
-                    return GalleryValidation.CreateByInfo(agent, info, thumbnailData);
-                }
-
-            }
-            catch (WebNetworkException e)
-            {
-                Console.WriteLine(e);
-                return GalleryValidation.CreateByError(SR.Get("DownloadSelect.Verify.NetworkError"));
-            }
-            catch (ExHentaiAccountException e)
-            {
-                Console.WriteLine(e);
-                return GalleryValidation.CreateByError(SR.Get("DownloadSelect.Verify.ExHentaiAccountError"));
-            }
-            catch (HitomiRemovedGalleryException e)
-            {
-                Console.WriteLine(e);
-                return GalleryValidation.CreateByError(SR.Get("DownloadSelect.Verify.GalleryRemoved"));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return GalleryValidation.CreateByError(SR.Get("DownloadSelect.Verify.TitleError"));
+                button.Checked = true;
             }
 
         }
 
-        private static byte[] DownloadThumbnail(GalleryAgent agent, string thumbnailUrl)
+        private void OnCheckedChanged(object sender, EventArgs e)
         {
-            byte[] thumbnailData = null;
+            var radioButton = sender as RadioButton;
 
-            if (string.IsNullOrWhiteSpace(thumbnailUrl) == false)
+            if (radioButton.Checked == true)
             {
-                try
-                {
-                    thumbnailData = agent.GetGalleryThumbnail(thumbnailUrl);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-
-            }
-
-            return thumbnailData;
-        }
-
-        private RadioButton Register(string text, DownloadMethod downloadMethod)
-        {
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
-
-            var radioButton = new RadioButton();
-            radioButton.Text = text;
-            radioButton.Name = text;
-            radioButton.CheckedChanged += this.OnRadioButtonCheckedChanged;
-
-            this.RadioButtons[radioButton] = downloadMethod;
-            this.Controls.Add(radioButton);
-
-            return radioButton;
-        }
-
-        private void OnRadioButtonCheckedChanged(object sender, EventArgs e)
-        {
-            if (this.SelectedDownloadMethodChanging == false)
-            {
-                this.OnSelectedDownloadMethodChanged(EventArgs.Empty);
+                this.SelectedRadioButton = radioButton;
             }
 
         }
@@ -244,78 +132,59 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             var map = base.GetPreferredBounds(layoutBounds);
 
-            RadioButton lastRadioButton = null;
+            var buttons = this.RadioButtons;
 
-            foreach (var pair in this.RadioButtons)
+            lock (buttons)
             {
-                var radioButtonSize = new Size(layoutBounds.Width, 25);
-                Rectangle checkBoxBounds = new Rectangle();
+                var height = 25;
 
-                if (lastRadioButton == null)
+                if (buttons.Count == 0)
                 {
-                    checkBoxBounds = new Rectangle(new Point(layoutBounds.Left, layoutBounds.Top), radioButtonSize);
+                    var noneLabel = this.NoneLabel;
+                    map[noneLabel] = new Rectangle(layoutBounds.Left, layoutBounds.Top, layoutBounds.Width, height);
                 }
                 else
                 {
-                    checkBoxBounds = DrawingUtils2.PlaceByDirection(map[lastRadioButton], radioButtonSize, PlaceDirection.Bottom, 0);
+                    for (int i = 0; i < buttons.Count; i++)
+                    {
+                        var button = buttons[i];
+
+                        if (i == 0)
+                        {
+                            map[button] = new Rectangle(layoutBounds.Left, layoutBounds.Top, layoutBounds.Width, height);
+                        }
+                        else
+                        {
+                            var prev = map[buttons[i - 1]];
+                            map[button] = new Rectangle(prev.Left, prev.Bottom, prev.Width, prev.Height);
+
+                        }
+
+                    }
+
                 }
 
-                var radioButton = pair.Key;
-                map[radioButton] = checkBoxBounds;
-                lastRadioButton = radioButton;
             }
 
             return map;
         }
-
-        private class DownloadParamater
+        protected virtual void OnGalleryListChanged(EventArgs e)
         {
-            public DownloadInput DownloadInput { get; } = default;
-            public DownloadMethod DownloadMethod { get; } = default;
+            this.UpdateNoneLabelVisible();
 
-            public DownloadParamater()
-            {
-
-            }
-
-            public DownloadParamater(DownloadInput downloadInput, DownloadMethod downloadMethod)
-            {
-                this.DownloadInput = downloadInput;
-                this.DownloadMethod = downloadMethod;
-            }
-
+            this.GalleryListChanged?.Invoke(this, e);
         }
 
-        public class GalleryValidation
+        private void UpdateNoneLabelVisible()
         {
-            public GalleryAgent Agent { get; private set; } = null;
-            public string ErrorMessage { get; private set; } = null;
-            public GalleryInfo Info { get; private set; } = null;
-            public byte[] ThumbnailData { get; private set; } = null;
+            var buttons = this.RadioButtons;
+            var noneLabel = this.NoneLabel;
+            var visible = buttons.Count == 0;
 
-            private GalleryValidation()
+            if (noneLabel.Visible != visible)
             {
-
+                noneLabel.Visible = visible;
             }
-
-            public static GalleryValidation CreateByError(string errorMessage)
-            {
-                var value = new GalleryValidation();
-                value.ErrorMessage = errorMessage;
-
-                return value;
-            }
-
-            public static GalleryValidation CreateByInfo(GalleryAgent agent, GalleryInfo info, byte[] thumbnailData)
-            {
-                var value = new GalleryValidation();
-                value.Agent = agent;
-                value.Info = info;
-                value.ThumbnailData = thumbnailData;
-
-                return value;
-            }
-
         }
 
     }

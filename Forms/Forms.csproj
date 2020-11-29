@@ -40,8 +40,8 @@
     <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=2.5.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser.2.5.0\lib\net461\CommandLine.dll</HintPath>
+    <Reference Include="CommandLine, Version=2.8.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.8.0\lib\net461\CommandLine.dll</HintPath>
     </Reference>
     <Reference Include="Giselle.Commons">
       <HintPath>..\Libs\Giselle.Commons.dll</HintPath>
@@ -49,8 +49,14 @@
     <Reference Include="Giselle.Drawing">
       <HintPath>..\Libs\Giselle.Drawing.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=1.1.0.145, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpZipLib.1.1.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="Giselle.Forms">
+      <HintPath>..\Libs\Giselle.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Giselle.Json">
+      <HintPath>..\Libs\Giselle.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.1.9, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.3.1\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack.Core.1.1.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
@@ -60,9 +66,8 @@
       <HintPath>..\packages\Microsoft.WindowsAPICodePack.Shell.1.1.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -91,9 +96,9 @@
     </Compile>
     <Compile Include="Doujinshi\DownloadMethod.cs" />
     <Compile Include="Doujinshi\DownloadMethodExHentai.cs" />
-    <Compile Include="Doujinshi\DownloadMethodExHentaiOriginal.cs" />
     <Compile Include="Doujinshi\DownloadMethodE_Hentai.cs" />
     <Compile Include="Doujinshi\DownloadMethodHitomi.cs" />
+    <Compile Include="Doujinshi\GalleryValidation.cs" />
     <Compile Include="Forms\AccountInfoGroupBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -107,10 +112,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\DownloadDetailListItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\ListItemWrapper.cs" />
-    <Compile Include="Forms\OptimizedProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\ProgramSettingsControl.cs">
@@ -129,14 +130,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\FontMatchFormat.cs" />
     <Compile Include="Resources\LanguageResource.ko-KR.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LanguageResource.ko-KR.resx</DependentUpon>
     </Compile>
-    <Compile Include="Schedulers\ImageView.cs" />
-    <Compile Include="Schedulers\ImageViews.cs" />
+    <Compile Include="Schedulers\ImageViewState.cs" />
+    <Compile Include="Schedulers\ImageViewStates.cs" />
     <Compile Include="Schedulers\TaskCancelingException.cs" />
     <Compile Include="Schedulers\TaskImageDownloadEventArgs.cs" />
     <Compile Include="SR.cs" />
@@ -161,15 +161,6 @@
     <Compile Include="Forms\ExHentaiAccountSettingsControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\LabeledComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\LabeledControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\LabeledTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Forms\LabeledTrackBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -179,16 +170,12 @@
     <Compile Include="Forms\NewDownloadForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\OptimizedGroupBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Forms\OptimizedTrackBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\SettingTrackBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\Utils\ControlUtils.cs" />
     <Compile Include="Forms\Utils\DrawingUtils2.cs" />
     <Compile Include="Schedulers\TaskInvalidStateException.cs" />
     <Compile Include="Schedulers\TaskState.cs" />
@@ -200,26 +187,16 @@
     <Compile Include="Forms\MainMenu.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\OptimizedControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\OptimizedForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\FontFormat.cs" />
-    <Compile Include="Resources\FontManager.cs" />
     <Compile Include="Utils\DirectoryUtils.cs" />
     <Compile Include="Utils\ExplorerUtils.cs" />
     <Compile Include="Utils\FormUtils.cs" />
     <Compile Include="Utils\ImageUtils.cs" />
     <Compile Include="Utils\PathUtils.cs" />
     <Compile Include="Utils\StructEqualityComparer.cs" />
-    <Compile Include="Utils\FileSizeUnit.cs" />
-    <Compile Include="Utils\FileSizeUtils.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

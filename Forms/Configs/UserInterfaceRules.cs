@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Giselle.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Configs
 {
-    public class UserInterfaceRules
+    public class UserInterfaceRules : IJsonObject
     {
         public bool ConfirmBeforeExitProgram { get; set; } = true;
         public bool ConfirmBeforeRemoveDownload { get; set; } = true;
@@ -17,16 +18,16 @@ namespace Giselle.DoujinshiDownloader.Configs
 
         }
 
-        public void Read(JToken jToken)
+        public void Read(JToken json)
         {
-            this.ConfirmBeforeExitProgram = jToken.Value<bool?>("ConfirmBeforeExitProgram") ?? this.ConfirmBeforeExitProgram;
-            this.ConfirmBeforeRemoveDownload = jToken.Value<bool?>("ConfirmBeforeRemoveDownload") ?? this.ConfirmBeforeRemoveDownload;
+            this.ConfirmBeforeExitProgram = json.Value<bool?>("ConfirmBeforeExitProgram") ?? this.ConfirmBeforeExitProgram;
+            this.ConfirmBeforeRemoveDownload = json.Value<bool?>("ConfirmBeforeRemoveDownload") ?? this.ConfirmBeforeRemoveDownload;
         }
 
-        public void Write(JToken jToken)
+        public void Write(JToken json)
         {
-            jToken["ConfirmBeforeExitProgram"] = this.ConfirmBeforeExitProgram;
-            jToken["ConfirmBeforeRemoveDownload"] = this.ConfirmBeforeRemoveDownload;
+            json["ConfirmBeforeExitProgram"] = this.ConfirmBeforeExitProgram;
+            json["ConfirmBeforeRemoveDownload"] = this.ConfirmBeforeRemoveDownload;
         }
 
     }

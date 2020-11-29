@@ -12,17 +12,18 @@ using Giselle.Drawing;
 using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms.Utils;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class ExHentaiAccountSettingsControl : SettingControl
     {
-        private LabeledTextBox MemberIdControl = null;
-        private LabeledTextBox PassHashControl = null;
-        private Button VerifyButton = null;
-        private Label MessageLabel = null;
+        private readonly LabeledTextBox MemberIdControl = null;
+        private readonly LabeledTextBox PassHashControl = null;
+        private readonly Button VerifyButton = null;
+        private readonly Label MessageLabel = null;
 
-        private AccountInfoGroupBox AccountInfoGroupBox = null;
+        private readonly AccountInfoGroupBox AccountInfoGroupBox = null;
 
         private readonly object ThreadLock = new object();
         private Thread VerifyThread = null;
@@ -35,8 +36,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             this.SuspendLayout();
 
-            var dd = DoujinshiDownloader.Instance;
-            var fm = dd.FontManager;
+            var fm = this.FontManager;
 
             this.Text = SR.Get("Settings.ExHentaiAccount.Title");
 
@@ -86,7 +86,6 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void VerifyThreading()
         {
-            var dd = DoujinshiDownloader.Instance;
             var agent = new ExHentaiAgent();
 
             try
@@ -94,7 +93,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 this.Verifing = true;
                 this.VerifySuccess = false;
                 this.ImageLimit = null;
-                ControlUtils.InvokeIfNeed(this, this.UpdateVerifyControl);
+                ControlUtils.InvokeFNeeded(this, this.UpdateVerifyControl);
 
                 var account = this.ParseAccount();
                 var result = agent.CheckAccount(account);
@@ -110,13 +109,14 @@ namespace Giselle.DoujinshiDownloader.Forms
             }
             catch (Exception e)
             {
+                var dd = DoujinshiDownloader.Instance;
                 dd.ShowCrashMessageBox(e);
             }
             finally
             {
                 try
                 {
-                    ControlUtils.InvokeIfNeed(this, this.UpdateVerifyControl);
+                    ControlUtils.InvokeFNeeded(this, this.UpdateVerifyControl);
                 }
                 catch (Exception)
                 {
@@ -203,11 +203,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public ExHentaiAccount ParseAccount()
         {
-            var account = new ExHentaiAccount();
-            account.MemberId = this.MemberIdControl.TextBox.Text;
-            account.PassHash = this.PassHashControl.TextBox.Text;
-
-            return account;
+            return new ExHentaiAccount { MemberId = this.MemberIdControl.TextBox.Text, PassHash = this.PassHashControl.TextBox.Text };
         }
 
         public override void Bind(Configuration config)
@@ -219,7 +215,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public override void Apply(Configuration config)
         {
-            config.Agent.ExHentaiAccount = this.ParseAccount();
+            var account = this.ParseAccount();
+            config.Agent.ExHentaiAccount = account;
         }
 
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)
@@ -242,7 +239,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var verifyButton = this.VerifyButton;
             var verifyButtonSize = new Size(verifyButtonWidth, passHashControlBounds.Bottom - memberIdControlBounds.Top);
-            var verifyButtonBounds = map[verifyButton] = DrawingUtils2.PlaceByDirection(memberIdControlBounds, verifyButtonSize, PlaceDirection.Right, margin);
+            map[verifyButton] = DrawingUtils2.PlaceByDirection(memberIdControlBounds, verifyButtonSize, PlaceDirection.Right, margin);
 
             var messageLabel = this.MessageLabel;
             var messageLabelBounds = map[messageLabel] = DrawingUtils2.PlaceByDirection(passHashControlBounds, new Size(layoutBounds.Width, 21), PlaceDirection.Bottom, 5);

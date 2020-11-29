@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Giselle.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Configs
 {
-    public class ProgramSettings
+    public class ProgramSettings : IJsonObject
     {
         public bool AllowBackground { get; set; } = true;
         public bool AllowNotifyMessage { get; set; } = true;
@@ -20,22 +21,22 @@ namespace Giselle.DoujinshiDownloader.Configs
 
         }
 
-        public void Read(JToken jToken)
+        public void Read(JToken json)
         {
-            this.AllowBackground = jToken.Value<bool?>("AllowBackground") ?? this.AllowBackground;
-            this.AllowNotifyMessage = jToken.Value<bool?>("AllowNotifyMessage") ?? this.AllowNotifyMessage;
+            this.AllowBackground = json.Value<bool?>("AllowBackground") ?? this.AllowBackground;
+            this.AllowNotifyMessage = json.Value<bool?>("AllowNotifyMessage") ?? this.AllowNotifyMessage;
 
-            this.NotifyMessageRules.Read(jToken.Value<JObject>("NotifyMessageRules") ?? new JObject());
-            this.UserInterfaceRules.Read(jToken.Value<JObject>("UserInterfaceRules") ?? new JObject());
+            this.NotifyMessageRules.Read(json.Value<JObject>("NotifyMessageRules") ?? new JObject());
+            this.UserInterfaceRules.Read(json.Value<JObject>("UserInterfaceRules") ?? new JObject());
         }
 
-        public void Write(JToken jToken)
+        public void Write(JToken json)
         {
-            jToken["AllowBackground"] = this.AllowBackground;
-            jToken["AllowNotifyMessage"] = this.AllowNotifyMessage;
+            json["AllowBackground"] = this.AllowBackground;
+            json["AllowNotifyMessage"] = this.AllowNotifyMessage;
 
-            this.NotifyMessageRules.Write(jToken["NotifyMessageRules"] = new JObject());
-            this.UserInterfaceRules.Write(jToken["UserInterfaceRules"] = new JObject());
+            this.NotifyMessageRules.Write(json["NotifyMessageRules"] = new JObject());
+            this.UserInterfaceRules.Write(json["UserInterfaceRules"] = new JObject());
         }
 
     }

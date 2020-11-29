@@ -10,13 +10,13 @@ namespace Giselle.DoujinshiDownloader.Schedulers
     public class TaskImageDownloadEventArgs : EventArgs
     {
         public DownloadTask Task { get; }
-        public ImageView View { get; }
-        public GalleryImage Image { get; }
+        public ImageViewState View { get; }
+        public GalleryImagePath Image { get; }
         public byte[] Data { get; }
         public int Index { get; }
         public int RetryCount { get; }
 
-        public TaskImageDownloadEventArgs(DownloadTask task, ImageView view, GalleryImage image, byte[] data, int index, int retryCount)
+        public TaskImageDownloadEventArgs(DownloadTask task, ImageViewState view, GalleryImagePath image, byte[] data, int index, int retryCount)
         {
             this.Task = task;
             this.View = view;
