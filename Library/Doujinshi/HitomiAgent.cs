@@ -1,16 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Giselle.Commons.Web;
-using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.DoujinshiDownloader.Utils;
-using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
@@ -128,27 +120,36 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             var hash = file.Hash;
             var path = this.PathToHash(hash);
             var @base = new char?();
-            string ext;
-            string subpath = null;
+
+            string subpath;
+            var ext = string.Empty;
 
             if (file.HasWebp == true)
             {
-                ext = "webp";
+                subpath = "webp";
+                ext = ".webp";
                 @base = 'a';
             }
             else if (file.HasAvif == true)
             {
-                ext = "avif";
+                subpath = "avif";
+                ext = ".avif";
                 @base = 'a';
             }
             else
             {
-                ext = "jpg";
                 subpath = "images";
+                var extIndex = file.Name.LastIndexOf('.');
+
+                if (extIndex != -1)
+                {
+                    ext = file.Name.Substring(extIndex);
+                }
+
             }
 
             var prefix = this.GetDomainPrefix(hash, @base);
-            return $"https://{prefix}.hitomi.la/{subpath ?? ext}/{path}.{ext}";
+            return $"https://{prefix}.hitomi.la/{subpath ?? ext}/{path}{ext}";
         }
 
         public HitomiImageFile GetGalleryImageFile(JToken json)
