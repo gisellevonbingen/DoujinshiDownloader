@@ -56,7 +56,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public string PathToHash(string hash)
+        public string HashToPath(string hash)
         {
             var length = hash.Length;
 
@@ -82,7 +82,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public string GetSmallImagePath(string hash)
         {
-            var p = this.PathToHash(hash);
+            var p = this.HashToPath(hash);
             return $"https://atn.hitomi.la/smalltn/{p}.jpg";
         }
 
@@ -117,10 +117,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public string GetReaderImagePath(HitomiImageFile file)
         {
-            var hash = file.Hash;
-            var path = this.PathToHash(hash);
             var @base = new char?();
-
             string subpath;
             var ext = string.Empty;
 
@@ -148,8 +145,10 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
             }
 
+            var hash = file.Hash;
+            var path = this.HashToPath(hash);
             var prefix = this.GetDomainPrefix(hash, @base);
-            return $"https://{prefix}.hitomi.la/{subpath ?? ext}/{path}{ext}";
+            return $"https://{prefix}.hitomi.la/{subpath}/{path}{ext}";
         }
 
         public HitomiImageFile GetGalleryImageFile(JToken json)
