@@ -209,8 +209,8 @@ namespace Giselle.DoujinshiDownloader.Forms
         public override void Bind(Configuration config)
         {
             var exHentaiAccount = config.Agent.ExHentaiAccount;
-            this.MemberIdControl.TextBox.Text = exHentaiAccount.MemberId;
-            this.PassHashControl.TextBox.Text = exHentaiAccount.PassHash;
+            this.MemberIdControl.TextBox.Text = exHentaiAccount?.MemberId;
+            this.PassHashControl.TextBox.Text = exHentaiAccount?.PassHash;
         }
 
         public override void Apply(Configuration config)

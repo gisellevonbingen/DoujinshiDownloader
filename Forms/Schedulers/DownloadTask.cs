@@ -66,6 +66,12 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         {
             ObjectUtils.DisposeQuietly(this.DownloadFile);
             this.DisposeCancelSources(false);
+
+            lock (this.OperationLock)
+            {
+                this.Cancel();
+            }
+
         }
 
         private void RequireState(TaskState require)
@@ -111,6 +117,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         }
 
+        public bool Running => this.Thread != null;
+
         public void WaitForComplete()
         {
             Thread thread = null;
@@ -136,6 +144,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 this.DisposeCancelSources(true);
 
                 ThreadUtils.Join(this.Thread);
+                this.Thread = null;
 
                 this.UpdateState(TaskState.Completed | TaskState.Cancelled);
 

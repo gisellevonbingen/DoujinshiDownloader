@@ -6,11 +6,9 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons;
 using Giselle.DoujinshiDownloader.Configs;
-using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
@@ -144,6 +142,8 @@ namespace Giselle.DoujinshiDownloader
 
         public void ShowCrashMessageBox(Exception exception)
         {
+            Console.WriteLine(exception);
+
             var file = this.DumpCrashMessage(exception);
 
             var mainForm = this.MainForm;

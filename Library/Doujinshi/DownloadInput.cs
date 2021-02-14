@@ -66,7 +66,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             }
 
             var splited = s.Split(KeyDelimiter);
-            string numberToString = null;
+            string numberToString;
             string keyToString = null;
 
             if (splited.Length == 2)
