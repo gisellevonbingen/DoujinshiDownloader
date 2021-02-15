@@ -106,8 +106,8 @@ namespace Giselle.DoujinshiDownloader
 
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         ~NotifyIconManager()

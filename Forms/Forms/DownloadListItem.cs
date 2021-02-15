@@ -19,6 +19,7 @@ namespace Giselle.DoujinshiDownloader.Forms
     {
         public DownloadTask Task { get; }
 
+        private readonly object ThumbnailSyncRoot = new object();
         private readonly PictureBox ThumbnailControl = null;
         private readonly SelectAllableTextBox TitleLabel = null;
         private readonly OptimizedProgressBar ProgressBar = null;
@@ -182,10 +183,9 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void OnTaskImageDownload(object sender, TaskImageDownloadEventArgs e)
         {
-            var control = this.ThumbnailControl;
-
-            lock (control)
+            lock (this.ThumbnailSyncRoot)
             {
+                var control = this.ThumbnailControl;
                 var index = e.Index;
 
                 if (control.Image == null && index == 0)
