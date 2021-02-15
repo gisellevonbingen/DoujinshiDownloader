@@ -6,8 +6,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.Forms;
 
@@ -15,8 +13,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 {
     public class MainForm : OptimizedForm
     {
-        private MainMenu MainMenu = null;
-        private DownloadListBox ListBox = null;
+        private readonly MainMenu MainMenu = null;
+        private readonly DownloadListBox ListBox = null;
 
         public MainForm()
         {
@@ -163,7 +161,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var mainMenuBounds = map[mainMenu] = new Rectangle(layoutBounds.Left, layoutBounds.Top, layoutBounds.Width, 82);
 
             var listBox = this.ListBox;
-            var listBoxBounds = map[listBox] = Rectangle.FromLTRB(layoutBounds.Left, mainMenuBounds.Bottom, layoutBounds.Right, layoutBounds.Bottom);
+            map[listBox] = Rectangle.FromLTRB(layoutBounds.Left, mainMenuBounds.Bottom, layoutBounds.Right, layoutBounds.Bottom);
 
             return map;
         }

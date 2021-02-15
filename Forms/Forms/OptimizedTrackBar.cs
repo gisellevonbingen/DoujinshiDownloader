@@ -10,8 +10,7 @@ namespace Giselle.DoujinshiDownloader.Forms
     public class OptimizedTrackBar : TrackBar
     {
         private bool ValueChanging = false;
-        private int _MinimumChange = 1;
-        public int MinimumChange { get { return this._MinimumChange; } set { this._MinimumChange = value; } }
+        public int MinimumChange { get; set; } = 1;
 
         public OptimizedTrackBar()
         {
@@ -61,7 +60,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                     this.ValueChanging = true;
 
                     var value = this.Value;
-                    value = value - (value % this.MinimumChange);
+                    value -= (value % this.MinimumChange);
                     this.Value = value;
                 }
                 finally

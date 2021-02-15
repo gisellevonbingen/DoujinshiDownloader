@@ -1,18 +1,18 @@
-﻿using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.Forms;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.DoujinshiDownloader.Doujinshi;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class AccountInfoGroupBox : OptimizedGroupBox
     {
-        private Label ImageLimitLabel;
+        private readonly Label ImageLimitLabel;
 
         public AccountInfoGroupBox()
         {
@@ -37,10 +37,12 @@ namespace Giselle.DoujinshiDownloader.Forms
             }
             else
             {
-                var map = new Dictionary<string, string>();
-                map["Current"] = value.Current.ToString();
-                map["Limit"] = value.Limit.ToString();
-                map["Regenerates"] = value.Regenerates.ToString();
+                var map = new Dictionary<string, string>
+                {
+                    ["Current"] = value.Current.ToString(),
+                    ["Limit"] = value.Limit.ToString(),
+                    ["Regenerates"] = value.Regenerates.ToString()
+                };
 
                 imageLimitLabel.Text = SR.Get("Settings.ExHentaiAccount.Information.ImageLimit", map);
             }

@@ -26,12 +26,14 @@ namespace Tester
 
         public static void TestDownload()
         {
-            var tests = new List<DownloadTest>();
-            tests.Add(new DownloadTest(new DownloadInput(1651862), DownloadMethod.Hitomi)); //WEBP, AVIF
-            tests.Add(new DownloadTest(new DownloadInput(1846070), DownloadMethod.Hitomi)); //WEBP, AVIF
-            tests.Add(new DownloadTest(new DownloadInput(1474824), DownloadMethod.Hitomi)); //JPG
-            tests.Add(new DownloadTest(new DownloadInput(1490664), DownloadMethod.Hitomi)); //JPG
-            tests.Add(new DownloadTest(new DownloadInput(1836951), DownloadMethod.Hitomi)); //GIF
+            var tests = new List<DownloadTest>
+            {
+                new DownloadTest(new DownloadInput(1651862), DownloadMethod.Hitomi), //WEBP, AVIF
+                new DownloadTest(new DownloadInput(1846070), DownloadMethod.Hitomi), //WEBP, AVIF
+                new DownloadTest(new DownloadInput(1474824), DownloadMethod.Hitomi), //JPG
+                new DownloadTest(new DownloadInput(1490664), DownloadMethod.Hitomi), //JPG
+                new DownloadTest(new DownloadInput(1836951), DownloadMethod.Hitomi) //GIF
+            };
 
             foreach (var test in tests)
             {
@@ -41,9 +43,11 @@ namespace Tester
                 var info = agent.GetGalleryInfo(site, input);
                 var thumbnail = agent.GetGalleryThumbnail(info.ThumbnailUrl);
 
-                var request = new DownloadRequest();
-                request.Validation = GalleryValidation.CreateByInfo(site, input, agent, info, thumbnail);
-                request.FileName = PathUtils.FilterInvalids(info.Title);
+                var request = new DownloadRequest
+                {
+                    Validation = GalleryValidation.CreateByInfo(site, input, agent, info, thumbnail),
+                    FileName = PathUtils.FilterInvalids(info.Title)
+                };
 
                 var printed = false;
 
@@ -77,16 +81,18 @@ namespace Tester
 
         public static void TestDownloadInputParse()
         {
-            var list = new List<string>();
-            list.Add("1426111");
-            list.Add("1426111/f31e10992f");
-            list.Add("https://e-hentai.org/g/1426111/f31e10992f");
-            list.Add("https://exhentai.org/g/1426111/f31e10992f");
-            list.Add("https://e-hentai.org/g/1426111/f31e10992f/");
-            list.Add("https://exhentai.org/g/1426111/f31e10992f/");
-            list.Add("https://hitomi.la/galleries/1445130.html");
-            list.Add("https://hitomi.la/reader/1262768.html");
-            list.Add("https://hitomi.la/reader/1262768.html#1-");
+            var list = new List<string>
+            {
+                "1426111",
+                "1426111/f31e10992f",
+                "https://e-hentai.org/g/1426111/f31e10992f",
+                "https://exhentai.org/g/1426111/f31e10992f",
+                "https://e-hentai.org/g/1426111/f31e10992f/",
+                "https://exhentai.org/g/1426111/f31e10992f/",
+                "https://hitomi.la/galleries/1445130.html",
+                "https://hitomi.la/reader/1262768.html",
+                "https://hitomi.la/reader/1262768.html#1-"
+            };
 
             foreach (var str in list)
             {

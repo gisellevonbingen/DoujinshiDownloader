@@ -7,13 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Drawing;
 using Giselle.Forms;
-using static System.Windows.Forms.LinkLabel;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {

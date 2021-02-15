@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Giselle.Commons.Web;
 using Newtonsoft.Json.Linq;
 
@@ -31,7 +32,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override List<GalleryImageView> GetGalleryImageViews(Site site, DownloadInput input, GalleryParameterValues values)
         {
-            var json = this.GetGalleryInfo(input);
+            var json = this.GetGalleryInfoAsJson(input);
             return this.GetGalleryImageFiles(json).Select(this.GetGalleryImageView).ToList();
         }
 
@@ -40,7 +41,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return new GalleryImageView() { Url = this.GetReaderImagePath(file), FileName = file.Name };
         }
 
-        public JObject GetGalleryInfo(DownloadInput input)
+        public JObject GetGalleryInfoAsJson(DownloadInput input)
         {
             var galleryParameter = this.CreateRequestParameter();
             galleryParameter.Uri = $"https://ltn.hitomi.la/galleries/{input.Number}.js";
@@ -170,7 +171,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override GalleryInfo GetGalleryInfo(Site site, DownloadInput input)
         {
-            var json = this.GetGalleryInfo(input);
+            var json = this.GetGalleryInfoAsJson(input);
 
             var info = new GalleryInfo
             {

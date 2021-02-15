@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -48,8 +47,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         {
             var uri = new Uri($"https://{origin}/");
             var cookieOrigin = $".{origin}";
-            account.MemberId.Execute(v => cookies.Add(uri, new Cookie("ipb_member_id", v, "/", cookieOrigin)));
-            account.PassHash.Execute(v => cookies.Add(uri, new Cookie("ipb_pass_hash", v, "/", cookieOrigin)));
+            account?.MemberId.ConsumeOwn(v => cookies.Add(uri, new Cookie("ipb_member_id", v, "/", cookieOrigin)));
+            account?.PassHash.ConsumeOwn(v => cookies.Add(uri, new Cookie("ipb_pass_hash", v, "/", cookieOrigin)));
         }
 
         public bool CheckAccount(ExHentaiAccount account)
@@ -168,8 +167,11 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
                 foreach (var element in gdtmElements)
                 {
-                    var view = new GalleryImageView();
-                    view.Url = element.ChildNodes["div"].ChildNodes["a"].GetAttributeValue("href", null);
+                    var view = new GalleryImageView()
+                    {
+                        Url = element.ChildNodes["div"].ChildNodes["a"].GetAttributeValue("href", null)
+                    };
+
                     list.Add(view);
                 }
 

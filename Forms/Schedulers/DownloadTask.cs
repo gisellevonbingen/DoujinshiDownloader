@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,8 +23,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         private Thread Thread = null;
         private readonly List<CancellationTokenSource> CancelSources = null;
 
-        private TaskState _State = TaskState.NotStarted;
-        public TaskState State { get { return this._State; } }
+        public TaskState State { get; private set; } = TaskState.NotStarted;
         public event EventHandler StateChanged = null;
         private readonly object StateLock = new object();
 
@@ -64,7 +62,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         protected virtual void Dispose(bool disposing)
         {
-            ObjectUtils.DisposeQuietly(this.DownloadFile);
+            this.DownloadFile.DisposeQuietly();
             this.DisposeCancelSources(false);
 
             lock (this.OperationLock)
@@ -93,7 +91,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         {
             lock (this.StateLock)
             {
-                this._State = state;
+                this.State = state;
             }
 
             this.OnStateChanged(EventArgs.Empty);
@@ -249,18 +247,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 {
                     if (cancel == true)
                     {
-                        try
-                        {
-                            source.Cancel();
-                        }
-                        catch (Exception)
-                        {
-
-                        }
-
+                        source.ExecuteQuietly(t => t.Cancel());
                     }
 
-                    ObjectUtils.DisposeQuietly(source);
+                    source.DisposeQuietly();
                 }
 
                 sources.Clear();

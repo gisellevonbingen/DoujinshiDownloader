@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.Drawing;
 using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Utils;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using Giselle.Forms;
+using Giselle.Drawing;
 using Giselle.Drawing.Drawing;
+using Giselle.Forms;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
     public class ContentsSettingControl : SettingControl
     {
-        private CheckBox CompleteAutoRemoveCheckBox = null;
-        private CheckBox DownloadToArchiveCheckBox = null;
-        private LabeledTextBox DirectoryTextBox = null;
-        private Button DirectoryButton = null;
-        private Label DirectoryCommentLabel = null;
+        private readonly CheckBox CompleteAutoRemoveCheckBox = null;
+        private readonly CheckBox DownloadToArchiveCheckBox = null;
+        private readonly LabeledTextBox DirectoryTextBox = null;
+        private readonly Button DirectoryButton = null;
+        private readonly Label DirectoryCommentLabel = null;
 
         public ContentsSettingControl()
         {

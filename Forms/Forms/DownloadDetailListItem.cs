@@ -48,7 +48,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             var view = this.ImageView;
             var state = view.State;
-            var detailMessage = view.ExceptionMessage.Execute(v => $" : {SR.Get("Download.Detail.Exception." + v)}");
+            var detailMessage = view.ExceptionMessage.ConsumeSelect(v => $" : {SR.Get("Download.Detail.Exception." + v)}");
 
             var stateLabel = this.StateLabel;
             stateLabel.Text = $"{this.Index} : {SR.Get($"Download.Detail.State.{state.ToString()}")}" + detailMessage;

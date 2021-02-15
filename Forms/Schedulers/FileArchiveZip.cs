@@ -1,11 +1,11 @@
-﻿using Giselle.Commons;
-using ICSharpCode.SharpZipLib.Zip;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Giselle.Commons;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace Giselle.DoujinshiDownloader.Schedulers
 {
@@ -34,8 +34,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         {
             base.Dispose(disposing);
 
-            ObjectUtils.DisposeQuietly(this.Stream);
-            ObjectUtils.DisposeQuietly(this.BaseStream);
+            this.Stream.DisposeQuietly();
+            this.BaseStream.DisposeQuietly();
         }
 
     }

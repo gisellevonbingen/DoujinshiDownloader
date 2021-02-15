@@ -1,7 +1,4 @@
-﻿using Giselle.Drawing;
-using Giselle.DoujinshiDownloader.Configs;
-using Giselle.DoujinshiDownloader.Forms.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,6 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.DoujinshiDownloader.Configs;
+using Giselle.DoujinshiDownloader.Forms.Utils;
+using Giselle.Drawing;
 using Giselle.Drawing.Drawing;
 
 namespace Giselle.DoujinshiDownloader.Forms

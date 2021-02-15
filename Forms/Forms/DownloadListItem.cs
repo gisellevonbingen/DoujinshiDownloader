@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.Drawing;
+using Giselle.Commons;
+using Giselle.Commons.Enums;
 using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
-using Giselle.Commons;
+using Giselle.Drawing;
 using Giselle.Forms;
-using Giselle.Commons.Enums;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -21,12 +19,12 @@ namespace Giselle.DoujinshiDownloader.Forms
     {
         public DownloadTask Task { get; }
 
-        private PictureBox ThumbnailControl = null;
-        private SelectAllableTextBox TitleLabel = null;
-        private OptimizedProgressBar ProgressBar = null;
-        private Button DetailButton = null;
-        private Button OpenButton = null;
-        private Button RemoveButton = null;
+        private readonly PictureBox ThumbnailControl = null;
+        private readonly SelectAllableTextBox TitleLabel = null;
+        private readonly OptimizedProgressBar ProgressBar = null;
+        private readonly Button DetailButton = null;
+        private readonly Button OpenButton = null;
+        private readonly Button RemoveButton = null;
 
         public event EventHandler RemoveRequest = null;
 
@@ -93,7 +91,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void ChangeThumbnail(PictureBox control, Image image)
         {
-            ObjectUtils.DisposeQuietly(control.Image);
+            control.Image.DisposeQuietly();
             control.Image = image;
         }
 
@@ -101,7 +99,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             base.Dispose(disposing);
 
-            ObjectUtils.DisposeQuietly(this.ThumbnailControl.Image);
+            this.ThumbnailControl.Image.DisposeQuietly();
         }
 
         protected override void UpdateControlsBoundsPreferred(Rectangle layoutBounds)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
-    public interface GalleryParameterType
+    public interface IGalleryParameterType
     {
         Guid Id { get; }
         string Name { get; }
@@ -14,7 +14,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         bool Available(object value);
     }
 
-    public class GalleryParameterType<T> : GalleryParameterType, IEquatable<GalleryParameterType<T>>
+    public class GalleryParameterType<T> : IGalleryParameterType, IEquatable<GalleryParameterType<T>>
     {
         public Guid Id { get; }
         public string Name { get; }
@@ -30,7 +30,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return true;
         }
 
-        bool GalleryParameterType.Available(object value)
+        bool IGalleryParameterType.Available(object value)
         {
             return value is T t ? this.Available(t) : false;
         }

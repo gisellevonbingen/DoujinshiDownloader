@@ -1,15 +1,14 @@
-﻿using Giselle.Commons;
-using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.DoujinshiDownloader.Utils;
-using Giselle.Forms;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Giselle.DoujinshiDownloader.Forms.NewDownloadForm;
+using Giselle.Commons;
+using Giselle.DoujinshiDownloader.Doujinshi;
+using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
@@ -18,8 +17,8 @@ namespace Giselle.DoujinshiDownloader.Forms
         public event EventHandler GalleryListChanged;
         public event EventHandler SelectedGalleryChanged;
 
-        private Label NoneLabel;
-        private List<RadioButton> RadioButtons;
+        private readonly Label NoneLabel;
+        private readonly List<RadioButton> RadioButtons;
 
         private RadioButton _SelectedRadioButton;
         private RadioButton SelectedRadioButton { get => this._SelectedRadioButton; set { this._SelectedRadioButton = value; this.OnSelectedGalleryChanged(EventArgs.Empty); } }
@@ -30,9 +29,9 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.Text = SR.Get("DownloadSelect.Title");
 
-            this.NoneLabel = new Label();
-            this.NoneLabel.Text = SR.Get("DownloadSelect.None");
-            this.Controls.Add(this.NoneLabel);
+            var noneLabel = this.NoneLabel = new Label();
+            noneLabel.Text = SR.Get("DownloadSelect.None");
+            this.Controls.Add(noneLabel);
 
             this.RadioButtons = new List<RadioButton>();
 
@@ -94,7 +93,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var enabled = validation.IsError == false;
             var button = new RadioButton
             {
-                Text = $"{SR.Get($"DownloadSelect.Site.{validation.Site.Name}")}{validation.ErrorMessage.Execute(s => $"({s})")}",
+                Text = $"{SR.Get($"DownloadSelect.Site.{validation.Site.Name}")}{validation.ErrorMessage.ConsumeSelect(s => $"({s})")}",
                 Enabled = enabled,
                 Tag = validation,
             };

@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Giselle.Commons;
-using Giselle.DoujinshiDownloader.Doujinshi;
 
 namespace Giselle.DoujinshiDownloader.Schedulers
 {
@@ -20,7 +19,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         private ManualResetEventSlim ResetEvent = null;
         private Thread ExecuteThread = null;
 
-        private List<DownloadTask> Queue = null;
+        private readonly List<DownloadTask> Queue = null;
 
         public DownloadScheduler()
         {
@@ -85,7 +84,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                             }
                             finally
                             {
-                                ObjectUtils.DisposeQuietly(task);
+                                task.DisposeQuietly();
                             }
 
                         }
@@ -140,7 +139,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     ThreadUtils.AbortAndJoin(this.ExecuteThread);
                     this.ExecuteThread = null;
 
-                    ObjectUtils.DisposeQuietly(this.ResetEvent);
+                    this.ResetEvent.DisposeQuietly();
                     this.ResetEvent = null;
                 }
                 finally

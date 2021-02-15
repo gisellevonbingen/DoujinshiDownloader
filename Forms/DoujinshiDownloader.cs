@@ -99,7 +99,7 @@ namespace Giselle.DoujinshiDownloader
 
         private void SetUILanguage(string language)
         {
-            var culture = language.Execute(l => CultureInfo.GetCultureInfo(l)) ?? CultureInfo.CurrentUICulture;
+            var culture = language.ConsumeSelect(l => CultureInfo.GetCultureInfo(l), CultureInfo.CurrentUICulture);
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
@@ -109,7 +109,7 @@ namespace Giselle.DoujinshiDownloader
 
         private void OnConsoleCancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
-            ObjectUtils.DisposeQuietly(this);
+            this.DisposeQuietly();
         }
 
         private void Run()
@@ -117,7 +117,6 @@ namespace Giselle.DoujinshiDownloader
             try
             {
                 this.Config.Load();
-
                 this.Scheduler.Start();
 
                 using (var mainForm = new MainForm())
@@ -145,7 +144,6 @@ namespace Giselle.DoujinshiDownloader
             Console.WriteLine(exception);
 
             var file = this.DumpCrashMessage(exception);
-
             var mainForm = this.MainForm;
 
             if (mainForm != null)
@@ -233,7 +231,7 @@ namespace Giselle.DoujinshiDownloader
 
             }
 
-            ObjectUtils.DisposeQuietly(this);
+            this.DisposeQuietly();
         }
 
         ~DoujinshiDownloader()
@@ -247,11 +245,11 @@ namespace Giselle.DoujinshiDownloader
             GC.SuppressFinalize(this);
         }
 
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
-            ObjectUtils.DisposeQuietly(this.MainForm);
-            ObjectUtils.DisposeQuietly(this.Scheduler);
-            ObjectUtils.DisposeQuietly(this.NotifyIconManager);
+            this.MainForm.DisposeQuietly();
+            this.Scheduler.DisposeQuietly();
+            this.NotifyIconManager.DisposeQuietly();
         }
 
     }

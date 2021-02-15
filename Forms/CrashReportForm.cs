@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.DoujinshiDownloader.Forms;
 using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Forms;
 
@@ -16,12 +14,12 @@ namespace Giselle.DoujinshiDownloader
     {
         private readonly string DumpFile = null;
 
-        private Label MessageLabel = null;
-        private Button CopyButton = null;
-        private Button OpenDirectoryButton = null;
-        private Button CloseButton = null;
+        private readonly Label MessageLabel = null;
+        private readonly Button CopyButton = null;
+        private readonly Button OpenDirectoryButton = null;
+        private readonly Button CloseButton = null;
 
-        private TextBox LogTextBox = null;
+        private readonly TextBox LogTextBox = null;
 
         public CrashReportForm(string dumpFile, Exception exception)
         {

@@ -1,10 +1,10 @@
-﻿using Giselle.Commons;
-using Giselle.DoujinshiDownloader.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Giselle.Commons;
+using Giselle.DoujinshiDownloader.Utils;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
@@ -24,9 +24,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public static DownloadInput Parse(string s)
         {
-            DownloadInput value = new DownloadInput();
-
-            if (TryParse(s, out value) == false)
+            if (TryParse(s, out var value) == false)
             {
                 throw new FormatException();
             }
@@ -44,8 +42,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             }
 
             s = s.ToLowerInvariant().Replace(" ", "");
-            s = StringUtils.RemovePrefix(s, "/");
-            s = StringUtils.RemoveSuffx(s, "/");
+            s = s.RemovePrefix("/");
+            s = s.RemoveSuffix("/");
 
             foreach (var site in Site.Knowns)
             {

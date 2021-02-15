@@ -17,12 +17,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override GalleryAgent CreateAgent()
         {
-            var agent = new ExHentaiAgent();
-            agent.Account = null;
-
-            return agent;
+            return new ExHentaiAgent { Account = null };
         }
-
 
     }
 

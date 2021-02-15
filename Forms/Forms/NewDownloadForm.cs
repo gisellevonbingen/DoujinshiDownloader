@@ -7,13 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons;
-using Giselle.Drawing;
+using Giselle.Commons.Web;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
-using System.IO;
 using Giselle.DoujinshiDownloader.Utils;
-using Giselle.Commons.Web;
+using Giselle.Drawing;
 using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
@@ -114,7 +113,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             base.Dispose(disposing);
 
-            ObjectUtils.DisposeQuietly(this.ThumbnailControl.Image);
+            this.ThumbnailControl.Image.DisposeQuietly();
         }
 
         private void OnAddButtonClick(object sender, EventArgs e)
@@ -289,10 +288,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             foreach (var method in DownloadMethod.Knowns)
             {
-                var parameter = new AgentGetGelleryInfosParameter();
-                parameter.Agent = method.CreateAgent();
-                parameter.Site = method.Site;
-                parameter.DownloadInput = downloadInput;
+                var parameter = new AgentGetGelleryInfosParameter
+                {
+                    Agent = method.CreateAgent(),
+                    Site = method.Site,
+                    DownloadInput = downloadInput
+                };
 
                 var task = Task.Factory.StartNew(() =>
                 {
@@ -359,7 +360,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             titleLabel.Text = string.Empty;
 
             var thumbnailControl = this.ThumbnailControl;
-            ObjectUtils.DisposeQuietly(thumbnailControl.Image);
+            thumbnailControl.Image.DisposeQuietly();
             thumbnailControl.Image = null;
 
             var galleryValidation = this.DownloadSelectGroupBox.SelectedGallery;

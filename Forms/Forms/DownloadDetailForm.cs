@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.Commons;
 using Giselle.Commons.Enums;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.Forms;
@@ -14,12 +13,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 {
     public class DownloadDetailForm : OptimizedForm
     {
-        private DownloadTask Task = null;
+        public DownloadTask Task { get; private set; }
 
-        private DownloadDetailListBox ListBox = null;
-        private LinkLabel[] StateLabels = null;
+        private readonly DownloadDetailListBox ListBox = null;
+        private readonly LinkLabel[] StateLabels = null;
 
-        private Button CloseButton = null;
+        private readonly Button CloseButton = null;
 
         public DownloadDetailForm()
         {

@@ -15,25 +15,6 @@ namespace Giselle.DoujinshiDownloader.Utils
             return value;
         }
 
-        public static void Execute<T>(this T obj, Action<T> action)
-        {
-            if (obj != null)
-            {
-                action(obj);
-            }
-
-        }
-
-        public static R Execute<T, R>(this T obj, Func<T, R> func)
-        {
-            if (obj != null)
-            {
-                return func(obj);
-            }
-
-            return default;
-        }
-
     }
 
 }

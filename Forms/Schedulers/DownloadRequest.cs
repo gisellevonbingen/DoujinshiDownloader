@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.DoujinshiDownloader.Utils;
 
 namespace Giselle.DoujinshiDownloader.Schedulers
 {

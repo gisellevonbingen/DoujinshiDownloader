@@ -1,19 +1,16 @@
-﻿using Giselle.DoujinshiDownloader.Doujinshi;
-using Newtonsoft.Json.Linq;
-using System;
-using System.CodeDom;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using Giselle.DoujinshiDownloader.Doujinshi;
 
 namespace Giselle.DoujinshiDownloader.Schedulers
 {
     public class ImageViewStates : IEnumerable<ImageViewState>
     {
-        private List<ImageViewState> Views;
+        private readonly List<ImageViewState> Views;
 
         public ImageViewStates(IEnumerable<GalleryImageView> imageViewUrls)
         {

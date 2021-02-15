@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.Drawing;
 using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Forms.Utils;
-using Giselle.DoujinshiDownloader.Utils;
+using Giselle.Drawing;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {

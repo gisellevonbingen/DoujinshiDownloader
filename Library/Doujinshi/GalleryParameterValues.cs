@@ -8,11 +8,11 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class GalleryParameterValues
     {
-        private Dictionary<GalleryParameterType, object> Values;
+        private readonly Dictionary<IGalleryParameterType, object> Values;
 
         public GalleryParameterValues()
         {
-            this.Values = new Dictionary<GalleryParameterType, object>();
+            this.Values = new Dictionary<IGalleryParameterType, object>();
         }
 
         public void Set<T>(GalleryParameterType<T> type, T value)
