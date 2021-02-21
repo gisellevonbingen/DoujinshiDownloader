@@ -14,6 +14,11 @@ namespace Giselle.DoujinshiDownloader
         public NotifyIcon Impl { get; }
         public Icon Icon { get; }
 
+
+        public MenuItem MenuItemNewDownload { get; }
+        public MenuItem MenuItemDownloadDirectory { get; }
+        public MenuItem MenuItemSettings { get; }
+
         public MenuItem MenuItemMainFormShow { get; }
         public MenuItem MenuItemMainFormHide { get; }
         public MenuItem MenuItemDispose { get; }
@@ -26,6 +31,17 @@ namespace Giselle.DoujinshiDownloader
             impl.DoubleClick += this.OnImplDoubleClick;
 
             var menu = impl.ContextMenu = new ContextMenu();
+
+            var itemNewDownload = this.MenuItemNewDownload = menu.MenuItems.Add(SR.Get("MainMenu.NewDownloadButton"));
+            itemNewDownload.Click += (sender, e) => DoujinshiDownloader.Instance.MainForm.MainMenu.OpenNewDownloadForm();
+
+            var itemDownloadDirectory = this.MenuItemDownloadDirectory = menu.MenuItems.Add(SR.Get("MainMenu.DownloadDirectory"));
+            itemDownloadDirectory.Click += (sender, e) => DoujinshiDownloader.Instance.MainForm.MainMenu.OpenDownloadDirectory();
+
+            var itemSettings = this.MenuItemSettings = menu.MenuItems.Add(SR.Get("MainMenu.Settings"));
+            itemSettings.Click += (sender, e) => DoujinshiDownloader.Instance.MainForm.MainMenu.OpenSettingsForm();
+
+            menu.MenuItems.Add("-");
 
             var itemShow = this.MenuItemMainFormShow = menu.MenuItems.Add(SR.Get("NotifyIcon.Show"));
             itemShow.Click += this.OnMenuItemMainFormShowClick;

@@ -17,12 +17,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 {
     public class MainMenu : OptimizedControl
     {
-        private readonly Button SettingsButton = null;
-        private readonly Button DownloadDirectoryButton = null;
+        public Button SettingsButton { get;  }
+        public Button DownloadDirectoryButton { get; }
+        public Button NewDownloadButton { get; }
 
         private readonly LinkLabel LinkLabel = null;
 
-        private readonly Button NewDownloadButton = null;
 
         public event EventHandler<DownloadRequestEventArgs> DownloadRequested = null;
 
@@ -61,7 +61,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             Process.Start("https://github.com/gisellevonbingen/DoujinshiDownloader/issues?q=");
         }
 
-        private void OnDownloadDirectoryButtonClick(object sender, EventArgs e)
+        public void OpenDownloadDirectory()
         {
             var config = DoujinshiDownloader.Instance.Config.Values;
             var directory = PathUtils.GetPath(config.Content.DownloadDirectory);
@@ -70,7 +70,12 @@ namespace Giselle.DoujinshiDownloader.Forms
             ExplorerUtils.Open(directory);
         }
 
-        private void OnNewDownloadButtonClick(object sender, EventArgs e)
+        private void OnDownloadDirectoryButtonClick(object sender, EventArgs e)
+        {
+            this.OpenDownloadDirectory();
+        }
+
+        public void OpenNewDownloadForm()
         {
             using (var form = new NewDownloadForm())
             {
@@ -84,18 +89,28 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
+        private void OnNewDownloadButtonClick(object sender, EventArgs e)
+        {
+            this.OpenNewDownloadForm();
+        }
+
         private void OnDownloadRequested(DownloadRequestEventArgs e)
         {
             this.DownloadRequested?.Invoke(this, e);
         }
 
-        private void OnSettingsButtonClick(object sender, EventArgs e)
+        public void OpenSettingsForm()
         {
             using (var form = new SettingsForm())
             {
                 form.ShowDialog(this);
             }
 
+        }
+
+        private void OnSettingsButtonClick(object sender, EventArgs e)
+        {
+            this.OpenSettingsForm();
         }
 
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)

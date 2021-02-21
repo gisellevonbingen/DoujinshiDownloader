@@ -13,8 +13,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 {
     public class MainForm : OptimizedForm
     {
-        private readonly MainMenu MainMenu = null;
-        private readonly DownloadListBox ListBox = null;
+        public MainMenu MainMenu { get; }
+        public DownloadListBox ListBox { get; }
 
         public MainForm()
         {
