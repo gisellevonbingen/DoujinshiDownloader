@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Giselle.Commons.Web;
+using Giselle.DoujinshiDownloader.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
@@ -169,10 +170,29 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return json["files"].Values<JToken>().Select(this.GetGalleryImageFile);
         }
 
+        public string GetLtnCommon()
+        {
+            var req = this.CreateRequestParameter();
+            req.Uri = "https://ltn.hitomi.la/common.js";
+            req.Method = "GET";
+
+            using (var res = this.Explorer.Request(req))
+            {
+                return res.ReadAsString();
+            }
+
+        }
+
         public override GalleryInfo GetGalleryInfo(Site site, DownloadInput input)
         {
-            var json = this.GetGalleryInfoAsJson(input);
+            var ltnMD5 = this.GetLtnCommon().GetMD5String();
 
+            if (ltnMD5.Equals("7DE16D68B72412F4D36623E66576E23A") == false)
+            {
+                throw new HitomiOutdateException($"Hitomi Agent code is output, current md5 is : {ltnMD5}");
+            }
+
+            var json = this.GetGalleryInfoAsJson(input);
             var info = new GalleryInfo
             {
                 GalleryUrl = site.ToUrl(input),

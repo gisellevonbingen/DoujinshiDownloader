@@ -345,6 +345,10 @@ namespace Giselle.DoujinshiDownloader.Forms
                 {
                     return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.ExHentaiAccountError"));
                 }
+                else if (exception is HitomiOutdateException)
+                {
+                    return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.HitomiOutdateError"));
+                }
                 else
                 {
                     return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.TitleError"));

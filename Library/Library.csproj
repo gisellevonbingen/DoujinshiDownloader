@@ -66,6 +66,7 @@
     <Compile Include="Doujinshi\ExHentaiAccountException.cs" />
     <Compile Include="Doujinshi\ExHentaiAgent.cs" />
     <Compile Include="Doujinshi\GalleryImageView.cs" />
+    <Compile Include="Doujinshi\HitomiOutdateException.cs" />
     <Compile Include="Doujinshi\IGalleryParameterType.cs" />
     <Compile Include="Doujinshi\GalleryParameterValues.cs" />
     <Compile Include="Doujinshi\HitomiImageFile.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Doujinshi\ImageRequestCreateException.cs" />
     <Compile Include="Doujinshi\Site.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\MD5Utils.cs" />
     <Compile Include="Utils\ObjectUtils2.cs" />
     <Compile Include="Utils\StringUtils2.cs" />
     <Compile Include="Utils\UriUtils.cs" />

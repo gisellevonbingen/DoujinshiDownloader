@@ -230,6 +230,9 @@
   <data name="DownloadSelect.Verify.TitleError" xml:space="preserve">
     <value>제목을 가져올 수 없음</value>
   </data>
+  <data name="DownloadSelect.Verify.HitomiOutdateError" xml:space="preserve">
+    <value>히토미 코드 만료됨, 프로그램 업데이트가 필요합니다</value>
+  </data>
   <data name="DownloadSelect.Add.MissingInput" xml:space="preserve">
     <value>번호 및 URL입력후 확인해주세요</value>
   </data>

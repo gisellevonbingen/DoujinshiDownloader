@@ -230,6 +230,9 @@ Are You Sure You Want To Quit?</value>
   <data name="DownloadSelect.Verify.TitleError" xml:space="preserve">
     <value>Error To Get Title</value>
   </data>
+  <data name="DownloadSelect.Verify.HitomiOutdateError" xml:space="preserve">
+    <value>Hitomi Agent Code Outdate, Please update program</value>
+  </data>
   <data name="DownloadSelect.Add.MissingInput" xml:space="preserve">
     <value>Missing Input Verify</value>
   </data>
