@@ -301,7 +301,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     }
 
                     this.NextIndex += 1;
-                    Thread.Sleep(1000);
                 }
 
                 var imageViewState = this.ImageViewStates[index];
