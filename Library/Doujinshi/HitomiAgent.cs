@@ -99,12 +99,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             var number_of_frontends = 3;
             var g = Convert.ToInt32(this.GetG(hash), 16);
 
-            if (g < 0x30)
+            if (g < 0x70)
             {
                 number_of_frontends = 2;
             }
 
-            if (g < 0x09)
+            if (g < 0x49)
             {
                 g = 1;
             }
