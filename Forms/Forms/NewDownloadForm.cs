@@ -102,6 +102,21 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.UpdateControlsBoundsPreferred();
         }
 
+        protected override void OnKeyReturn()
+        {
+            base.OnKeyReturn();
+
+            if (this.InputControl.TextBox.Focused == true)
+            {
+                this.VerifyButton.PerformClick();
+            }
+            else if (this.DownloadSelectGroupBox.SelectedGallery != null)
+            {
+                this.AddButton.PerformClick();
+            }
+
+        }
+
         private void OnDownloadSelectGroupBoxGalleryListChanged(object sender, EventArgs e)
         {
             var layoutBounds = this.GetLayoutBounds();
