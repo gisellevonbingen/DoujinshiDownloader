@@ -11,6 +11,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class HitomiAgent : GalleryAgent
     {
+        public static string CurrentMD5 { get; } = "7DE16D68B72412F4D36623E66576E23A";
         public static int HashLeastLength { get; } = 3;
 
         public HitomiAgent()
@@ -187,7 +188,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         {
             var ltnMD5 = this.GetLtnCommon().GetMD5String();
 
-            if (ltnMD5.Equals("7DE16D68B72412F4D36623E66576E23A") == false)
+            if (ltnMD5.Equals(CurrentMD5) == false)
             {
                 throw new HitomiOutdateException($"Hitomi Agent code is output, current md5 is : {ltnMD5}");
             }
