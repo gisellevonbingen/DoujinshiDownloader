@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.DoujinshiDownloader.Schedulers;
+using Giselle.Drawing.Drawing;
 using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
@@ -15,8 +16,8 @@ namespace Giselle.DoujinshiDownloader.Forms
         private DownloadTask Task = null;
 
         private readonly List<DownloadDetailListItem> Items = null;
-        private readonly List<DownloadDetailListItem> VisibleItems = null;
         private readonly Panel Panel = null;
+        private readonly Control ScrollGenerator = null;
 
         private ViewState[] _ActiveStates;
         public ViewState[] ActiveStates { get => this._ActiveStates; set { this._ActiveStates = value; this.OnActiveStatesChanged(); } }
@@ -24,14 +25,19 @@ namespace Giselle.DoujinshiDownloader.Forms
         public DownloadDetailListBox()
         {
             this.Items = new List<DownloadDetailListItem>();
-            this.VisibleItems = new List<DownloadDetailListItem>();
 
             this.SuspendLayout();
             var controls = this.Controls;
 
             var panel = this.Panel = new Panel();
+            panel.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             panel.AutoScroll = true;
+            panel.Paint += this.OnPanelPaint;
+            panel.MouseDoubleClick += this.OnPanelMouseDoubleClick;
             controls.Add(panel);
+
+            var scrollGenerator = this.ScrollGenerator = new Control() { Bounds = new Rectangle() };
+            panel.Controls.Add(scrollGenerator);
 
             this.ResumeLayout(false);
 
@@ -64,14 +70,9 @@ namespace Giselle.DoujinshiDownloader.Forms
             for (int i = 0; i < taskCount; i++)
             {
                 var imageView = task.ImageViewStates[i];
-                var item = new DownloadDetailListItem(i, imageView)
-                {
-                    Font = fm[9.0F, FontStyle.Regular],
-                    Visible = false
-                };
+                var item = new DownloadDetailListItem(i, imageView) { Visible = false };
 
                 items.Add(item);
-                controls.Add(item);
             }
 
             task.Progressed += this.OnTaskProgressed;
@@ -84,6 +85,71 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.UpdateItemsVisible();
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            var g = e.Graphics;
+            var panel = this.Panel;
+            var panelWidth = panel.Width;
+
+            using (var linePen = new Pen(Color.Black, 1.0F))
+            {
+                var y = panel.Bottom;
+                g.DrawLine(linePen, 0, y, panelWidth, y);
+            }
+
+        }
+
+        private void OnPanelMouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var mouseLocation = e.Location;
+            mouseLocation.Y -= this.Panel.AutoScrollPosition.Y;
+
+            var item = this.Items.Where(i => i.Visible).FirstOrDefault(i => i.Bounds.Contains(mouseLocation));
+
+            if (item != null)
+            {
+                Clipboard.SetText(item.ImageView.View.Url, TextDataFormat.Text);
+            }
+
+        }
+
+        private void OnPanelPaint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            var font = this.FontManager[9.0F, FontStyle.Regular];
+            var panel = this.Panel;
+            var panelWidth = panel.Width;
+            var panelScrollOffset = panel.AutoScrollPosition.Y;
+
+            foreach (var item in this.Items.Where(i => i.Visible))
+            {
+                var itemBounds = item.Bounds;
+                itemBounds.Y += panelScrollOffset;
+
+                using (var brush = new SolidBrush(item.ForeColor))
+                {
+                    using (var format = new StringFormat())
+                    {
+                        format.Alignment = StringAlignment.Near;
+                        format.LineAlignment = StringAlignment.Center;
+
+                        g.DrawString($"{item.Text}\r\n{item.ImageView.View.FileName}", font, brush, itemBounds, format);
+                    }
+
+                }
+
+                using (var linePen = new Pen(Color.Black, 1.0F))
+                {
+                    var y = itemBounds.Bottom;
+                    g.DrawLine(linePen, 0, y, panelWidth, y);
+                }
+
+            }
+
+        }
+
         public void UpdateItemsVisible()
         {
             var items = this.Items;
@@ -94,34 +160,36 @@ namespace Giselle.DoujinshiDownloader.Forms
                 this.UpdateItemVisible(item);
             }
 
-            this.UpdateControlsBoundsPreferred();
+            this.UpdateItemsBounds();
+        }
+
+        private void UpdateItemsBounds()
+        {
+            var top = 0;
+            var panel = this.Panel;
+            var prev = panel.AutoScrollPosition;
+            panel.AutoScrollPosition = new Point(0, 0);
+            var panelWidth = panel.Width;
+
+            foreach (var item in this.Items.Where(i => i.Visible))
+            {
+                item.Bounds = new Rectangle(10, top, panelWidth - 10, 50);
+                top = item.Bounds.Bottom;
+            }
+
+            this.ScrollGenerator.Top = top;
+            panel.AutoScrollPosition = new Point(prev.X, Math.Abs(prev.Y));
+            panel.Invalidate();
         }
 
         public void UpdateItemVisible(DownloadDetailListItem item)
         {
             var activeStates = this.ActiveStates;
-            var visibles = this.VisibleItems;
             var any = activeStates.Length == 0;
-
             var state = item.ImageView.State;
 
-            if (any || Array.IndexOf(activeStates, state) > -1)
-            {
-                if (visibles.Contains(item) == false)
-                {
-                    visibles.Add(item);
-                    item.Visible = true;
-                }
-
-            }
-            else
-            {
-                visibles.Remove(item);
-                item.Visible = false;
-            }
-
+            item.Visible = any || Array.IndexOf(activeStates, state) > -1;
         }
-
 
         protected override void UpdateControlsBoundsPreferred(Rectangle layoutBounds)
         {
@@ -138,24 +206,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)
         {
             var map = base.GetPreferredBounds(layoutBounds);
-
-            map[this.Panel] = layoutBounds;
-
-            var items = this.Items;
-            var visibles = this.VisibleItems;
-            int top = 0;
-
-            foreach (var item in items)
-            {
-                if (visibles.Contains(item) == true)
-                {
-                    var size = item.GetPreferredSize(new Size(layoutBounds.Width - 17, 0));
-                    var itemBounds = map[item] = new Rectangle(layoutBounds.Left, top, size.Width, size.Height);
-                    top = itemBounds.Bottom;
-                }
-
-            }
-
+            map[this.Panel] = layoutBounds.InTopBounds(layoutBounds.Height - 1);
             return map;
         }
 
@@ -166,7 +217,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 var item = this.Items[e.Index];
                 item.UpdateState();
                 this.UpdateItemVisible(item);
-                this.UpdateControlsBoundsPreferred();
+                this.UpdateItemsBounds();
             });
 
         }

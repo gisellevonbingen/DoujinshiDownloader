@@ -45,7 +45,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 var state = states[i];
                 var stateLabel = stateLabels[i] = new LinkLabel();
-                stateLabel.Text = SR.Get($"Download.Detail.State.{state.ToString()}");
+                stateLabel.Text = SR.Get($"Download.Detail.State.{state}");
                 stateLabel.Tag = state;
                 stateLabel.Font = fm[10.0F, FontStyle.Regular];
                 stateLabel.LinkClicked += this.OnStateLabelsLinkClicked;

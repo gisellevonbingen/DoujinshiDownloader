@@ -31,7 +31,7 @@ namespace Giselle.DoujinshiDownloader.Utils
 
         public static string Substring(this string text, string prefix, string suffix, int startIndex)
         {
-            return Substring(text, prefix, suffix, 0, out var endIndex);
+            return Substring(text, prefix, suffix, startIndex, out _);
         }
 
         public static string Substring(this string text, string prefix, string suffix, int startIndex, out int endIndex)

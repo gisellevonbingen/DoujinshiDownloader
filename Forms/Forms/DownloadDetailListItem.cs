@@ -6,40 +6,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons;
-using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
-using Giselle.DoujinshiDownloader.Utils;
-using Giselle.Drawing;
-using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
 {
-    public class DownloadDetailListItem : OptimizedControl
+    public class DownloadDetailListItem
     {
         public int Index { get; }
         public ImageViewState ImageView { get; }
 
-        private readonly Label StateLabel;
-        private readonly TextBox UrlTextBox;
+        private bool _Visible = false;
+        public bool Visible { get => this._Visible; set { if (this.Visible != value) { this._Visible = value; this.OnVisibleChanged(EventArgs.Empty); } } }
+        public event EventHandler VisibleChanged;
+
+        private Rectangle _Bounds = new Rectangle();
+        public Rectangle Bounds { get => this._Bounds; set { if (this.Bounds != value) { this._Bounds = value; this.OnBoundsChanged(EventArgs.Empty); } } }
+        public event EventHandler BoundsChanged;
+
+        public string Text { get; private set; } = string.Empty;
+        public Color ForeColor { get; private set; } = Color.Black;
 
         public DownloadDetailListItem(int index, ImageViewState imageView)
         {
             this.Index = index;
             this.ImageView = imageView;
-
-            this.SuspendLayout();
-
-            var stateLabel = this.StateLabel = new Label();
-            this.Controls.Add(stateLabel);
-
-            var urlTextBox = this.UrlTextBox = new TextBox();
-            urlTextBox.ReadOnly = true;
-            urlTextBox.Text = imageView.View.Url;
-            urlTextBox.BorderStyle = BorderStyle.None;
-            this.Controls.Add(urlTextBox);
-
-            this.ResumeLayout(false);
-            this.Padding = new Padding(10, 5, 0, 6);
 
             this.UpdateState();
         }
@@ -50,37 +40,18 @@ namespace Giselle.DoujinshiDownloader.Forms
             var state = view.State;
             var detailMessage = view.ExceptionMessage.ConsumeSelect(v => $" : {SR.Get("Download.Detail.Exception." + v)}");
 
-            var stateLabel = this.StateLabel;
-            stateLabel.Text = $"{this.Index} : {SR.Get($"Download.Detail.State.{state.ToString()}")}" + detailMessage;
-            stateLabel.ForeColor = (state == ViewState.Exception) ? Color.Red : Color.Black;
+            this.Text = $"{this.Index} : {SR.Get($"Download.Detail.State.{state}")}" + detailMessage;
+            this.ForeColor = (state == ViewState.Exception) ? Color.Red : Color.Black;
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        protected virtual void OnVisibleChanged(EventArgs e)
         {
-            base.OnPaint(e);
-
-            using (var pen = new Pen(Brushes.Black, 1.0F))
-            {
-                var g = e.Graphics;
-                var padding = this.Padding;
-                var size = this.ClientSize;
-                var bottom = size.Height - pen.Width;
-                g.DrawLine(pen, 0, bottom, size.Width, bottom);
-            }
-
+            this.VisibleChanged?.Invoke(this, e);
         }
 
-        protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)
+        protected virtual void OnBoundsChanged(EventArgs e)
         {
-            var map = base.GetPreferredBounds(layoutBounds);
-
-            var stateLabel = this.StateLabel;
-            map[stateLabel] = new Rectangle(layoutBounds.Left, layoutBounds.Top, layoutBounds.Width, stateLabel.PreferredHeight);
-
-            var urlTextBox = this.UrlTextBox;
-            map[urlTextBox] = DrawingUtils2.PlaceByDirection(map[stateLabel], new Size(layoutBounds.Width, urlTextBox.PreferredHeight), PlaceDirection.Bottom, 0);
-
-            return map;
+            this.BoundsChanged?.Invoke(this, e);
         }
 
     }
