@@ -148,7 +148,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             progressBar.Value = task.ImageViewStates?.CountState(ViewState.Success | ViewState.Exception) ?? 0;
 
             var states = EnumUtils.Values<TaskState>();
-            var text = string.Join(", ", states.Where(v => state.HasFlag(v)).Select(v => SR.Get($"Downlaod.State.{v.ToString()}")));
+            var text = string.Join(", ", states.Where(v => state.HasFlag(v)).Select(v => SR.Get($"Downlaod.State.{v}")));
 
             if (state.HasFlag(TaskState.Running) == true)
             {
