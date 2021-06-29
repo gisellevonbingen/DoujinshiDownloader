@@ -156,10 +156,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 this.UpdateAddMessageLabel(true, SR.Get("DownloadSelect.Add.MissingInput"));
             }
-            else if (selectedGallery == null)
-            {
-                this.UpdateAddMessageLabel(true, SR.Get("DownloadSelect.Add.MissingServer"));
-            }
             else if (selectedGallery.Info == null)
             {
                 this.UpdateAddMessageLabel(true, SR.Get("DownloadSelect.Add.MissingServer"));
