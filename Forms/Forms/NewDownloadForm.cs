@@ -102,6 +102,22 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.UpdateControlsBoundsPreferred();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Down)
+            {
+                this.DownloadSelectGroupBox.SelectDown();
+                return true;
+            }
+            else if (keyData == Keys.Up)
+            {
+                this.DownloadSelectGroupBox.SelectUp();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         protected override void OnKeyReturn()
         {
             base.OnKeyReturn();
@@ -278,6 +294,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                     verifyButton.Enabled = true;
                     addButton.Enabled = true;
                     downloadSelectGroupBox.Enabled = true;
+                    downloadSelectGroupBox.Focus();
                 });
 
             }

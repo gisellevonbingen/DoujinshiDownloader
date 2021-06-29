@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons;
+using Giselle.Commons.Collections;
 using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
@@ -21,7 +21,8 @@ namespace Giselle.DoujinshiDownloader.Forms
         private readonly List<RadioButton> RadioButtons;
 
         private RadioButton _SelectedRadioButton;
-        private RadioButton SelectedRadioButton { get => this._SelectedRadioButton; set { this._SelectedRadioButton = value; this.OnSelectedGalleryChanged(EventArgs.Empty); } }
+        public RadioButton SelectedRadioButton { get => this._SelectedRadioButton; set { this._SelectedRadioButton = value; this.OnSelectedGalleryChanged(EventArgs.Empty); } }
+        private bool SelectedRadioButtonChanging;
 
         public DownloadSelectGroupBox()
         {
@@ -39,10 +40,84 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.UpdateNoneLabelVisible();
         }
+
+        public int SelectedIndex
+        {
+            get
+            {
+                return this.RadioButtons.IndexOf(this.SelectedRadioButton);
+            }
+
+            set
+            {
+                this.SelectedRadioButton = this.RadioButtons.Get(value, null);
+            }
+
+        }
+
+        public void SelectUp()
+        {
+            var buttons = this.GetRadioButtons();
+
+            for (var i = this.SelectedIndex - 1; i > -1; i--)
+            {
+                var button = buttons[i];
+
+                if (button.Enabled == true)
+                {
+                    button.Checked = true;
+                }
+
+            }
+
+        }
+
+        public void SelectDown()
+        {
+            var buttons = this.GetRadioButtons();
+
+            for (var i = this.SelectedIndex + 1; i < buttons.Length; i++)
+            {
+                var button = buttons[i];
+
+                if (button.Enabled == true)
+                {
+                    button.Checked = true;
+                }
+
+            }
+
+        }
+
+        public RadioButton[] GetRadioButtons() => this.RadioButtons.ToArray();
+
         public GalleryValidation SelectedGallery => this.SelectedRadioButton?.Tag as GalleryValidation;
 
         protected virtual void OnSelectedGalleryChanged(EventArgs e)
         {
+            var radioButton = this.SelectedRadioButton;
+
+            if (radioButton != null)
+            {
+                var prev = this.SelectedRadioButtonChanging;
+
+                try
+                {
+                    this.SelectedRadioButtonChanging = true;
+
+                    radioButton.Checked = true;
+                }
+                finally
+                {
+                    this.SelectedRadioButtonChanging = prev;
+                }
+
+            }
+            else
+            {
+                this.RadioButtons.ForEach(b => b.Checked = false);
+            }
+
             this.SelectedGalleryChanged?.Invoke(this, e);
         }
 
