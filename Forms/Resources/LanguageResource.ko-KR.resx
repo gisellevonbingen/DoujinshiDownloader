@@ -374,6 +374,9 @@ E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
   <data name="Download.Detail.State.Exception" xml:space="preserve">
     <value>에러 발생</value>
   </data>
+  <data name="Download.Detail.FilteredCount" xml:space="preserve">
+    <value>표시중인 파일 : {=Index}/{=Count}</value>
+  </data>
   <data name="Download.Detail.Exception.Unknown" xml:space="preserve">
     <value>알 수 없음</value>
   </data>
@@ -413,7 +416,7 @@ E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
     <value>다운로드 시작 중</value>
   </data>
   <data name="Downlaod.State.Running" xml:space="preserve">
-    <value>다운로드 중 {=Percent}%</value>
+    <value>다운로드 중 {=Percent}% ({=Index}/{=Count})</value>
   </data>
   <data name="Downlaod.State.Canceling" xml:space="preserve">
     <value>다운로드 취소 중</value>

@@ -153,7 +153,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             if (state.HasFlag(TaskState.Running) == true)
             {
                 double percent = task.Count > 0 ? progressBar.Value / (task.Count / 100.0D) : 0.0D;
-                text = SR.Replace(text, "Percent", percent.ToString("F2"));
+                text = SR.Replace(text, "Percent", percent.ToString("F2"), "Index", $"{progressBar.Value}", "Count", $"{task.Count}");
             }
             else if (state.HasFlag(TaskState.Cancelled) == true)
             {

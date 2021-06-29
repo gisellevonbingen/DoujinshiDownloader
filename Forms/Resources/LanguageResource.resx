@@ -373,6 +373,9 @@ Regenerates At A Rate Of {=Regenerates} Per Minute</value>
   <data name="Download.Detail.State.Exception" xml:space="preserve">
     <value>Exception</value>
   </data>
+  <data name="Download.Detail.FilteredCount" xml:space="preserve">
+    <value>Showing Count : {=Index}/{=Count}</value>
+  </data>
   <data name="Download.Detail.Exception.Unknown" xml:space="preserve">
     <value>Unknown</value>
   </data>
@@ -412,7 +415,7 @@ Would You Like To Continue?</value>
     <value>Starting</value>
   </data>
   <data name="Downlaod.State.Running" xml:space="preserve">
-    <value>Downloading {=Percent}%</value>
+    <value>Downloading {=Percent}% ({=Index}/{=Count})</value>
   </data>
   <data name="Downlaod.State.Canceling" xml:space="preserve">
     <value>Canceling</value>

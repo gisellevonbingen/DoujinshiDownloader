@@ -44,6 +44,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.ActiveStates = new ViewState[0];
         }
 
+        public DownloadDetailListItem[] GetItems() => this.Items.ToArray();
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

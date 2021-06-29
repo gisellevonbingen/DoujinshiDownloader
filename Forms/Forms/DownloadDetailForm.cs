@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.Commons.Enums;
 using Giselle.DoujinshiDownloader.Schedulers;
+using Giselle.Drawing.Drawing;
 using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
@@ -17,6 +18,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private readonly DownloadDetailListBox ListBox = null;
         private readonly LinkLabel[] StateLabels = null;
+        private readonly Label CountLabel = null;
 
         private readonly Button CloseButton = null;
 
@@ -54,10 +56,26 @@ namespace Giselle.DoujinshiDownloader.Forms
                 controls.Add(stateLabel);
             }
 
+            var countLabel = this.CountLabel = new Label();
+            countLabel.TextAlign = ContentAlignment.MiddleCenter;
+            controls.Add(countLabel);
+
             this.ResumeLayout(false);
 
             this.Padding = new Padding(0);
             this.ClientSize = new Size(400, 400);
+        }
+
+        private void OnTaskProgressed(object sender, TaskProgressingEventArgs e)
+        {
+            ControlUtils.InvokeFNeeded(this, this.RefreshCountLabel);
+        }
+
+        public void RefreshCountLabel()
+        {
+            var index = this.ListBox.GetItems().Count(i => i.Visible);
+            var count = this.Task.Count;
+            this.CountLabel.Text = SR.Get("Download.Detail.FilteredCount", "Index", $"{index}", "Count", $"{count}");
         }
 
         private void OnStateLabelsLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -67,6 +85,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var activeStates = this.StateLabels.Where(c => c.LinkVisited).Select(c => (ViewState)c.Tag).ToArray();
             this.ListBox.ActiveStates = activeStates;
+
+            this.RefreshCountLabel();
         }
 
         private void OnCloseButtonClick(object sender, EventArgs e)
@@ -82,6 +102,9 @@ namespace Giselle.DoujinshiDownloader.Forms
             listBox.Bind(task);
 
             this.Task = task;
+            task.Progressed += this.OnTaskProgressed;
+
+            this.RefreshCountLabel();
         }
 
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)
@@ -92,12 +115,14 @@ namespace Giselle.DoujinshiDownloader.Forms
             var doneButtonSize = new Size(120, 40);
             var doneButtonBounds = map[doneButton] = new Rectangle(new Point(layoutBounds.Left + (layoutBounds.Width - doneButtonSize.Width) / 2, layoutBounds.Bottom - doneButtonSize.Height - 10), doneButtonSize);
 
+            map[this.CountLabel] = map[doneButton].OutTopBounds(30, 10).DeriveLeft(layoutBounds.Left).DeriveWidth(layoutBounds.Width);
+
             var stateLabels = this.StateLabels;
             var stateLabelsMargin = 5;
             var stateLabelsTotalWidth = stateLabels.Sum(c => c.PreferredWidth) + (stateLabels.Length - 1) * stateLabelsMargin;
             var stateLabelsHeight = stateLabels.Max(c => c.PreferredHeight);
             var stateLabelsLeft = layoutBounds.Left + (layoutBounds.Width - stateLabelsTotalWidth) / 2;
-            var stateLabelsTop = doneButtonBounds.Top - 10 - stateLabelsHeight;
+            var stateLabelsTop = map[this.CountLabel].Top - stateLabelsHeight;
 
             for (int i = 0; i < stateLabels.Length; i++)
             {
@@ -116,9 +141,16 @@ namespace Giselle.DoujinshiDownloader.Forms
             }
 
             var listBox = this.ListBox;
-            map[listBox] = Rectangle.FromLTRB(layoutBounds.Left, layoutBounds.Top, layoutBounds.Right, stateLabelsTop - 10);
+            map[listBox] = Rectangle.FromLTRB(layoutBounds.Left, layoutBounds.Top, layoutBounds.Right, stateLabelsTop);
 
             return map;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            this.Task.Progressed -= this.OnTaskProgressed;
         }
 
     }
