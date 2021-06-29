@@ -267,7 +267,7 @@
     <value>사용자 인터페이스</value>
   </data>
   <data name="Settings.Program.CheckHitomiOutdateScheduler" xml:space="preserve">
-    <value>히토미 코드의 만료 여부를 자동으로 확인 (개발자 테스트용)</value>
+    <value>히토미 코드의 만료 여부를 자동으로 확인 (개발자 전용)</value>
   </data>
   <data name="Settings.Program.CheckHitomiOutdateNow" xml:space="preserve">
     <value>지금 확인</value>
