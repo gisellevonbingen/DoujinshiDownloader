@@ -8,7 +8,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class GalleryValidation
     {
-        public Site Site { get; private set; } = null;
+        public DownloadMethod Method { get; private set; } = null;
         public DownloadInput Input { get; private set; } = default;
         public GalleryAgent Agent { get; private set; } = null;
         public bool IsError { get; private set; } = false;
@@ -21,16 +21,16 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public static GalleryValidation CreateByError(Site site, string errorMessage)
+        public static GalleryValidation CreateByError(DownloadMethod method, string errorMessage)
         {
-            return new GalleryValidation { Site = site, IsError = true, ErrorMessage = errorMessage };
+            return new GalleryValidation { Method = method, IsError = true, ErrorMessage = errorMessage };
         }
 
-        public static GalleryValidation CreateByInfo(Site site, DownloadInput input, GalleryAgent agent, GalleryInfo info, byte[] thumbnailData)
+        public static GalleryValidation CreateByInfo(DownloadMethod method, DownloadInput input, GalleryAgent agent, GalleryInfo info, byte[] thumbnailData)
         {
             return new GalleryValidation
             {
-                Site = site,
+                Method = method,
                 Input = input,
                 Agent = agent,
                 IsError = false,

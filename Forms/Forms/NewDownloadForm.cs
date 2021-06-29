@@ -115,7 +115,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 return true;
             }
 
-            return base.ProcessCmdKey(ref msg, keyData);
+            return base.ProcessDialogKey(keyData);
         }
 
         protected override void OnKeyReturn()
@@ -257,6 +257,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                     addButton.Enabled = false;
                     downloadSelectGroupBox.Enabled = false;
                     downloadSelectGroupBox.Clear();
+                    downloadSelectGroupBox.FillVerifing();
                     this.UpdateGalleryInfoControls();
                 });
 
@@ -272,7 +273,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                     {
                         ControlUtils.InvokeFNeeded(this, () =>
                         {
-                            downloadSelectGroupBox.Add(galleryValidation);
+                            downloadSelectGroupBox.ReplaceOrAdd(galleryValidation);
                         });
 
                     });
@@ -322,8 +323,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 var parameter = new AgentGetGelleryInfosParameter
                 {
+                    Method = method,
                     Agent = method.CreateAgent(),
-                    Site = method.Site,
                     DownloadInput = downloadInput
                 };
 
@@ -342,12 +343,13 @@ namespace Giselle.DoujinshiDownloader.Forms
         private GalleryValidation VerifyGallery(AgentGetGelleryInfosParameter parameter)
         {
             var agent = parameter.Agent;
-            var site = parameter.Site;
+            var method = parameter.Method;
+            var site = method.Site;
             var downloadInput = parameter.DownloadInput;
 
             if (site.IsAcceptable(downloadInput) == false)
             {
-                return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.NotSupported"));
+                return GalleryValidation.CreateByError(method, SR.Get("DownloadSelect.Verify.NotSupported"));
             }
 
             try
@@ -356,12 +358,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                 if (info.Title == null)
                 {
-                    return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.TitleError"));
+                    return GalleryValidation.CreateByError(method, SR.Get("DownloadSelect.Verify.TitleError"));
                 }
                 else
                 {
                     var thumbnailData = this.DownloadThumbnail(agent, info.ThumbnailUrl);
-                    return GalleryValidation.CreateByInfo(site, downloadInput, agent, info, thumbnailData);
+                    return GalleryValidation.CreateByInfo(method, downloadInput, agent, info, thumbnailData);
                 }
 
             }
@@ -371,19 +373,19 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                 if (exception is WebNetworkException)
                 {
-                    return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.NetworkError"));
+                    return GalleryValidation.CreateByError(method, SR.Get("DownloadSelect.Verify.NetworkError"));
                 }
                 else if (exception is ExHentaiAccountException)
                 {
-                    return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.ExHentaiAccountError"));
+                    return GalleryValidation.CreateByError(method, SR.Get("DownloadSelect.Verify.ExHentaiAccountError"));
                 }
                 else if (exception is HitomiOutdateException)
                 {
-                    return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.HitomiOutdateError"));
+                    return GalleryValidation.CreateByError(method, SR.Get("DownloadSelect.Verify.HitomiOutdateError"));
                 }
                 else
                 {
-                    return GalleryValidation.CreateByError(site, SR.Get("DownloadSelect.Verify.TitleError"));
+                    return GalleryValidation.CreateByError(method, SR.Get("DownloadSelect.Verify.TitleError"));
                 }
 
             }
@@ -516,8 +518,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private class AgentGetGelleryInfosParameter
         {
+            public DownloadMethod Method { get; set; }
             public GalleryAgent Agent { get; set; }
-            public Site Site { get; set; }
             public DownloadInput DownloadInput { get; set; }
         }
 

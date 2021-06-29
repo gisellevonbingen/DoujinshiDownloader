@@ -212,7 +212,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             var request = this.Request;
             var agent = request.Validation.Agent;
-            var site = request.Validation.Site;
+            var site = request.Validation.Method.Site;
             var input = request.Validation.Input;
             var galleryValues = request.GalleryParameterValues;
 
@@ -358,7 +358,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         private string Download(int index, ImageViewState viewState, GalleryParameterValues values)
         {
             var agent = this.Agent;
-            var site = this.Request.Validation.Site;
+            var site = this.Request.Validation.Method.Site;
             var input = this.Request.Validation.Input;
 
             var image = agent.GetGalleryImage(site, input, viewState.View.Url, values);

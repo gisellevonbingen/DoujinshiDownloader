@@ -165,28 +165,32 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.OnGalleryListChanged(new EventArgs());
         }
 
-        public void Add(GalleryValidation validation)
+        public void ReplaceOrAdd(GalleryValidation validation)
         {
-            var enabled = validation.IsError == false;
-            var button = new RadioButton
-            {
-                Text = $"{SR.Get($"DownloadSelect.Site.{validation.Site.Name}")}{validation.ErrorMessage.ConsumeSelect(s => $"({s})")}",
-                Enabled = enabled,
-                Tag = validation,
-            };
-            button.CheckedChanged += this.OnCheckedChanged;
-
             var buttons = this.RadioButtons;
+            var sameMethodButton = buttons.FirstOrDefault(b => (b.Tag is GalleryValidation valid && valid.Method == validation.Method));
+            var enabling = validation.IsError == false;
+            RadioButton button = null;
 
-            lock (buttons)
+            if (sameMethodButton != null)
             {
+                button = sameMethodButton;
+            }
+            else
+            {
+                button = new RadioButton();
+                button.CheckedChanged += this.OnCheckedChanged;
                 buttons.Add(button);
                 this.Controls.Add(button);
             }
 
+            button.Text = $"{SR.Get($"DownloadSelect.Site.{validation.Method.Site.Name}")}{validation.ErrorMessage.ConsumeSelect(s => $"({s})")}";
+            button.Enabled = enabling;
+            button.Tag = validation;
+
             this.OnGalleryListChanged(new EventArgs());
 
-            if (this.SelectedGallery == null && enabled == true)
+            if (this.SelectedGallery == null && enabling == true)
             {
                 button.Checked = true;
             }
@@ -261,6 +265,15 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 noneLabel.Visible = visible;
             }
+        }
+
+        public void FillVerifing()
+        {
+            foreach (var method in DownloadMethod.Knowns)
+            {
+                this.ReplaceOrAdd(GalleryValidation.CreateByError(method, SR.Get("DownloadSelect.Verify.Verifing")));
+            }
+
         }
 
     }

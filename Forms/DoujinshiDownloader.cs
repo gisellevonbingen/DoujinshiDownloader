@@ -106,6 +106,10 @@ namespace Giselle.DoujinshiDownloader
             {
                 this.HitomiOutdateScheduler.Start();
             }
+            else
+            {
+                this.HitomiOutdateScheduler.Stop();
+            }
 
         }
 

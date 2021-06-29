@@ -49,7 +49,7 @@ namespace Tester
 
                 var request = new DownloadRequest
                 {
-                    Validation = GalleryValidation.CreateByInfo(site, input, agent, info, thumbnail),
+                    Validation = GalleryValidation.CreateByInfo(test.Method, input, agent, info, thumbnail),
                     FileName = PathUtils.FilterInvalids(info.Title)
                 };
 

@@ -215,6 +215,9 @@
   <data name="DownloadSelect.Site.ExHentai" xml:space="preserve">
     <value>ExHentai</value>
   </data>
+  <data name="DownloadSelect.Verify.Verifing" xml:space="preserve">
+    <value>확인중</value>
+  </data>
   <data name="DownloadSelect.Verify.NotSupported" xml:space="preserve">
     <value>지원되지 않는 입력</value>
   </data>
