@@ -195,7 +195,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
             if (CompareMD5(ltnMD5) == false)
             {
-                throw new HitomiOutdateException($"Hitomi Agent code is output, current md5 is : {ltnMD5}");
+                throw new HitomiOutdateException($"Hitomi Agent code was outdated, current md5 is : {ltnMD5}");
             }
 
             var json = this.GetGalleryInfoAsJson(input);
