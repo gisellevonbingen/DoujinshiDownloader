@@ -66,6 +66,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 if (button.Enabled == true)
                 {
                     button.Checked = true;
+                    break;
                 }
 
             }
@@ -83,6 +84,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 if (button.Enabled == true)
                 {
                     button.Checked = true;
+                    break;
                 }
 
             }
