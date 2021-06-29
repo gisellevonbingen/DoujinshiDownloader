@@ -371,11 +371,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             {
                 var fileName = viewState.View.FileName ?? new Uri(image.ImageUrl).GetFileName();
 
-                var dd = DoujinshiDownloader.Instance;
-                var config = dd.Config.Values;
-                var retryCount = config.Network.RetryCount;
-
-                for (int k = 0; k < retryCount + 1; k++)
+                for (int k = 0; k < agent.RetryCount + 1; k++)
                 {
                     try
                     {
@@ -409,7 +405,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                         Console.WriteLine(e);
 
-                        if (k + 1 == retryCount)
+                        if (k + 1 == agent.RetryCount)
                         {
                             return "Network";
                         }

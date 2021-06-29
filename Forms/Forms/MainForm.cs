@@ -105,7 +105,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public DownloadTask Register(DownloadRequest request)
         {
-            var task = DoujinshiDownloader.Instance.Scheduler.AddQueue(request);
+            var task = DoujinshiDownloader.Instance.DownloadScheduler.AddQueue(request);
             task.StateChanged += this.OnTaskStateChanged;
             this.ListBox.Add(task);
 
@@ -131,7 +131,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                         {
                             var title = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Title");
                             var text = SR.Get("NotifyIcon.DownloadCompleteNotifyMessage.Text", "Title", task.Request.Validation.Info.Title);
-                            DoujinshiDownloader.Instance.NotifyIconManager.Show(title, text, ToolTipIcon.Info);
+                            DoujinshiDownloader.Instance.NotifyIconManager.Show(title, text);
                         });
 
                     }

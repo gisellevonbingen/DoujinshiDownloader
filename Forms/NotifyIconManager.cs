@@ -58,14 +58,14 @@ namespace Giselle.DoujinshiDownloader
             this.UpdateItemState(false);
         }
 
-        public void Show(string title, string message, ToolTipIcon icon)
+        public void Show(string title, string message, ToolTipIcon icon = ToolTipIcon.Info)
         {
             var config = DoujinshiDownloader.Instance.Config.Values.Program;
 
             if (config.AllowNotifyMessage == true)
             {
                 var impl = this.Impl;
-                impl.ShowBalloonTip(1000, $"{DoujinshiDownloader.Name} - {title}", message, icon);
+                impl.ShowBalloonTip(1000, title, message, icon);
             }
 
         }
@@ -87,7 +87,7 @@ namespace Giselle.DoujinshiDownloader
 
                 if (config.NotifyMessageRules.HideMainForm == true)
                 {
-                    this.Show(this.MenuItemMainFormHide.Text, SR.Get("NotifyIcon.RunningBackgroundNotifyMessage"), ToolTipIcon.Info);
+                    this.Show(this.MenuItemMainFormHide.Text, SR.Get("NotifyIcon.RunningBackgroundNotifyMessage"));
                 }
 
             }

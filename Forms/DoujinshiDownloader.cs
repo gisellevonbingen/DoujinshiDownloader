@@ -72,7 +72,8 @@ namespace Giselle.DoujinshiDownloader
         public ResourceManager ResourceManager { get; }
         public ConfigurationManager Config { get; }
         public NotifyIconManager NotifyIconManager { get; }
-        public DownloadScheduler Scheduler { get; }
+        public DownloadScheduler DownloadScheduler { get; }
+        public HitomiOutdateScheduler HitomiOutdateScheduler { get; }
 
         public MainForm MainForm { get; private set; }
         public event EventHandler MainFormVisibleChanged;
@@ -91,10 +92,21 @@ namespace Giselle.DoujinshiDownloader
             FormUtils.DefaultIcon = Properties.Resources.Icon;
 
             this.Config = new ConfigurationManager(PathUtils.GetPath("Configuration.json"));
+            this.Config.Saved += this.OnConfigSaved;
             this.NotifyIconManager = new NotifyIconManager();
-            this.Scheduler = new DownloadScheduler();
+            this.DownloadScheduler = new DownloadScheduler();
+            this.HitomiOutdateScheduler = new HitomiOutdateScheduler();
 
             this.MainForm = null;
+        }
+
+        private void OnConfigSaved(object sender, EventArgs e)
+        {
+            if (this.Config.Values.Program.CheckHitomiOutdate == true)
+            {
+                this.HitomiOutdateScheduler.Start();
+            }
+
         }
 
         private void SetUILanguage(string language)
@@ -117,7 +129,7 @@ namespace Giselle.DoujinshiDownloader
             try
             {
                 this.Config.Load();
-                this.Scheduler.Start();
+                this.DownloadScheduler.Start();
 
                 using (var mainForm = new MainForm())
                 {
@@ -206,7 +218,7 @@ namespace Giselle.DoujinshiDownloader
 
         public void QueryQuit()
         {
-            var scheduler = this.Scheduler;
+            var scheduler = this.DownloadScheduler;
             var tasks = scheduler.GetQueueCopy();
 
             string text;
@@ -248,8 +260,9 @@ namespace Giselle.DoujinshiDownloader
         protected virtual void Dispose(bool disposing)
         {
             this.MainForm.DisposeQuietly();
-            this.Scheduler.DisposeQuietly();
+            this.DownloadScheduler.DisposeQuietly();
             this.NotifyIconManager.DisposeQuietly();
+            this.HitomiOutdateScheduler.DisposeQuietly();
         }
 
     }

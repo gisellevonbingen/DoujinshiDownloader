@@ -266,6 +266,15 @@ Are You Sure You Want To Quit?</value>
   <data name="Settings.Program.UserInterfaceRule" xml:space="preserve">
     <value>User Interface</value>
   </data>
+  <data name="Settings.Program.CheckHitomiOutdateScheduler" xml:space="preserve">
+    <value>Background Check Hitomi Agent Outdate (For Dev)</value>
+  </data>
+  <data name="Settings.Program.CheckHitomiOutdateNow" xml:space="preserve">
+    <value>Check Now</value>
+  </data>
+  <data name="Settings.Program.CheckHitomiOutdateNow.Latest" xml:space="preserve">
+    <value>Current Hitomi Agent Code Is Latest</value>
+  </data>
   <data name="Settings.Program.UserInterfaceRules.ConfirmBeforeExitProgram" xml:space="preserve">
     <value>Confirm Before Exit Program</value>
   </data>
@@ -419,5 +428,8 @@ Would You Like To Continue?</value>
   </data>
   <data name="Downlaod.State.Completed.Fails" xml:space="preserve">
     <value> (Fail Files : {=ExceptionCount})</value>
+  </data>
+  <data name="HitomiOutdateScheduler.Notify.Title" xml:space="preserve">
+    <value>Hitomi Agent Outdate Detected</value>
   </data>
 </root>

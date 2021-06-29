@@ -266,6 +266,15 @@
   <data name="Settings.Program.UserInterfaceRule" xml:space="preserve">
     <value>사용자 인터페이스</value>
   </data>
+  <data name="Settings.Program.CheckHitomiOutdateScheduler" xml:space="preserve">
+    <value>히토미 코드의 만료 여부를 자동으로 확인 (개발자 테스트용)</value>
+  </data>
+  <data name="Settings.Program.CheckHitomiOutdateNow" xml:space="preserve">
+    <value>지금 확인</value>
+  </data>
+  <data name="Settings.Program.CheckHitomiOutdateNow.Latest" xml:space="preserve">
+    <value>현재 히토미 코드는 최신 상태입니다</value>
+  </data>
   <data name="Settings.Program.UserInterfaceRules.ConfirmBeforeExitProgram" xml:space="preserve">
     <value>프로그램 종료시 확인</value>
   </data>
@@ -420,5 +429,8 @@ E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
   </data>
   <data name="Downlaod.State.Completed.Fails" xml:space="preserve">
     <value> ({=ExceptionCount}개 파일 다운로드 실패)</value>
+  </data>
+  <data name="HitomiOutdateScheduler.Notify.Title" xml:space="preserve">
+    <value>히토미 코드 만료</value>
   </data>
 </root>

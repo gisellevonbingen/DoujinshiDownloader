@@ -13,10 +13,23 @@ namespace Giselle.DoujinshiDownloader.Configs
         public string Path { get; }
         public Configuration Values { get; }
 
+        public event EventHandler Loaded;
+        public event EventHandler Saved;
+
         public ConfigurationManager(string path)
         {
             this.Path = path;
             this.Values = new Configuration();
+        }
+
+        protected virtual void OnLoaded(EventArgs e)
+        {
+            this.Loaded?.Invoke(this, e);
+        }
+
+        protected virtual void OnSaved(EventArgs e)
+        {
+            this.Saved?.Invoke(this, e);
         }
 
         public void Load()
@@ -25,6 +38,8 @@ namespace Giselle.DoujinshiDownloader.Configs
 
             var values = this.Values;
             values.Read(jToken);
+
+            this.OnLoaded(EventArgs.Empty);
 
             this.Save();
         }
@@ -49,6 +64,8 @@ namespace Giselle.DoujinshiDownloader.Configs
             this.Values.Write(jToken);
 
             File.WriteAllText(this.Path, jToken.ToString(Newtonsoft.Json.Formatting.Indented));
+
+            this.OnSaved(EventArgs.Empty);
         }
 
     }

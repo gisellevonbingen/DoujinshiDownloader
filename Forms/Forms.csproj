@@ -123,6 +123,7 @@
     <Compile Include="Forms\SettingControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="HitomiOutdateScheduler.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="NotifyIconManager.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

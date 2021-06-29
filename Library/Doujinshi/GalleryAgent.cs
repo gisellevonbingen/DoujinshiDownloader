@@ -12,16 +12,28 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
     {
         public WebExplorer Explorer { get; }
         public WebProxySettings Proxy { get; set; }
+        public int Timeout { get; set; } = 60 * 1000;
+        public int RetryCount { get; set; } = 2;
 
         public GalleryAgent()
         {
             this.Explorer = new WebExplorer();
             this.Proxy = null;
+            this.Timeout = 0;
+            this.RetryCount = 0;
         }
 
         public virtual WebRequestParameter CreateRequestParameter()
         {
-            return new WebRequestParameter { Proxy = this.Proxy };
+            var req = new WebRequestParameter { Proxy = this.Proxy };
+            var timeout = this.Timeout;
+
+            if (timeout > 0)
+            {
+                req.Timeout = timeout;
+            }
+
+            return req;
         }
 
         public abstract GalleryInfo GetGalleryInfo(Site site, DownloadInput input);

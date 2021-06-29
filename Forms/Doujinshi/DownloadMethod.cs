@@ -24,11 +24,21 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public abstract Site Site { get; }
 
-        public abstract GalleryAgent CreateAgent();
+        protected abstract GalleryAgent OnCreateAgent();
 
         public bool Equals(DownloadMethod other)
         {
             return this == other;
+        }
+
+        public GalleryAgent CreateAgent()
+        {
+            var config = DoujinshiDownloader.Instance.Config.Values;
+
+            var agent = this.OnCreateAgent();
+            agent.Timeout = config.Network.Timeout;
+            agent.RetryCount = config.Network.RetryCount;
+            return agent;
         }
 
     }
