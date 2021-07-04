@@ -11,7 +11,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class HitomiAgent : GalleryAgent
     {
-        public static string CurrentMD5 { get; } = "7DE16D68B72412F4D36623E66576E23A";
+        public static string CurrentMD5 { get; } = "34AC81CE57B10B066C4D8B0ED108372F";
         public static int HashLeastLength { get; } = 3;
 
         public static bool CompareMD5(string ltnMD5)
@@ -111,7 +111,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 number_of_frontends = 2;
             }
 
-            if (g < 0x49)
+            if (g < 0x59)
             {
                 g = 1;
             }
