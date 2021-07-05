@@ -73,7 +73,6 @@ namespace Giselle.DoujinshiDownloader
         public ConfigurationManager Config { get; }
         public NotifyIconManager NotifyIconManager { get; }
         public DownloadScheduler DownloadScheduler { get; }
-        public HitomiOutdateScheduler HitomiOutdateScheduler { get; }
 
         public MainForm MainForm { get; private set; }
         public event EventHandler MainFormVisibleChanged;
@@ -92,25 +91,10 @@ namespace Giselle.DoujinshiDownloader
             FormUtils.DefaultIcon = Properties.Resources.Icon;
 
             this.Config = new ConfigurationManager(PathUtils.GetPath("Configuration.json"));
-            this.Config.Saved += this.OnConfigSaved;
             this.NotifyIconManager = new NotifyIconManager();
             this.DownloadScheduler = new DownloadScheduler();
-            this.HitomiOutdateScheduler = new HitomiOutdateScheduler();
 
             this.MainForm = null;
-        }
-
-        private void OnConfigSaved(object sender, EventArgs e)
-        {
-            if (this.Config.Values.Program.CheckHitomiOutdate == true)
-            {
-                this.HitomiOutdateScheduler.Start();
-            }
-            else
-            {
-                this.HitomiOutdateScheduler.Stop();
-            }
-
         }
 
         private void SetUILanguage(string language)
@@ -266,7 +250,6 @@ namespace Giselle.DoujinshiDownloader
             this.MainForm.DisposeQuietly();
             this.DownloadScheduler.DisposeQuietly();
             this.NotifyIconManager.DisposeQuietly();
-            this.HitomiOutdateScheduler.DisposeQuietly();
         }
 
     }

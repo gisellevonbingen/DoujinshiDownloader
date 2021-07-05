@@ -40,7 +40,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public abstract List<GalleryImageView> GetGalleryImageViews(Site site, DownloadInput input, GalleryParameterValues values);
 
-        public abstract GalleryImagePath GetGalleryImage(Site site, DownloadInput input, string viewUrl, GalleryParameterValues values);
+        public abstract GalleryImagePath GetGalleryImagePath(Site site, DownloadInput input, GalleryImageView view, GalleryParameterValues values);
 
         public virtual byte[] GetGalleryThumbnail(string thumbnailUrl)
         {
@@ -65,16 +65,21 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public virtual WebRequestParameter CreateImageRequest(Site site, DownloadInput input, string imageUrl, GalleryParameterValues values)
+        public virtual WebRequestParameter CreateImageRequest(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
-            parameter.Uri = imageUrl;
+            parameter.Uri = path.ImageUrl;
 
             return parameter;
         }
 
-        public abstract GalleryImagePath ReloadImage(Site site, DownloadInput input, string requestUrl, string reloadUrl, GalleryParameterValues values);
+        public abstract GalleryImagePath ReloadImagePath(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath prev, GalleryParameterValues values);
+
+        public virtual void Validate(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath path, GalleryParameterValues values, byte[] bytes)
+        {
+
+        }
 
     }
 

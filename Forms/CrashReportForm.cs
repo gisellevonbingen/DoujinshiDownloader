@@ -55,9 +55,10 @@ namespace Giselle.DoujinshiDownloader
             this.Controls.Add(closeButton);
 
             var logTextBox = this.LogTextBox = new TextBox();
+            logTextBox.WordWrap = false;
             logTextBox.ReadOnly = true;
             logTextBox.Multiline = true;
-            logTextBox.Text = string.Concat(exception);
+            logTextBox.Text = string.Concat(exception) + Environment.NewLine + exception?.StackTrace + Environment.NewLine;
             this.Controls.Add(logTextBox);
 
             this.ResumeLayout(false);

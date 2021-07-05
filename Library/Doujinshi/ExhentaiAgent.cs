@@ -194,8 +194,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return list;
         }
 
+        public override GalleryImagePath GetGalleryImagePath(Site site, DownloadInput input, GalleryImageView view, GalleryParameterValues values)
+        {
+            return this.GetGalleryImagePath(view.Url, values);
+        }
 
-        public override GalleryImagePath GetGalleryImage(Site site, DownloadInput input, string viewUrl, GalleryParameterValues values)
+        private GalleryImagePath GetGalleryImagePath(string viewUrl, GalleryParameterValues values)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Uri = viewUrl;
@@ -256,14 +260,14 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override GalleryImagePath ReloadImage(Site site, DownloadInput input, string requestUrl, string reloadUrl, GalleryParameterValues values)
+        public override GalleryImagePath ReloadImagePath(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath prev, GalleryParameterValues values)
         {
-            return this.GetGalleryImage(site, input, reloadUrl, values);
+            return this.GetGalleryImagePath(prev.ReloadUrl, values);
         }
 
-        public override WebRequestParameter CreateImageRequest(Site site, DownloadInput input, string imageUrl, GalleryParameterValues values)
+        public override WebRequestParameter CreateImageRequest(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)
         {
-            var uri = new Uri(imageUrl);
+            var uri = new Uri(path.ImageUrl);
             var fileName = uri.GetFileName();
 
             if (fileName.Equals("509.gif") == true)
@@ -271,7 +275,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 throw new ImageRequestCreateException("ImageLimit");
             }
 
-            return base.CreateImageRequest(site, input, imageUrl, values);
+            return base.CreateImageRequest(site, input, view, path, values);
         }
 
     }

@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
-    public class GalleryImagePath
+    public class HitomiGalleryImageView : GalleryImageView
     {
-        public string ImageUrl { get; set; }
-        public string ReloadUrl { get; set; }
+        public HitomiImageFile ImageFile { get; set; }
 
-        public GalleryImagePath()
+        public HitomiGalleryImageView()
         {
 
         }

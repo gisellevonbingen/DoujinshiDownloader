@@ -360,16 +360,16 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             var agent = this.Agent;
             var site = this.Request.Validation.Method.Site;
             var input = this.Request.Validation.Input;
+            var imageView = viewState.View;
+            var imagePath = agent.GetGalleryImagePath(site, input, imageView, values);
 
-            var image = agent.GetGalleryImage(site, input, viewState.View.Url, values);
-
-            if (image.ImageUrl == null)
+            if (imagePath.ImageUrl == null)
             {
                 return "RequestNotCreate";
             }
             else
             {
-                var fileName = viewState.View.FileName ?? new Uri(image.ImageUrl).GetFileName();
+                var fileName = imageView.FileName ?? new Uri(imagePath.ImageUrl).GetFileName();
 
                 for (int k = 0; k < agent.RetryCount + 1; k++)
                 {
@@ -377,9 +377,11 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     {
                         this.ThrowIfCancelRequested();
 
-                        var downloadRequest = agent.CreateImageRequest(site, input, image.ImageUrl, values);
+                        var downloadRequest = agent.CreateImageRequest(site, input, imageView, imagePath, values);
                         var bytes = this.Download(agent, downloadRequest);
-                        this.OnImageDownload(new TaskImageDownloadEventArgs(this, viewState, image, bytes, index, k));
+                        agent.Validate(site, input, imageView, imagePath, values, bytes);
+
+                        this.OnImageDownload(new TaskImageDownloadEventArgs(this, viewState, imagePath, bytes, index, k));
 
                         lock (this.DownloadFile)
                         {
@@ -411,9 +413,9 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         }
                         else
                         {
-                            if (string.IsNullOrWhiteSpace(image.ReloadUrl) == false)
+                            if (string.IsNullOrWhiteSpace(imagePath.ReloadUrl) == false)
                             {
-                                image = agent.ReloadImage(site, input, image.ImageUrl, image.ReloadUrl, values);
+                                imagePath = agent.ReloadImagePath(site, input, imageView, imagePath, values);
                             }
 
                         }

@@ -27,9 +27,6 @@ namespace Giselle.DoujinshiDownloader.Forms
         private readonly Label UserInterfaceRuleLabel;
         private readonly Dictionary<PropertyInfo, CheckBox> UserInterfaceRuleCheckBoxs;
 
-        private readonly CheckBox CheckHitomiOutdateCheckBox;
-        private readonly OptimizedButton CheckHitomiOutdateButton;
-
         public ProgramSettingsControl()
         {
             this.SuspendLayout();
@@ -53,43 +50,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.UserInterfaceRuleCheckBoxs = this.CreatePropertyCheckBoxs(this.GetProperites(typeof(UserInterfaceRules), typeof(bool)), "Settings.Program.UserInterfaceRules");
 
-            var checkHitomiOutdateCheckBox = this.CheckHitomiOutdateCheckBox = new CheckBox();
-            checkHitomiOutdateCheckBox.Text = SR.Get("Settings.Program.CheckHitomiOutdateScheduler");
-            this.Controls.Add(checkHitomiOutdateCheckBox);
-
-            var checkHitomiOutdateButton = this.CheckHitomiOutdateButton = new OptimizedButton();
-            checkHitomiOutdateButton.Text = SR.Get("Settings.Program.CheckHitomiOutdateNow");
-            checkHitomiOutdateButton.Click += this.OnCheckHitomiOutdateButtonClick;
-            this.Controls.Add(checkHitomiOutdateButton);
-
             this.ResumeLayout(false);
-        }
-
-        private void OnCheckHitomiOutdateButtonClick(object sender, EventArgs e)
-        {
-            try
-            {
-                var agent = DownloadMethod.Hitomi.CreateAgent() as HitomiAgent;
-                var md5 = agent.GetLtnCommon().GetMD5String();
-                var result = HitomiAgent.CompareMD5(md5);
-                var text = string.Empty;
-
-                if (result == true)
-                {
-                    text = SR.Get("Settings.Program.CheckHitomiOutdateNow.Latest");
-                }
-                else
-                {
-                    text = SR.Get("DownloadSelect.Verify.HitomiOutdateError");
-                }
-
-                MessageBox.Show(text, this.CheckHitomiOutdateButton.Text, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-            }
-            catch (Exception ex)
-            {
-                DoujinshiDownloader.Instance.ShowCrashMessageBox(ex);
-            }
-
         }
 
         private void UpdateNotifymessageRuleCheckBoxs()
@@ -143,7 +104,6 @@ namespace Giselle.DoujinshiDownloader.Forms
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle lb)
         {
             var map = base.GetPreferredBounds(lb);
-
             var checkBoxHeight = 25;
 
             var allowBackgroundCheckBox = this.AllowBackgroundCheckBox;
@@ -160,13 +120,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             var userInterfaceRuleLabelBounds = map[userInterfaceRuleLabel] = new Rectangle(userInterfaceRuleLabelLocation, userInterfaceRuleLabelSize);
 
             this.PlacePropertyCheckBoxs(map, this.UserInterfaceRuleCheckBoxs.Values, checkBoxHeight, userInterfaceRuleLabelBounds);
-
-            var checkHitomiOutdateCheckBox = this.CheckHitomiOutdateCheckBox;
-            map[checkHitomiOutdateCheckBox] = map.UnionBounds().OutBottomBounds(checkBoxHeight, 10).InLeftBounds(checkHitomiOutdateCheckBox.PreferredSize.Width);
-
-            var checkHitomiOutdateButton = this.CheckHitomiOutdateButton;
-            checkHitomiOutdateButton.Size = TextRenderer.MeasureText(checkHitomiOutdateButton.Text, checkHitomiOutdateButton.Font) + new Size(10, 10);
-            map[checkHitomiOutdateButton] = map[checkHitomiOutdateCheckBox].OutBottomBounds(checkHitomiOutdateButton.Height).InLeftBounds(checkHitomiOutdateButton.Width);
 
             return map;
         }
@@ -214,7 +167,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             var program = config.Program;
             program.AllowBackground = this.AllowBackgroundCheckBox.Checked;
             program.AllowNotifyMessage = this.AllowNotifyMessageCheckBox.Checked;
-            program.CheckHitomiOutdate = this.CheckHitomiOutdateCheckBox.Checked;
 
             this.ApplyPropertyCheckBoxs(program.NotifyMessageRules, this.NotifyMessageRuleCheckBoxs);
             this.ApplyPropertyCheckBoxs(program.UserInterfaceRules, this.UserInterfaceRuleCheckBoxs);
@@ -237,7 +189,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             var program = config.Program;
             this.AllowBackgroundCheckBox.Checked = program.AllowBackground;
             this.AllowNotifyMessageCheckBox.Checked = program.AllowNotifyMessage;
-            this.CheckHitomiOutdateCheckBox.Checked = program.CheckHitomiOutdate;
 
             this.BindPropertyCheckBoxs(program.NotifyMessageRules, this.NotifyMessageRuleCheckBoxs);
             this.BindPropertyCheckBoxs(program.UserInterfaceRules, this.UserInterfaceRuleCheckBoxs);

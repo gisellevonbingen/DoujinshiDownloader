@@ -16,10 +16,6 @@ namespace Tester
         [STAThread]
         public static void Main()
         {
-            var common = new HitomiAgent().GetLtnCommon();
-            var md5 = common.GetMD5String();
-            Console.WriteLine($"Current Hitomi MD5 : {md5}");
-
             using (var instance = new DoujinshiDownloader(new CommandLineOptions()))
             {
                 TestDownloadInputParse();

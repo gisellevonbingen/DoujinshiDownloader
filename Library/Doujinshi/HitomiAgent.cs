@@ -5,47 +5,57 @@ using System.Text;
 using System.Threading.Tasks;
 using Giselle.Commons.Web;
 using Giselle.DoujinshiDownloader.Utils;
+using Jint;
 using Newtonsoft.Json.Linq;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class HitomiAgent : GalleryAgent
     {
-        public static string CurrentMD5 { get; } = "50C0BA0D37565C31947A36DEAE5E4D68";
         public static int HashLeastLength { get; } = 3;
 
-        public static bool CompareMD5(string ltnMD5)
-        {
-            return ltnMD5.Equals(CurrentMD5);
-        }
+        public Engine JLintEngine { get; }
 
         public HitomiAgent()
         {
-
+            var engine = this.JLintEngine = new Engine();
+            engine.Execute("var document = {};");
+            engine.Execute("document.location = {};");
+            engine.Execute("document.location.hostname = '';");
+            engine.Execute("var mock = {};");
+            engine.Execute("mock.ready = function(){ return mock; };");
+            engine.Execute("var $ = function(){ return mock; };");
         }
 
-        public override GalleryImagePath GetGalleryImage(Site site, DownloadInput input, string viewUrl, GalleryParameterValues values)
+        public override GalleryImagePath GetGalleryImagePath(Site site, DownloadInput input, GalleryImageView view, GalleryParameterValues values)
         {
-            return new GalleryImagePath() { ImageUrl = viewUrl };
+            return new GalleryImagePath() { ImageUrl = view.Url };
         }
 
-        public override WebRequestParameter CreateImageRequest(Site site, DownloadInput input, string imageUrl, GalleryParameterValues values)
+        public override WebRequestParameter CreateImageRequest(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)
         {
-            var request = base.CreateImageRequest(site, input, imageUrl, values);
+            var request = base.CreateImageRequest(site, input, view, path, values);
             request.Referer = Site.HitomiReader.ToUrl(input);
 
             return request;
         }
 
-        public override List<GalleryImageView> GetGalleryImageViews(Site site, DownloadInput input, GalleryParameterValues values)
+        public void InstallLtn()
         {
-            var json = this.GetGalleryInfoAsJson(input);
-            return this.GetGalleryImageFiles(json).Select(this.GetGalleryImageView).ToList();
+            var ltn = this.GetLtnCommon();
+            this.JLintEngine.Execute(ltn);
         }
 
-        public GalleryImageView GetGalleryImageView(HitomiImageFile file)
+        public override List<GalleryImageView> GetGalleryImageViews(Site site, DownloadInput input, GalleryParameterValues values)
         {
-            return new GalleryImageView() { Url = this.GetReaderImagePath(file), FileName = file.Name };
+            this.InstallLtn();
+            var json = this.GetGalleryInfoAsJson(input);
+            return this.GetGalleryImageFiles(json).Select(f => this.GetGalleryImageView(f)).ToList();
+        }
+
+        private GalleryImageView GetGalleryImageView(HitomiImageFile file)
+        {
+            return new HitomiGalleryImageView() { Url = this.GetReaderImageViewUrl(file), FileName = file.Name, ImageFile = file };
         }
 
         public JObject GetGalleryInfoAsJson(DownloadInput input)
@@ -64,7 +74,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public string HashToPath(string hash)
+        public string HashToDir(string hash)
         {
             var length = hash.Length;
 
@@ -90,40 +100,11 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public string GetSmallImagePath(string hash)
         {
-            var p = this.HashToPath(hash);
+            var p = this.HashToDir(hash);
             return $"https://atn.hitomi.la/smalltn/{p}.jpg";
         }
 
-        public string GetDomainPrefix(string hash, char? @base)
-        {
-            var c = 'b';
-
-            if (@base.HasValue == true)
-            {
-                c = @base.Value;
-            }
-
-            var number_of_frontends = 3;
-            var g = Convert.ToInt32(this.GetG(hash), 16);
-
-            if (g < 0x70)
-            {
-                number_of_frontends = 2;
-            }
-
-            if (g < 0x59)
-            {
-                g = 1;
-            }
-
-            var o = g % number_of_frontends;
-            var builder = new StringBuilder();
-            builder.Append((char)(97 + o));
-            builder.Append(c);
-            return builder.ToString();
-        }
-
-        public string GetReaderImagePath(HitomiImageFile file)
+        private string GetReaderImageViewUrl(HitomiImageFile file)
         {
             var @base = new char?();
             string subpath;
@@ -154,9 +135,10 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             }
 
             var hash = file.Hash;
-            var path = this.HashToPath(hash);
-            var prefix = this.GetDomainPrefix(hash, @base);
-            return $"https://{prefix}.hitomi.la/{subpath}/{path}{ext}";
+            var dir = this.HashToDir(hash);
+            var preUrl = $"https://a.hitomi.la/{subpath}/{dir}{ext}";
+            var url = this.JLintEngine.Invoke("url_from_url", preUrl, (@base ?? '\0').ToString());
+            return url.ToString();
         }
 
         public HitomiImageFile GetGalleryImageFile(JToken json)
@@ -191,13 +173,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override GalleryInfo GetGalleryInfo(Site site, DownloadInput input)
         {
-            var ltnMD5 = this.GetLtnCommon().GetMD5String();
-
-            if (CompareMD5(ltnMD5) == false)
-            {
-                throw new HitomiOutdateException($"Hitomi Agent code was outdated, current md5 is : {ltnMD5}");
-            }
-
             var json = this.GetGalleryInfoAsJson(input);
             var info = new GalleryInfo
             {
@@ -209,9 +184,19 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return info;
         }
 
-        public override GalleryImagePath ReloadImage(Site site, DownloadInput input, string requestUrl, string reloadUrl, GalleryParameterValues values)
+        public override GalleryImagePath ReloadImagePath(Site site, DownloadInput input, GalleryImageView _view, GalleryImagePath prev, GalleryParameterValues values)
         {
-            throw new NotImplementedException();
+            if (_view is HitomiGalleryImageView view)
+            {
+                this.InstallLtn();
+                var newView = this.GetGalleryImageView(view.ImageFile);
+                return this.GetGalleryImagePath(site, input, newView, values);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
         }
 
     }

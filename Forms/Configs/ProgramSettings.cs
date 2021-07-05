@@ -12,7 +12,6 @@ namespace Giselle.DoujinshiDownloader.Configs
     {
         public bool AllowBackground { get; set; } = true;
         public bool AllowNotifyMessage { get; set; } = true;
-        public bool CheckHitomiOutdate { get; set; } = false;
 
         public NotifyMessageRules NotifyMessageRules { get; } = new NotifyMessageRules();
         public UserInterfaceRules UserInterfaceRules { get; } = new UserInterfaceRules();
@@ -26,7 +25,6 @@ namespace Giselle.DoujinshiDownloader.Configs
         {
             this.AllowBackground = json.Value<bool?>("AllowBackground") ?? this.AllowBackground;
             this.AllowNotifyMessage = json.Value<bool?>("AllowNotifyMessage") ?? this.AllowNotifyMessage;
-            this.CheckHitomiOutdate = json.Value<bool?>("CheckHitomiOutdate") ?? this.CheckHitomiOutdate;
 
             this.NotifyMessageRules.Read(json.Value<JObject>("NotifyMessageRules") ?? new JObject());
             this.UserInterfaceRules.Read(json.Value<JObject>("UserInterfaceRules") ?? new JObject());
@@ -36,7 +34,6 @@ namespace Giselle.DoujinshiDownloader.Configs
         {
             json["AllowBackground"] = this.AllowBackground;
             json["AllowNotifyMessage"] = this.AllowNotifyMessage;
-            json["CheckHitomiOutdate"] = this.CheckHitomiOutdate;
 
             this.NotifyMessageRules.Write(json["NotifyMessageRules"] = new JObject());
             this.UserInterfaceRules.Write(json["UserInterfaceRules"] = new JObject());
