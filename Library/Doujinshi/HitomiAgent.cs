@@ -74,7 +74,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public string HashToDir(string hash)
+        public string FileNameFromHash(string hash)
         {
             var length = hash.Length;
 
@@ -100,31 +100,31 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public string GetSmallImagePath(string hash)
         {
-            var p = this.HashToDir(hash);
-            return $"https://atn.hitomi.la/smalltn/{p}.jpg";
+            var fileName = this.FileNameFromHash(hash);
+            return $"https://atn.hitomi.la/smalltn/{fileName}.jpg";
         }
 
         private string GetReaderImageViewUrl(HitomiImageFile file)
         {
             var @base = new char?();
-            string subpath;
+            string subpath1;
             var ext = string.Empty;
 
             if (file.HasWebp == true)
             {
-                subpath = "webp";
+                subpath1 = "webp";
                 ext = ".webp";
                 @base = 'a';
             }
             else if (file.HasAvif == true)
             {
-                subpath = "avif";
+                subpath1 = "avif";
                 ext = ".avif";
                 @base = 'a';
             }
             else
             {
-                subpath = "images";
+                subpath1 = "images";
                 var extIndex = file.Name.LastIndexOf('.');
 
                 if (extIndex != -1)
@@ -135,8 +135,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             }
 
             var hash = file.Hash;
-            var dir = this.HashToDir(hash);
-            var preUrl = $"https://a.hitomi.la/{subpath}/{dir}{ext}";
+            var fileName = this.FileNameFromHash(hash);
+            var preUrl = $"https://a.hitomi.la/{subpath1}/{fileName}{ext}";
             var url = this.JLintEngine.Invoke("url_from_url", preUrl, (@base ?? '\0').ToString());
             return url.ToString();
         }
