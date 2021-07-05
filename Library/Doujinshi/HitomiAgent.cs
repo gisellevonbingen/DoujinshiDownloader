@@ -137,7 +137,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             var hash = file.Hash;
             var fileName = this.FileNameFromHash(hash);
             var preUrl = $"https://a.hitomi.la/{subpath1}/{fileName}{ext}";
-            var url = this.JLintEngine.Invoke("url_from_url", preUrl, (@base ?? '\0').ToString());
+            var url = this.JLintEngine.Invoke("url_from_url", preUrl, @base.ToString());
             return url.ToString();
         }
 
