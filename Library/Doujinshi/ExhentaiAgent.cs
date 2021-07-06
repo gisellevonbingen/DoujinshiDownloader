@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Giselle.Commons;
-using Giselle.Commons.Web;
+using Giselle.Commons.Net;
 using Giselle.DoujinshiDownloader.Utils;
 using HtmlAgilityPack;
 
@@ -59,7 +59,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
             using (var response = this.Explorer.Request(parameter))
             {
-                var loc = response.Impl.Headers["location"];
+                var loc = response.Headers["location"];
                 return string.IsNullOrWhiteSpace(loc) == false;
             }
 
@@ -98,7 +98,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
             using (var response = this.Explorer.Request(parameter))
             {
-                var redirect = response.Impl.Headers["Content-Disposition"];
+                var redirect = response.Headers["Content-Disposition"];
 
                 if (redirect != null)
                 {
@@ -248,7 +248,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
                 using (var response2 = this.Explorer.Request(parameter2))
                 {
-                    return response2.Impl.Headers["Location"];
+                    return response2.Headers["Location"];
                 }
 
             }

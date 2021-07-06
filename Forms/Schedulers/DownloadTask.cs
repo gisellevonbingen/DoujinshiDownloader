@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Giselle.Commons;
-using Giselle.Commons.Web;
+using Giselle.Commons.Net;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Utils;
 
@@ -17,6 +18,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         public DownloadRequest Request { get; }
 
         public event EventHandler<TaskProgressingEventArgs> Progressed = null;
+        public event EventHandler<TaskProgressingEventArgs> Downloading = null;
 
         private readonly object OperationLock = new object();
 
@@ -308,7 +310,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 try
                 {
                     imageViewState.State = ViewState.Downloading;
-                    this.OnProgressing(new TaskProgressingEventArgs(index, imageViewState));
+                    this.OnProgressed(new TaskProgressingEventArgs(imageViewState));
 
                     var exceptionMessage = this.Download(index, imageViewState, values);
                     imageViewState.State = string.IsNullOrWhiteSpace(exceptionMessage) ? ViewState.Success : ViewState.Exception;
@@ -336,14 +338,19 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     this.Index++;
                 }
 
-                this.OnProgressing(new TaskProgressingEventArgs(index, imageViewState));
+                this.OnProgressed(new TaskProgressingEventArgs(imageViewState));
             }
 
         }
 
-        protected virtual void OnProgressing(TaskProgressingEventArgs e)
+        protected virtual void OnProgressed(TaskProgressingEventArgs e)
         {
             this.Progressed?.Invoke(this, e);
+        }
+
+        protected virtual void OnDownloading(TaskProgressingEventArgs e)
+        {
+            this.Downloading?.Invoke(this, e);
         }
 
         protected virtual void ThrowIfCancelRequested()
@@ -377,10 +384,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     {
                         this.ThrowIfCancelRequested();
 
-                        var downloadRequest = agent.CreateImageRequest(site, input, imageView, imagePath, values);
-                        var bytes = this.Download(agent, downloadRequest);
+                        var bytes = this.Download(agent, site, input, viewState, imagePath, values);
                         agent.Validate(site, input, imageView, imagePath, values, bytes);
-
                         this.OnImageDownload(new TaskImageDownloadEventArgs(this, viewState, imagePath, bytes, index, k));
 
                         lock (this.DownloadFile)
@@ -434,7 +439,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this.ImageDownload?.Invoke(this, e);
         }
 
-        private byte[] Download(GalleryAgent agent, WebRequestParameter downloadRequest)
+        private byte[] Download(GalleryAgent agent, Site site, DownloadInput input, ImageViewState imageViewState, GalleryImagePath imagePath, GalleryParameterValues values)
         {
             using (var source = new CancellationTokenSource())
             {
@@ -448,16 +453,16 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         cancelSources.Add(source);
                     }
 
+                    var downloadRequest = agent.CreateImageRequest(site, input, imageViewState.View, imagePath, values);
+
                     using (var response = agent.Explorer.Request(downloadRequest, source))
                     {
+                        imageViewState.Length = response.ContentLength;
+                        imageViewState.Position = 0L;
+
                         using (var responseStream = response.ReadAsStream())
                         {
-                            using (var ms = new MemoryStream())
-                            {
-                                responseStream.CopyTo(ms);
-                                return ms.ToArray();
-                            }
-
+                            return this.Download(imageViewState, responseStream);
                         }
 
                     }
@@ -472,6 +477,34 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                 }
 
+            }
+
+        }
+
+        private byte[] Download(ImageViewState imageViewState, Stream responseStream)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var buffer = new byte[81920];
+                var len = 0;
+
+                for (; (len = responseStream.Read(buffer, 0, buffer.Length)) > 0;)
+                {
+                    ms.Write(buffer, 0, len);
+                    imageViewState.Position += len;
+
+                    try
+                    {
+                        this.OnDownloading(new TaskProgressingEventArgs(imageViewState));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+
+                }
+
+                return ms.ToArray();
             }
 
         }

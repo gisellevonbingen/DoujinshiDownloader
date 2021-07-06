@@ -8,13 +8,11 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 {
     public class TaskProgressingEventArgs : EventArgs
     {
-        public int Index { get; }
-        public ImageViewState View { get; }
+        public ImageViewState ViewState { get; }
 
-        public TaskProgressingEventArgs(int index, ImageViewState view)
+        public TaskProgressingEventArgs(ImageViewState viewState)
         {
-            this.Index = index;
-            this.View = view;
+            this.ViewState = viewState;
         }
 
     }

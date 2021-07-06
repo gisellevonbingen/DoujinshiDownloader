@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Giselle.Commons.Web;
+using Giselle.Commons.Net;
 using Giselle.DoujinshiDownloader.Utils;
 using Jint;
 using Newtonsoft.Json.Linq;

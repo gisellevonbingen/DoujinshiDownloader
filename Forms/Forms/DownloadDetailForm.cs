@@ -63,7 +63,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.ResumeLayout(false);
 
             this.Padding = new Padding(0);
-            this.ClientSize = new Size(400, 400);
+            this.ClientSize = new Size(400, 420);
         }
 
         private void OnTaskProgressed(object sender, TaskProgressingEventArgs e)
@@ -141,7 +141,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             }
 
             var listBox = this.ListBox;
-            map[listBox] = Rectangle.FromLTRB(layoutBounds.Left, layoutBounds.Top, layoutBounds.Right, stateLabelsTop);
+            map[listBox] = Rectangle.FromLTRB(layoutBounds.Left, layoutBounds.Top, layoutBounds.Right, stateLabelsTop - 10);
 
             return map;
         }

@@ -86,7 +86,7 @@
     <Compile Include="Utils\ObjectUtils2.cs" />
     <Compile Include="Utils\StringUtils2.cs" />
     <Compile Include="Utils\UriUtils.cs" />
-    <Compile Include="Utils\WebResponseUtils.cs" />
+    <Compile Include="Utils\HttpWebResponseExtensions2.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

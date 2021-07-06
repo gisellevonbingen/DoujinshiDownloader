@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.Commons;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.Drawing.Drawing;
 using Giselle.Forms;
@@ -21,6 +22,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private ViewState[] _ActiveStates;
         public ViewState[] ActiveStates { get => this._ActiveStates; set { this._ActiveStates = value; this.OnActiveStatesChanged(); } }
+
+        public Timer UpdateTimer { get; }
 
         public DownloadDetailListBox()
         {
@@ -39,21 +42,35 @@ namespace Giselle.DoujinshiDownloader.Forms
             var scrollGenerator = this.ScrollGenerator = new Control() { Bounds = new Rectangle() };
             panel.Controls.Add(scrollGenerator);
 
+            this.UpdateTimer = new Timer();
+            this.UpdateTimer.Interval = 50;
+            this.UpdateTimer.Tick += this.OnUpdateTimerTick;
+            this.UpdateTimer.Start();
+
             this.ResumeLayout(false);
 
             this.ActiveStates = new ViewState[0];
         }
 
         public DownloadDetailListItem[] GetItems() => this.Items.ToArray();
+        public bool AnyVisibleItemDirty => this.Items.Where(i => i.Visible).Any(i => i.Dirty);
 
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
 
-            if (disposing == true)
+            var task = this.Task;
+            task.Progressed -= this.OnTaskProgressed;
+
+            this.UpdateTimer.Tick -= this.OnUpdateTimerTick;
+            this.UpdateTimer.DisposeQuietly();
+        }
+
+        private void OnUpdateTimerTick(object sender, EventArgs e)
+        {
+            if (this.AnyVisibleItemDirty == true)
             {
-                var task = this.Task;
-                task.Progressed -= this.OnTaskProgressed;
+                this.Panel.Invalidate();
             }
 
         }
@@ -72,12 +89,11 @@ namespace Giselle.DoujinshiDownloader.Forms
             for (int i = 0; i < taskCount; i++)
             {
                 var imageView = task.ImageViewStates[i];
-                var item = new DownloadDetailListItem(i, imageView) { Visible = false };
-
-                items.Add(item);
+                items.Add(new DownloadDetailListItem(i, imageView) { Visible = false });
             }
 
             task.Progressed += this.OnTaskProgressed;
+            task.Downloading += this.OnTaskDownloading;
 
             this.UpdateItemsVisible();
         }
@@ -112,7 +128,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             if (item != null)
             {
-                Clipboard.SetText(item.ImageView.View.Url, TextDataFormat.Text);
+                Clipboard.SetText(item.ImageViewState.View.Url, TextDataFormat.Text);
             }
 
         }
@@ -120,7 +136,6 @@ namespace Giselle.DoujinshiDownloader.Forms
         private void OnPanelPaint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-            var font = this.FontManager[9.0F, FontStyle.Regular];
             var panel = this.Panel;
             var panelWidth = panel.Width;
             var panelScrollOffset = panel.AutoScrollPosition.Y;
@@ -130,17 +145,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 var itemBounds = item.Bounds;
                 itemBounds.Y += panelScrollOffset;
 
-                using (var brush = new SolidBrush(item.ForeColor))
-                {
-                    using (var format = new StringFormat())
-                    {
-                        format.Alignment = StringAlignment.Near;
-                        format.LineAlignment = StringAlignment.Center;
-
-                        g.DrawString($"{item.Text}\r\n{item.ImageView.View.FileName}", font, brush, itemBounds, format);
-                    }
-
-                }
+                item.Paint(this, g, itemBounds);
 
                 using (var linePen = new Pen(Color.Black, 1.0F))
                 {
@@ -175,7 +180,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             foreach (var item in this.Items.Where(i => i.Visible))
             {
-                item.Bounds = new Rectangle(10, top, panelWidth - 10, 50);
+                item.Bounds = new Rectangle(10, top, panelWidth - 10, 60);
                 top = item.Bounds.Bottom;
             }
 
@@ -186,9 +191,14 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public void UpdateItemVisible(DownloadDetailListItem item)
         {
+            if (item == null)
+            {
+                return;
+            }
+
             var activeStates = this.ActiveStates;
             var any = activeStates.Length == 0;
-            var state = item.ImageView.State;
+            var state = item.ImageViewState.State;
 
             item.Visible = any || Array.IndexOf(activeStates, state) > -1;
         }
@@ -214,14 +224,27 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void OnTaskProgressed(object sender, TaskProgressingEventArgs e)
         {
+            var item = this.MakeItemDirty(e.ViewState);
+
             ControlUtils.InvokeFNeeded(this, () =>
             {
-                var item = this.Items[e.Index];
-                item.UpdateState();
                 this.UpdateItemVisible(item);
                 this.UpdateItemsBounds();
             });
 
+        }
+
+        private void OnTaskDownloading(object sender, TaskProgressingEventArgs e)
+        {
+            this.MakeItemDirty(e.ViewState);
+        }
+
+        public DownloadDetailListItem MakeItemDirty(ImageViewState viewState)
+        {
+            var item = this.Items.FirstOrDefault(i => i.ImageViewState == viewState);
+            item?.MakeDirty();
+
+            return item;
         }
 
     }

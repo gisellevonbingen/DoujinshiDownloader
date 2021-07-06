@@ -13,7 +13,7 @@ namespace Giselle.DoujinshiDownloader.Forms
     public class DownloadDetailListItem
     {
         public int Index { get; }
-        public ImageViewState ImageView { get; }
+        public ImageViewState ImageViewState { get; }
 
         private bool _Visible = false;
         public bool Visible { get => this._Visible; set { if (this.Visible != value) { this._Visible = value; this.OnVisibleChanged(EventArgs.Empty); } } }
@@ -23,24 +23,69 @@ namespace Giselle.DoujinshiDownloader.Forms
         public Rectangle Bounds { get => this._Bounds; set { if (this.Bounds != value) { this._Bounds = value; this.OnBoundsChanged(EventArgs.Empty); } } }
         public event EventHandler BoundsChanged;
 
+        private bool _Dirty = false;
+        public bool Dirty { get => this._Dirty; protected set { if (this.Dirty != value) { this._Dirty = value; this.OnDirtyChanged(EventArgs.Empty); } } }
+        public event EventHandler DirtyChanged;
+
         public string Text { get; private set; } = string.Empty;
         public Color ForeColor { get; private set; } = Color.Black;
 
-        public DownloadDetailListItem(int index, ImageViewState imageView)
+        public DownloadDetailListItem(int index, ImageViewState imageViewState)
         {
             this.Index = index;
-            this.ImageView = imageView;
+            this.ImageViewState = imageViewState;
 
+            this.UpdateState();
+        }
+
+        public void MakeDirty()
+        {
+            this.Dirty = true;
+        }
+
+        public void MakeClean()
+        {
+            if (this.Dirty == true)
+            {
+                this.Dirty = false;
+                this.OnClean();
+            }
+
+        }
+
+        protected virtual void OnClean()
+        {
             this.UpdateState();
         }
 
         public void UpdateState()
         {
-            var view = this.ImageView;
-            var state = view.State;
-            var detailMessage = view.ExceptionMessage.ConsumeSelect(v => $" : {SR.Get("Download.Detail.Exception." + v)}");
+            var viewState = this.ImageViewState;
+            var state = viewState.State;
 
-            this.Text = $"{this.Index} : {SR.Get($"Download.Detail.State.{state}")}" + detailMessage;
+            var lines = new List<string>() { $"{this.Index} : {viewState.View.FileName}" };
+            var stateToString = $"{SR.Get($"Download.Detail.State.{state}")}";
+
+            if (viewState.Length > 0)
+            {
+                var position = FileSizeUtils.ToString(viewState.Position, 2);
+                var length = FileSizeUtils.ToString(viewState.Length, 2);
+                var perecent = viewState.Position / (viewState.Length / 100.0F);
+                lines.Add($"{stateToString}, {position} / {length} ({perecent:F2}%)");
+            }
+            else
+            {
+                lines.Add(stateToString);
+            }
+
+            if (viewState.ExceptionMessage != null)
+            {
+                var detailMessage = viewState.ExceptionMessage.ConsumeSelect(v => $" : {SR.Get("Download.Detail.Exception." + v)}");
+                lines.Add($"{detailMessage}");
+            }
+
+
+            this.Text = string.Join(Environment.NewLine, lines);
             this.ForeColor = (state == ViewState.Exception) ? Color.Red : Color.Black;
         }
 
@@ -52,6 +97,31 @@ namespace Giselle.DoujinshiDownloader.Forms
         protected virtual void OnBoundsChanged(EventArgs e)
         {
             this.BoundsChanged?.Invoke(this, e);
+        }
+
+        protected virtual void OnDirtyChanged(EventArgs e)
+        {
+            this.DirtyChanged?.Invoke(this, e);
+        }
+
+        public void Paint(DownloadDetailListBox parent, Graphics g, Rectangle bounds)
+        {
+            this.MakeClean();
+
+            using (var brush = new SolidBrush(this.ForeColor))
+            {
+                using (var format = new StringFormat())
+                {
+                    format.Alignment = StringAlignment.Near;
+                    format.LineAlignment = StringAlignment.Center;
+
+                    var viewState = this.ImageViewState;
+                    var font = parent.FontManager[9.0F, FontStyle.Regular];
+                    g.DrawString(this.Text, font, brush, bounds, format);
+                }
+
+            }
+
         }
 
     }
