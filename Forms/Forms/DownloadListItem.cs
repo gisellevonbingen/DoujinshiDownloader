@@ -289,10 +289,10 @@ namespace Giselle.DoujinshiDownloader.Forms
             var removeButtonBounds = map[removeButton] = new Rectangle(new Point(layoutBounds.Right - buttonSize.Width - margin, layoutBounds.Bottom - buttonSize.Height - margin), buttonSize);
 
             var openButton = this.OpenButton;
-            var openButtonBounds = map[openButton] = DrawingUtils2.PlaceByDirection(removeButtonBounds, buttonSize, PlaceDirection.Left, margin);
+            var openButtonBounds = map[openButton] = removeButtonBounds.PlaceByDirection(buttonSize, PlaceDirection.Left, margin);
 
             var detailButton = this.DetailButton;
-            map[detailButton] = DrawingUtils2.PlaceByDirection(openButtonBounds, buttonSize, PlaceDirection.Left, margin);
+            map[detailButton] = openButtonBounds.PlaceByDirection(buttonSize, PlaceDirection.Left, margin);
 
             return map;
         }

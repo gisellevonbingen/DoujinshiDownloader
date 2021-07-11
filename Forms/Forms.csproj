@@ -89,6 +89,7 @@
     <Compile Include="Configs\ContentSettings.cs" />
     <Compile Include="Configs\NetworkSettings.cs" />
     <Compile Include="Configs\NotifyMessageRules.cs" />
+    <Compile Include="Configs\NumberingSettings.cs" />
     <Compile Include="Configs\ProgramSettings.cs" />
     <Compile Include="Configs\UserInterfaceRules.cs" />
     <Compile Include="CrashReportForm.cs">
@@ -112,6 +113,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\DownloadDetailListItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\NumberingGroupBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\ProgramSettingsControl.cs">

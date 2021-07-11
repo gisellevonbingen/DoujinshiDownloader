@@ -135,7 +135,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var linkLabel = this.LinkLabel;
             var linkLabelSize = new Size(linkLabel.PreferredWidth, 25);
-            map[linkLabel] = DrawingUtils2.PlaceByDirection(map[downloadDirectoryButton], linkLabelSize, PlaceDirection.Left, PlaceLevel.Full);
+            map[linkLabel] = map[downloadDirectoryButton].PlaceByDirection(linkLabelSize, PlaceDirection.Left, PlaceLevel.Full);
 
             return map;
         }

@@ -232,15 +232,15 @@ namespace Giselle.DoujinshiDownloader.Forms
             map[memberIdControl.Label] = new Rectangle(0, 0, 80, memberIdControlBounds.Height);
 
             var passHashControl = this.PassHashControl;
-            var passHashControlBounds = map[passHashControl] = DrawingUtils2.PlaceByDirection(memberIdControlBounds, labeledControlSize, PlaceDirection.Bottom, 5);
+            var passHashControlBounds = map[passHashControl] = memberIdControlBounds.PlaceByDirection(labeledControlSize, PlaceDirection.Bottom, 5);
             map[passHashControl.Label] = new Rectangle(0, 0, 80, passHashControlBounds.Height);
 
             var verifyButton = this.VerifyButton;
             var verifyButtonSize = new Size(verifyButtonWidth, passHashControlBounds.Bottom - memberIdControlBounds.Top);
-            map[verifyButton] = DrawingUtils2.PlaceByDirection(memberIdControlBounds, verifyButtonSize, PlaceDirection.Right, margin);
+            map[verifyButton] = memberIdControlBounds.PlaceByDirection(verifyButtonSize, PlaceDirection.Right, margin);
 
             var messageLabel = this.MessageLabel;
-            var messageLabelBounds = map[messageLabel] = DrawingUtils2.PlaceByDirection(passHashControlBounds, new Size(layoutBounds.Width, 21), PlaceDirection.Bottom, 5);
+            var messageLabelBounds = map[messageLabel] = passHashControlBounds.PlaceByDirection(new Size(layoutBounds.Width, 21), PlaceDirection.Bottom, 5);
 
             var accountInformationGroupBox = this.AccountInfoGroupBox;
             map[accountInformationGroupBox] = Rectangle.FromLTRB(layoutBounds.Left, messageLabelBounds.Bottom, layoutBounds.Right, layoutBounds.Bottom);

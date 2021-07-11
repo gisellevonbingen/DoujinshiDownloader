@@ -115,11 +115,11 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var threadCountControl = this.ThreadCountControl;
             var threadCountControlSize = new Size(layoutBounds.Width, 25);
-            var threadCountControlBounds = map[threadCountControl] = DrawingUtils2.PlaceByDirection(timeoutControlBounds, threadCountControlSize, PlaceDirection.Bottom);
+            var threadCountControlBounds = map[threadCountControl] = timeoutControlBounds.PlaceByDirection(threadCountControlSize, PlaceDirection.Bottom);
 
             var retryCountControl = this.RetryCountControl;
             var retryCountControlSize = new Size(layoutBounds.Width, 25);
-            map[retryCountControl] = DrawingUtils2.PlaceByDirection(threadCountControlBounds, retryCountControlSize, PlaceDirection.Bottom);
+            map[retryCountControl] = threadCountControlBounds.PlaceByDirection(retryCountControlSize, PlaceDirection.Bottom);
 
             return map;
         }

@@ -463,16 +463,16 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var inputControl = this.InputControl;
             var inputControlSize = new Size(verifyButtonBounds.Left - 10 - layoutBounds.Left, 29);
-            var inputControlBounds = map[inputControl] = DrawingUtils2.PlaceByDirection(verifyButtonBounds, inputControlSize, PlaceDirection.Left, PlaceLevel.Half);
+            var inputControlBounds = map[inputControl] = verifyButtonBounds.PlaceByDirection(inputControlSize, PlaceDirection.Left, PlaceLevel.Half);
             map[inputControl.Label] = new Rectangle(new Point(), inputControl.Label.PreferredSize);
 
             var verifyMessageLabel = this.VerifyMessageLabel;
             var verifyMessageLabelSize = new Size(verifyButtonBounds.Right - inputControlBounds.Left, 21);
-            var verifyMessageLabelBounds = map[verifyMessageLabel] = DrawingUtils2.PlaceByDirection(inputControlBounds, verifyMessageLabelSize, PlaceDirection.Bottom, 5);
+            var verifyMessageLabelBounds = map[verifyMessageLabel] = inputControlBounds.PlaceByDirection(verifyMessageLabelSize, PlaceDirection.Bottom, 5);
 
             var downloadSelectGroupBox = this.DownloadSelectGroupBox;
             var downloadSelectGroupBoxSize = downloadSelectGroupBox.GetPreferredSize(new Size(layoutBounds.Width, 0));
-            map[downloadSelectGroupBox] = DrawingUtils2.PlaceByDirection(verifyMessageLabelBounds, downloadSelectGroupBoxSize, PlaceDirection.Bottom);
+            map[downloadSelectGroupBox] = verifyMessageLabelBounds.PlaceByDirection(downloadSelectGroupBoxSize, PlaceDirection.Bottom);
 
             var resultButtonSize = new Size((layoutBounds.Width - 10) / 2, 30);
             var resultButtonTop = layoutBounds.Bottom - resultButtonSize.Height;
@@ -485,7 +485,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var addMessageLabel = this.AddMessageLabel;
             var addMessageLabelSize = new Size(layoutBounds.Width, 21);
-            map[addMessageLabel] = DrawingUtils2.PlaceByDirection(cancelButtonBounds, addMessageLabelSize, PlaceDirection.Top, 5);
+            map[addMessageLabel] = cancelButtonBounds.PlaceByDirection(addMessageLabelSize, PlaceDirection.Top, 5);
 
             return map;
         }

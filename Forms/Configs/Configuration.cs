@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Giselle.DoujinshiDownloader.Configs
 {
-    public class Configuration
+    public class Configuration : IJsonObject
     {
         public ProgramSettings Program { get; } = new ProgramSettings();
         public AgentSettings Agent { get; } = new AgentSettings();

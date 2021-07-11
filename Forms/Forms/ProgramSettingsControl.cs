@@ -110,7 +110,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var allowBackgroundCheckBoxBounds = map[allowBackgroundCheckBox] = new Rectangle(lb.Left, lb.Top, allowBackgroundCheckBox.PreferredSize.Width, checkBoxHeight);
 
             var allowNotifyMessageCheckBox = this.AllowNotifyMessageCheckBox;
-            var allowNotifyMessageCheckBoxBounds = map[allowNotifyMessageCheckBox] = DrawingUtils2.PlaceByDirection(allowBackgroundCheckBoxBounds, new Size(allowNotifyMessageCheckBox.PreferredSize.Width, checkBoxHeight), PlaceDirection.Bottom, 0);
+            var allowNotifyMessageCheckBoxBounds = map[allowNotifyMessageCheckBox] = allowBackgroundCheckBoxBounds.PlaceByDirection(new Size(allowNotifyMessageCheckBox.PreferredSize.Width, checkBoxHeight), PlaceDirection.Bottom, 0);
 
             var rulesLastest = this.PlacePropertyCheckBoxs(map, this.NotifyMessageRuleCheckBoxs.Values, checkBoxHeight, allowNotifyMessageCheckBoxBounds);
 

@@ -191,7 +191,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var saveButtonBounds = map[saveButton] = new Rectangle(saveButtonLocation, resultButtonSize);
 
             var cancelButton = this.CancelButton;
-            map[cancelButton] = DrawingUtils2.PlaceByDirection(saveButtonBounds, resultButtonSize, PlaceDirection.Left, margin);
+            map[cancelButton] = saveButtonBounds.PlaceByDirection(resultButtonSize, PlaceDirection.Left, margin);
 
             var listBox = this.ListBox;
             var listBoxBounds = map[listBox] = new Rectangle(layoutBounds.Left, layoutBounds.Top, 200, saveButtonBounds.Top - layoutBounds.Top - margin);
