@@ -9,10 +9,10 @@ using System.Windows.Forms;
 using Giselle.Commons;
 using Giselle.Commons.Net;
 using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Drawing;
+using Giselle.Drawing.Drawing;
 using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms

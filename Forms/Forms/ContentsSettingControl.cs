@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.DoujinshiDownloader.Configs;
-using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Drawing;
 using Giselle.Drawing.Drawing;
@@ -100,8 +99,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var downloadToArchiveCheckBox = this.DownloadToArchiveCheckBox;
             var downloadToArchiveCheckBoxSize = completeAutoRemoveCheckBoxBounds.Size;
-            var downloadToArchiveCheckBoxLocation = DrawingUtils.PlaceByDirection(completeAutoRemoveCheckBoxBounds, downloadToArchiveCheckBoxSize, PlaceDirection.Bottom, 0);
-            var downloadToArchiveCheckBoxBounds = map[downloadToArchiveCheckBox] = new Rectangle(downloadToArchiveCheckBoxLocation, downloadToArchiveCheckBoxSize);
+            var downloadToArchiveCheckBoxBounds = map[downloadToArchiveCheckBox] = completeAutoRemoveCheckBoxBounds.PlaceByDirection(downloadToArchiveCheckBoxSize, PlaceDirection.Bottom, 0);
 
             var directoryButtonWidth = 40;
             var directoryButtonLeft = layoutBounds.Right - directoryButtonWidth;

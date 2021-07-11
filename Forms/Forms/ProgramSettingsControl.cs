@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Drawing;
 using Giselle.Drawing.Drawing;
@@ -135,12 +134,12 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                 if (rulesLastest == null)
                 {
-                    var point = DrawingUtils.PlaceByDirection(start, size, PlaceDirection.Bottom, 0);
+                    var point = start.PlaceByDirection(size, PlaceDirection.Bottom, 0);
                     location = new Point(point.X + 20, point.Y);
                 }
                 else
                 {
-                    location = DrawingUtils.PlaceByDirection(map[rulesLastest], size, PlaceDirection.Bottom, 0);
+                    location = map[rulesLastest].PlaceByDirection(size, PlaceDirection.Bottom, 0).Location;
                 }
 
                 map[checkBox] = new Rectangle(location, size);

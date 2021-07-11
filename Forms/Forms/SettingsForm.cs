@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.DoujinshiDownloader.Forms.Utils;
 using Giselle.Drawing;
+using Giselle.Drawing.Drawing;
 using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
