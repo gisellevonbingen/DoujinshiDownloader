@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Giselle.Commons;
 using Giselle.Commons.Net;
+using Giselle.Commons.Threading;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Utils;
 
@@ -168,7 +169,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 this.UpdateState(TaskState.Canceling);
                 this.DisposeCancelSources(true);
 
-                ThreadUtils.Join(this.Thread);
+                this.Thread.JoinNotCurrent();
                 this.Thread = null;
 
                 this.UpdateState(TaskState.Completed | TaskState.Cancelled);
@@ -258,7 +259,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             foreach (var thread in threads)
             {
-                ThreadUtils.Join(thread);
+                thread.JoinNotCurrent();
             }
 
         }

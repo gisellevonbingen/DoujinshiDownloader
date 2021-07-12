@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Giselle.Commons;
+using Giselle.Commons.Threading;
 
 namespace Giselle.DoujinshiDownloader.Schedulers
 {
@@ -136,7 +137,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 {
                     this.Stopping = true;
 
-                    ThreadUtils.AbortAndJoin(this.ExecuteThread);
+                    this.ExecuteThread.AbortAndJoinNotCurrent();
                     this.ExecuteThread = null;
 
                     this.ResetEvent.DisposeQuietly();
