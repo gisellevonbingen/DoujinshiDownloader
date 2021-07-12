@@ -13,7 +13,6 @@ namespace Giselle.DoujinshiDownloader.Configs
         public string DownloadDirectory { get; set; } = "Downloads";
         public bool DownloadCompleteAutoRemove { get; set; } = false;
         public bool DownloadToArchive { get; set; } = false;
-        public NumberingSettings Numbering { get; set; } = new NumberingSettings();
 
         public ContentSettings()
         {
@@ -25,8 +24,6 @@ namespace Giselle.DoujinshiDownloader.Configs
             this.DownloadDirectory = json.Value<string>("DownloadDirectory") ?? this.DownloadDirectory;
             this.DownloadCompleteAutoRemove = json.Value<bool?>("DownloadCompleteAutoRemove") ?? this.DownloadCompleteAutoRemove;
             this.DownloadToArchive = json.Value<bool?>("DownloadToArchive") ?? this.DownloadToArchive;
-
-            this.Numbering = json.Read<NumberingSettings>("Numbering");
         }
 
         public void Write(JToken json)
@@ -34,8 +31,6 @@ namespace Giselle.DoujinshiDownloader.Configs
             json["DownloadDirectory"] = this.DownloadDirectory;
             json["DownloadCompleteAutoRemove"] = this.DownloadCompleteAutoRemove;
             json["DownloadToArchive"] = this.DownloadToArchive;
-
-            json["Numbering"] = this.Numbering.Write();
         }
 
     }

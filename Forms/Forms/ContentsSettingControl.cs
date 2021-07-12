@@ -22,8 +22,6 @@ namespace Giselle.DoujinshiDownloader.Forms
         private readonly Button DirectoryButton = null;
         private readonly Label DirectoryCommentLabel = null;
 
-        public NumberingGroupBox NumberingGroupBox { get; private set; }
-
         public ContentsSettingControl()
         {
             this.SuspendLayout();
@@ -57,10 +55,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             directoryCommentLabel.Text = SR.Get("Settings.Download.DirectoryWarning");
             directoryCommentLabel.TextAlign = ContentAlignment.MiddleLeft;
             this.Controls.Add(directoryCommentLabel);
-
-            var numberingGroupBox = this.NumberingGroupBox = new NumberingGroupBox();
-            numberingGroupBox.Text = "파일명에 번호 붙이기";
-            this.Controls.Add(numberingGroupBox);
 
             this.ResumeLayout(false);
         }
@@ -114,8 +108,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             var directoryCommentLabel = this.DirectoryCommentLabel;
             map[directoryCommentLabel] = new Rectangle(new Point(directoryTextBoxBounds.Left, directoryTextBoxBounds.Bottom), directoryCommentLabel.PreferredSize);
 
-            map[this.NumberingGroupBox] = map[directoryCommentLabel].PlaceByDirection(this.NumberingGroupBox.PreferredSize, PlaceDirection.Bottom, 20);
-
             return map;
         }
 
@@ -140,8 +132,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.DirectoryTextBox.TextBox.Text = content.DownloadDirectory;
             this.CompleteAutoRemoveCheckBox.Checked = content.DownloadCompleteAutoRemove;
             this.DownloadToArchiveCheckBox.Checked = content.DownloadToArchive;
-
-            this.NumberingGroupBox.Bind(content.Numbering);
         }
 
         public override void Apply(Configuration config)
@@ -150,8 +140,6 @@ namespace Giselle.DoujinshiDownloader.Forms
             content.DownloadDirectory = this.DirectoryTextBox.TextBox.Text;
             content.DownloadCompleteAutoRemove = this.CompleteAutoRemoveCheckBox.Checked;
             content.DownloadToArchive = this.DownloadToArchiveCheckBox.Checked;
-
-            content.Numbering = this.NumberingGroupBox.Parse();
         }
 
     }
