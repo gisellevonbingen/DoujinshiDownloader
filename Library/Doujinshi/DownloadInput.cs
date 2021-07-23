@@ -132,16 +132,15 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             var number = this.Number;
             var key = this.Key;
 
-            int hash = 17;
-            hash = hash * 17 + number;
-            hash = hash * 17 + (key != null ? key.GetHashCode() : 0);
-
+            var hash = ObjectUtils.HashSeed;
+            hash = hash.AccumulateHashCode(number);
+            hash = hash.AccumulateHashCode(key);
             return hash;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is DownloadInput other ? this.Equals(other) : false;
+            return obj is DownloadInput other && this.Equals(other);
         }
 
         public bool Equals(DownloadInput other)
