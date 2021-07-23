@@ -14,7 +14,7 @@ namespace Giselle.DoujinshiDownloader
         [Option("multiInst", HelpText = "Run New Instance Without Mutex")]
         public bool MultiInstance { get; set; }
 
-        [Option("language", Required = false, HelpText = "Set ui language, ex.) en-US, ko-KR")]
+        [Option("language", Required = false, HelpText = "Set ui language, e.g.) en-US, ko-KR")]
         public string Language { get; set; }
 
     }
