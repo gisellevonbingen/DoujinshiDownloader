@@ -341,7 +341,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 tasks.Add(task);
             }
 
-            Task.WaitAll(tasks.ToArray());
+            Task.WaitAny(tasks.ToArray());
         }
 
         private GalleryValidation VerifyGallery(AgentGetGelleryInfosParameter parameter)
