@@ -200,6 +200,9 @@ Are You Sure You Want To Quit?</value>
   <data name="NewDownload.Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="NewDownload.Continue" xml:space="preserve">
+    <value>Add Continuously</value>
+  </data>
   <data name="DownloadSelect.Title" xml:space="preserve">
     <value>Select Download</value>
   </data>

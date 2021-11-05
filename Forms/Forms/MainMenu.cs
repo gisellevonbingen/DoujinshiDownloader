@@ -77,12 +77,31 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public void OpenNewDownloadForm()
         {
-            using (var form = new NewDownloadForm())
+            while (true)
             {
-                if (form.ShowDialog(this) == DialogResult.OK)
+                var continueChecked = false;
+
+                using (var form = new NewDownloadForm())
                 {
-                    var request = form.Request;
-                    this.OnDownloadRequested(new DownloadRequestEventArgs(request));
+                    form.ContinueChecked = continueChecked;
+
+                    if (form.ShowDialog(this) == DialogResult.OK)
+                    {
+                        var request = form.Request;
+                        this.OnDownloadRequested(new DownloadRequestEventArgs(request));
+                        continueChecked = form.ContinueChecked;
+
+                        if (continueChecked == false)
+                        {
+                            break;
+                        }
+
+                    }
+                    else
+                    {
+                        break;
+                    }
+
                 }
 
             }

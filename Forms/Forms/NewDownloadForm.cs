@@ -31,6 +31,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         private readonly Label AddMessageLabel = null;
         private readonly Button AddButton = null;
         private readonly new Button CancelButton = null;
+        private readonly CheckBox ContinueCheckBox = null;
 
         private readonly object VerifyInputThreadLock = new object();
         private Thread VerifyInputThread = null;
@@ -96,11 +97,18 @@ namespace Giselle.DoujinshiDownloader.Forms
             cancelButton.Click += this.OnCancelButtonClick;
             this.Controls.Add(cancelButton);
 
+            var continueCheckBox = this.ContinueCheckBox = new CheckBox();
+            continueCheckBox.Text = SR.Get("NewDownload.Continue");
+            continueCheckBox.Font = fm[12, FontStyle.Regular];
+            this.Controls.Add(continueCheckBox);
+
             this.ResumeLayout(false);
 
-            this.ClientSize = new Size(500, 500);
+            this.ClientSize = new Size(500, 520);
             this.UpdateControlsBoundsPreferred();
         }
+
+        public bool ContinueChecked { get => this.ContinueCheckBox.Checked; set => this.ContinueCheckBox.Checked = value; }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -478,14 +486,16 @@ namespace Giselle.DoujinshiDownloader.Forms
             var resultButtonTop = layoutBounds.Bottom - resultButtonSize.Height;
 
             var addButton = this.AddButton;
-            map[addButton] = new Rectangle(new Point(layoutBounds.Right - resultButtonSize.Width, resultButtonTop), resultButtonSize);
+            var addButtonBounds = map[addButton] = new Rectangle(new Point(layoutBounds.Right - resultButtonSize.Width, resultButtonTop), resultButtonSize);
 
             var cancelButton = this.CancelButton;
-            var cancelButtonBounds = map[cancelButton] = new Rectangle(new Point(layoutBounds.Left, resultButtonTop), resultButtonSize);
+            map[cancelButton] = new Rectangle(new Point(layoutBounds.Left, resultButtonTop), resultButtonSize);
+
+            var continueCheckBox = this.ContinueCheckBox;
+            map[continueCheckBox] = addButtonBounds.PlaceByDirection(continueCheckBox.PreferredSize, PlaceDirection.Top, PlaceLevel.Full, 5);
 
             var addMessageLabel = this.AddMessageLabel;
-            var addMessageLabelSize = new Size(layoutBounds.Width, 21);
-            map[addMessageLabel] = cancelButtonBounds.PlaceByDirection(addMessageLabelSize, PlaceDirection.Top, 5);
+            map[addMessageLabel] = layoutBounds.InBottomBounds(21, layoutBounds.Bottom - map[continueCheckBox].Top);
 
             return map;
         }
