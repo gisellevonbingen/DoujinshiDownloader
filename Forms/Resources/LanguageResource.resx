@@ -303,8 +303,7 @@ Are You Sure You Want To Quit?</value>
 
 Increase When Bring Image From E-Hentai/ExHentai Server
 
-If Current Exceed Limit, Can't Bring Image
-Regenerates At A Rate Of {=Regenerates} Per Minute</value>
+If Current Exceed Limit, Can't Bring Image</value>
   </data>
   <data name="Settings.Network.Title" xml:space="preserve">
     <value>Network</value>

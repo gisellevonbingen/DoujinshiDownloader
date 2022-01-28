@@ -10,7 +10,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
     {
         public int Current { get; set; }
         public int Limit { get; set; }
-        public int Regenerates { get; set; }
     }
 
 }

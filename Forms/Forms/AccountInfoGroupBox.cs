@@ -41,7 +41,6 @@ namespace Giselle.DoujinshiDownloader.Forms
                 {
                     ["Current"] = value.Current.ToString(),
                     ["Limit"] = value.Limit.ToString(),
-                    ["Regenerates"] = value.Regenerates.ToString()
                 };
 
                 imageLimitLabel.Text = SR.Get("Settings.ExHentaiAccount.Information.ImageLimit", map);

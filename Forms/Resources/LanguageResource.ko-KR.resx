@@ -304,8 +304,7 @@
 E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
 점수가 증가합니다
 
-점수가 제한 값에 도달하면 이미지를 가져올 수 없습니다
-1분 당 {=Regenerates}점 감소합니다</value>
+점수가 제한 값에 도달하면 이미지를 가져올 수 없습니다</value>
   </data>
   <data name="Settings.Network.Title" xml:space="preserve">
     <value>네트워크</value>

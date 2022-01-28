@@ -76,13 +76,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 var document = response.ReadAsDocument();
                 var stuffboxDivNode = document.DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("stuffbox"));
                 var homeboxDivNode = stuffboxDivNode.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("homebox"));
-                var cuts = homeboxDivNode.InnerText.Cut("You are currently at ", " towards a limit of ", ". This regenerates at a rate of ", " per minute.");
+                var cuts = homeboxDivNode.InnerText.Cut("You are currently at ", " towards a limit of ", ".");
 
                 var imageLimit = new ImageLimit
                 {
                     Current = NumberUtils.ToInt(cuts[0]),
                     Limit = NumberUtils.ToInt(cuts[1]),
-                    Regenerates = NumberUtils.ToInt(cuts[2])
                 };
 
                 return imageLimit;
