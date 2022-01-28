@@ -85,6 +85,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         private void VerifyThreading()
         {
             var agent = new ExHentaiAgent();
+            Exception exception = null;
 
             try
             {
@@ -103,15 +104,16 @@ namespace Giselle.DoujinshiDownloader.Forms
                     this.ImageLimit = agent.GetImageLimit(account);
                 }
 
-                this.Verifing = false;
             }
             catch (Exception e)
             {
-                var dd = DoujinshiDownloader.Instance;
-                dd.ShowCrashMessageBox(e);
+                this.VerifySuccess = false;
+                exception = e;
             }
             finally
             {
+                this.Verifing = false;
+
                 try
                 {
                     ControlUtils.InvokeFNeeded(this, this.UpdateVerifyControl);
@@ -121,11 +123,13 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                 }
 
-                lock (this.ThreadLock)
-                {
-                    this.VerifyThread = null;
-                }
+                this.VerifyThread = null;
+            }
 
+            if (exception != null)
+            {
+                var dd = DoujinshiDownloader.Instance;
+                dd.ShowCrashMessageBox(exception);
             }
 
         }
