@@ -790,202 +790,6 @@
             The chunk of data to add
             </param>
         </member>
-        <member name="T:ICSharpCode.SharpZipLib.SharpZipBaseException">
-            <summary>
-            SharpZipBaseException is the base exception class for SharpZipLib.
-            All library exceptions are derived from this.
-            </summary>
-            <remarks>NOTE: Not all exceptions thrown will be derived from this class.
-            A variety of other exceptions are possible for example <see cref="T:System.ArgumentNullException"></see></remarks>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor">
-            <summary>
-            Initializes a new instance of the SharpZipBaseException class.
-            </summary>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the SharpZipBaseException class with a specified error message.
-            </summary>
-            <param name="message">A message describing the exception.</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the SharpZipBaseException class with a specified
-            error message and a reference to the inner exception that is the cause of this exception.
-            </summary>
-            <param name="message">A message describing the exception.</param>
-            <param name="innerException">The inner exception</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Initializes a new instance of the SharpZipBaseException class with serialized data.
-            </summary>
-            <param name="info">
-            The System.Runtime.Serialization.SerializationInfo that holds the serialized
-            object data about the exception being thrown.
-            </param>
-            <param name="context">
-            The System.Runtime.Serialization.StreamingContext that contains contextual information
-            about the source or destination.
-            </param>
-        </member>
-        <member name="T:ICSharpCode.SharpZipLib.StreamDecodingException">
-            <summary>
-            Indicates that an error occured during decoding of a input stream due to corrupt
-            data or (unintentional) library incompability.
-            </summary>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor">
-            <summary>
-            Initializes a new instance of the StreamDecodingException with a generic message
-            </summary>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the StreamDecodingException class with a specified error message.
-            </summary>
-            <param name="message">A message describing the exception.</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the StreamDecodingException class with a specified
-            error message and a reference to the inner exception that is the cause of this exception.
-            </summary>
-            <param name="message">A message describing the exception.</param>
-            <param name="innerException">The inner exception</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Initializes a new instance of the StreamDecodingException class with serialized data.
-            </summary>
-            <param name="info">
-            The System.Runtime.Serialization.SerializationInfo that holds the serialized
-            object data about the exception being thrown.
-            </param>
-            <param name="context">
-            The System.Runtime.Serialization.StreamingContext that contains contextual information
-            about the source or destination.
-            </param>
-        </member>
-        <member name="T:ICSharpCode.SharpZipLib.StreamUnsupportedException">
-            <summary>
-            Indicates that the input stream could not decoded due to known library incompability or missing features
-            </summary>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor">
-            <summary>
-            Initializes a new instance of the StreamUnsupportedException with a generic message
-            </summary>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the StreamUnsupportedException class with a specified error message.
-            </summary>
-            <param name="message">A message describing the exception.</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the StreamUnsupportedException class with a specified
-            error message and a reference to the inner exception that is the cause of this exception.
-            </summary>
-            <param name="message">A message describing the exception.</param>
-            <param name="innerException">The inner exception</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Initializes a new instance of the StreamUnsupportedException class with serialized data.
-            </summary>
-            <param name="info">
-            The System.Runtime.Serialization.SerializationInfo that holds the serialized
-            object data about the exception being thrown.
-            </param>
-            <param name="context">
-            The System.Runtime.Serialization.StreamingContext that contains contextual information
-            about the source or destination.
-            </param>
-        </member>
-        <member name="T:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException">
-            <summary>
-            Indicates that the input stream could not decoded due to the stream ending before enough data had been provided
-            </summary>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor">
-            <summary>
-            Initializes a new instance of the UnexpectedEndOfStreamException with a generic message
-            </summary>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the UnexpectedEndOfStreamException class with a specified error message.
-            </summary>
-            <param name="message">A message describing the exception.</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the UnexpectedEndOfStreamException class with a specified
-            error message and a reference to the inner exception that is the cause of this exception.
-            </summary>
-            <param name="message">A message describing the exception.</param>
-            <param name="innerException">The inner exception</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Initializes a new instance of the UnexpectedEndOfStreamException class with serialized data.
-            </summary>
-            <param name="info">
-            The System.Runtime.Serialization.SerializationInfo that holds the serialized
-            object data about the exception being thrown.
-            </param>
-            <param name="context">
-            The System.Runtime.Serialization.StreamingContext that contains contextual information
-            about the source or destination.
-            </param>
-        </member>
-        <member name="T:ICSharpCode.SharpZipLib.ValueOutOfRangeException">
-            <summary>
-            Indicates that a value was outside of the expected range when decoding an input stream
-            </summary>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the ValueOutOfRangeException class naming the causing variable
-            </summary>
-            <param name="nameOfValue">Name of the variable, use: nameof()</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.String,System.Int64,System.Int64,System.Int64)">
-            <summary>
-            Initializes a new instance of the ValueOutOfRangeException class naming the causing variable,
-            it's current value and expected range.
-            </summary>
-            <param name="nameOfValue">Name of the variable, use: nameof()</param>
-            <param name="value">The invalid value</param>
-            <param name="maxValue">Expected maximum value</param>
-            <param name="minValue">Expected minimum value</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.String,System.String,System.String,System.String)">
-            <summary>
-            Initializes a new instance of the ValueOutOfRangeException class naming the causing variable,
-            it's current value and expected range.
-            </summary>
-            <param name="nameOfValue">Name of the variable, use: nameof()</param>
-            <param name="value">The invalid value</param>
-            <param name="maxValue">Expected maximum value</param>
-            <param name="minValue">Expected minimum value</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Initializes a new instance of the ValueOutOfRangeException class with serialized data.
-            </summary>
-            <param name="info">
-            The System.Runtime.Serialization.SerializationInfo that holds the serialized
-            object data about the exception being thrown.
-            </param>
-            <param name="context">
-            The System.Runtime.Serialization.StreamingContext that contains contextual information
-            about the source or destination.
-            </param>
-        </member>
         <member name="T:ICSharpCode.SharpZipLib.Core.ScanEventArgs">
             <summary>
             Event arguments for scanning.
@@ -1509,7 +1313,6 @@
             </summary>
             <param name="path">A <see cref="T:System.String"/> containing path information.</param>
             <returns>The path with the root removed if it was present; path otherwise.</returns>
-            <remarks>Unlike the <see cref="T:System.IO.Path"/> class the path isn't otherwise checked for validity.</remarks>
         </member>
         <member name="M:ICSharpCode.SharpZipLib.Core.PathUtils.GetTempFileName(System.String)">
             <summary>
@@ -1594,6 +1397,202 @@
             <summary>
             Initialise an instance of <see cref="T:ICSharpCode.SharpZipLib.Core.StreamUtils"></see>
             </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.SharpZipBaseException">
+            <summary>
+            SharpZipBaseException is the base exception class for SharpZipLib.
+            All library exceptions are derived from this.
+            </summary>
+            <remarks>NOTE: Not all exceptions thrown will be derived from this class.
+            A variety of other exceptions are possible for example <see cref="T:System.ArgumentNullException"></see></remarks>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor">
+            <summary>
+            Initializes a new instance of the SharpZipBaseException class.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the SharpZipBaseException class with a specified error message.
+            </summary>
+            <param name="message">A message describing the exception.</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the SharpZipBaseException class with a specified
+            error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">A message describing the exception.</param>
+            <param name="innerException">The inner exception</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the SharpZipBaseException class with serialized data.
+            </summary>
+            <param name="info">
+            The System.Runtime.Serialization.SerializationInfo that holds the serialized
+            object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The System.Runtime.Serialization.StreamingContext that contains contextual information
+            about the source or destination.
+            </param>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.StreamDecodingException">
+            <summary>
+            Indicates that an error occurred during decoding of a input stream due to corrupt
+            data or (unintentional) library incompatibility.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor">
+            <summary>
+            Initializes a new instance of the StreamDecodingException with a generic message
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the StreamDecodingException class with a specified error message.
+            </summary>
+            <param name="message">A message describing the exception.</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the StreamDecodingException class with a specified
+            error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">A message describing the exception.</param>
+            <param name="innerException">The inner exception</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the StreamDecodingException class with serialized data.
+            </summary>
+            <param name="info">
+            The System.Runtime.Serialization.SerializationInfo that holds the serialized
+            object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The System.Runtime.Serialization.StreamingContext that contains contextual information
+            about the source or destination.
+            </param>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.StreamUnsupportedException">
+            <summary>
+            Indicates that the input stream could not decoded due to known library incompability or missing features
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor">
+            <summary>
+            Initializes a new instance of the StreamUnsupportedException with a generic message
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the StreamUnsupportedException class with a specified error message.
+            </summary>
+            <param name="message">A message describing the exception.</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the StreamUnsupportedException class with a specified
+            error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">A message describing the exception.</param>
+            <param name="innerException">The inner exception</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the StreamUnsupportedException class with serialized data.
+            </summary>
+            <param name="info">
+            The System.Runtime.Serialization.SerializationInfo that holds the serialized
+            object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The System.Runtime.Serialization.StreamingContext that contains contextual information
+            about the source or destination.
+            </param>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException">
+            <summary>
+            Indicates that the input stream could not decoded due to the stream ending before enough data had been provided
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor">
+            <summary>
+            Initializes a new instance of the UnexpectedEndOfStreamException with a generic message
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the UnexpectedEndOfStreamException class with a specified error message.
+            </summary>
+            <param name="message">A message describing the exception.</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the UnexpectedEndOfStreamException class with a specified
+            error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">A message describing the exception.</param>
+            <param name="innerException">The inner exception</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the UnexpectedEndOfStreamException class with serialized data.
+            </summary>
+            <param name="info">
+            The System.Runtime.Serialization.SerializationInfo that holds the serialized
+            object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The System.Runtime.Serialization.StreamingContext that contains contextual information
+            about the source or destination.
+            </param>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.ValueOutOfRangeException">
+            <summary>
+            Indicates that a value was outside of the expected range when decoding an input stream
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the ValueOutOfRangeException class naming the causing variable
+            </summary>
+            <param name="nameOfValue">Name of the variable, use: nameof()</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.String,System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Initializes a new instance of the ValueOutOfRangeException class naming the causing variable,
+            it's current value and expected range.
+            </summary>
+            <param name="nameOfValue">Name of the variable, use: nameof()</param>
+            <param name="value">The invalid value</param>
+            <param name="maxValue">Expected maximum value</param>
+            <param name="minValue">Expected minimum value</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the ValueOutOfRangeException class naming the causing variable,
+            it's current value and expected range.
+            </summary>
+            <param name="nameOfValue">Name of the variable, use: nameof()</param>
+            <param name="value">The invalid value</param>
+            <param name="maxValue">Expected maximum value</param>
+            <param name="minValue">Expected minimum value</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the ValueOutOfRangeException class with serialized data.
+            </summary>
+            <param name="info">
+            The System.Runtime.Serialization.SerializationInfo that holds the serialized
+            object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The System.Runtime.Serialization.StreamingContext that contains contextual information
+            about the source or destination.
+            </param>
         </member>
         <member name="T:ICSharpCode.SharpZipLib.Encryption.PkzipClassic">
             <summary>
@@ -1829,6 +1828,9 @@
             and advances the position within the stream by the number of bytes read.
             </summary>
         </member>
+        <member name="M:ICSharpCode.SharpZipLib.Encryption.ZipAESStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
         <member name="M:ICSharpCode.SharpZipLib.Encryption.ZipAESStream.Write(System.Byte[],System.Int32,System.Int32)">
             <summary>
             Writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
@@ -1932,41 +1934,55 @@
             This class contains constants used for gzip.
             </summary>
         </member>
-        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipConstants.GZIP_MAGIC">
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipConstants.ID1">
             <summary>
-            Magic number found at start of GZIP header
+            First GZip identification byte
             </summary>
         </member>
-        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipConstants.FTEXT">
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipConstants.ID2">
             <summary>
-            Flag bit mask for text
+            Second GZip identification byte
             </summary>
         </member>
-        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipConstants.FHCRC">
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipConstants.CompressionMethodDeflate">
             <summary>
-            Flag bitmask for Crc
+            Deflate compression method
             </summary>
         </member>
-        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipConstants.FEXTRA">
+        <member name="P:ICSharpCode.SharpZipLib.GZip.GZipConstants.Encoding">
             <summary>
-            Flag bit mask for extra
+            Get the GZip specified encoding (CP-1252 if supported, otherwise ASCII)
             </summary>
         </member>
-        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipConstants.FNAME">
+        <member name="T:ICSharpCode.SharpZipLib.GZip.GZipFlags">
             <summary>
-            flag bitmask for name
+            GZip header flags
             </summary>
         </member>
-        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipConstants.FCOMMENT">
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipFlags.FTEXT">
             <summary>
-            flag bit mask indicating comment is present
+            Text flag hinting that the file is in ASCII
             </summary>
         </member>
-        <member name="M:ICSharpCode.SharpZipLib.GZip.GZipConstants.#ctor">
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipFlags.FHCRC">
             <summary>
-            Initialise default instance.
+            CRC flag indicating that a CRC16 preceeds the data
             </summary>
-            <remarks>Constructor is private to prevent instances being created.</remarks>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipFlags.FEXTRA">
+            <summary>
+            Extra flag indicating that extra fields are present
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipFlags.FNAME">
+            <summary>
+            Filename flag indicating that the original filename is present
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipFlags.FCOMMENT">
+            <summary>
+            Flag bit mask indicating that a comment is present
+            </summary>
         </member>
         <member name="T:ICSharpCode.SharpZipLib.GZip.GZipException">
             <summary>
@@ -2084,6 +2100,12 @@
             </param>
             <returns>Returns the number of bytes actually read.</returns>
         </member>
+        <member name="M:ICSharpCode.SharpZipLib.GZip.GZipInputStream.GetFilename">
+            <summary>
+            Retrieves the filename header field for the block last read
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ICSharpCode.SharpZipLib.GZip.GZipOutputStream">
              <summary>
              This filter stream is used to compress a stream into a "GZIP" stream.
@@ -2154,6 +2176,11 @@
             Get the current compression level.
             </summary>
             <returns>The current compression level.</returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.FileName">
+            <summary>
+            Original filename
+            </summary>
         </member>
         <member name="M:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Write(System.Byte[],System.Int32,System.Int32)">
             <summary>
@@ -5959,16 +5986,15 @@
             Allows client to determine if an entry can be patched after its added
             </summary>
         </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.cryptoTransform_">
+            <summary>
+            The CryptoTransform currently being used to encrypt the compressed data.
+            </summary>
+        </member>
         <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.AESAuthCode">
             <summary>
             Returns the 10 byte AUTH CODE to be appended immediately following the AES data stream.
             </summary>
-        </member>
-        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Password">
-            <summary>
-            Get/set the password used for encryption.
-            </summary>
-            <remarks>When set to null or if the password is empty no encryption is performed</remarks>
         </member>
         <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.EncryptBlock(System.Byte[],System.Int32,System.Int32)">
             <summary>
@@ -5983,17 +6009,6 @@
             <param name="length">
             Number of bytes in buffer to encrypt
             </param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializePassword(System.String)">
-            <summary>
-            Initializes encryption keys based on given <paramref name="password"/>.
-            </summary>
-            <param name="password">The password.</param>
-        </member>
-        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializeAESPassword(ICSharpCode.SharpZipLib.Zip.ZipEntry,System.String,System.Byte[]@,System.Byte[]@)">
-            <summary>
-            Initializes encryption keys based on given password.
-            </summary>
         </member>
         <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Deflate">
             <summary>
@@ -6749,6 +6764,21 @@
             Initialise a default instance of <see cref="T:ICSharpCode.SharpZipLib.Zip.FastZip"/>.
             </summary>
         </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.FastZip.#ctor(ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting)">
+            <summary>
+            Initialise a new instance of <see cref="T:ICSharpCode.SharpZipLib.Zip.FastZip"/> using the specified <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting"/>
+            </summary>
+            <param name="timeSetting">The <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting">time setting</see> to use when creating or extracting <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipEntry">Zip entries</see>.</param>
+            <remarks>Using <see cref="F:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting.LastAccessTime">TimeSetting.LastAccessTime</see><see cref="F:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting.LastAccessTimeUtc">[Utc]</see> when
+            creating an archive will set the file time to the moment of reading.
+            </remarks>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.FastZip.#ctor(System.DateTime)">
+            <summary>
+            Initialise a new instance of <see cref="T:ICSharpCode.SharpZipLib.Zip.FastZip"/> using the specified <see cref="T:System.DateTime"/>
+            </summary>
+            <param name="time">The time to set all <see cref="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.DateTime"/> values for created or extracted <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipEntry">Zip Entries</see>.</param>
+        </member>
         <member name="M:ICSharpCode.SharpZipLib.Zip.FastZip.#ctor(ICSharpCode.SharpZipLib.Zip.FastZipEvents)">
             <summary>
             Initialise a new instance of <see cref="T:ICSharpCode.SharpZipLib.Zip.FastZip"/>
@@ -6977,6 +7007,17 @@
         <member name="P:ICSharpCode.SharpZipLib.Zip.IEntryFactory.NameTransform">
             <summary>
             Get/set the <see cref="T:ICSharpCode.SharpZipLib.Core.INameTransform"></see> applicable.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.IEntryFactory.Setting">
+            <summary>
+            Get the <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting"/> in use.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.IEntryFactory.FixedDateTime">
+            <summary>
+            Get the <see cref="T:System.DateTime"/> value to use when <see cref="P:ICSharpCode.SharpZipLib.Zip.IEntryFactory.Setting"/> is set to <see cref="F:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting.Fixed"/>,
+            or if not specified, the value of <see cref="P:System.DateTime.Now"/> when the class was the initialized
             </summary>
         </member>
         <member name="T:ICSharpCode.SharpZipLib.Zip.WindowsNameTransform">
@@ -7791,7 +7832,7 @@
         <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.ExternalFileAttributes">
             <summary>
             Get/Set external file attributes as an integer.
-            The values of this are operating system dependant see
+            The values of this are operating system dependent see
             <see cref="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.HostSystem">HostSystem</see> for details
             </summary>
         </member>
@@ -7819,7 +7860,7 @@
         </member>
         <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.HostSystem">
              <summary>
-             Gets the compatability information for the <see cref="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.ExternalFileAttributes">external file attribute</see>
+             Gets the compatibility information for the <see cref="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.ExternalFileAttributes">external file attribute</see>
              If the external file attributes are compatible with MS-DOS and can be read
              by PKZIP for DOS version 2.04g then this value will be zero.  Otherwise the value
              will be non-zero and identify the host system on which the attributes are compatible.
@@ -7953,7 +7994,7 @@
             The size or -1 if unknown.
             </returns>
             <remarks>Setting the size before adding an entry to an archive can help
-            avoid compatability problems with some archivers which dont understand Zip64 extensions.</remarks>
+            avoid compatibility problems with some archivers which don't understand Zip64 extensions.</remarks>
         </member>
         <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressedSize">
             <summary>
@@ -7976,13 +8017,11 @@
         </member>
         <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressionMethod">
             <summary>
-            Gets/Sets the compression method. Only Deflated and Stored are supported.
+            Gets/Sets the compression method.
             </summary>
             <returns>
             The compression method for this entry
             </returns>
-            <see cref="F:ICSharpCode.SharpZipLib.Zip.CompressionMethod.Deflated"/>
-            <see cref="F:ICSharpCode.SharpZipLib.Zip.CompressionMethod.Stored"/>
         </member>
         <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressionMethodForHeader">
             <summary>
@@ -8018,11 +8057,19 @@
             <summary>
             Returns the length of the salt, in bytes
             </summary>
+            Key size -> Salt length: 128 bits = 8 bytes, 192 bits = 12 bytes, 256 bits = 16 bytes.
         </member>
         <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.AESOverheadSize">
             <summary>
             Number of extra bytes required to hold the AES Header fields (Salt, Pwd verify, AuthCode)
             </summary>
+            File format:
+            Bytes	 |	Content
+            ---------+---------------------------
+            Variable |	Salt value
+            2		 |	Password verification value
+            Variable |	Encrypted file data
+            10		 |	Authentication code
         </member>
         <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.EncryptionOverheadSize">
             <summary>
@@ -8049,7 +8096,7 @@
             </returns>
             <remarks>
             A comment is only available for entries when read via the <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipFile"/> class.
-            The <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipInputStream"/> class doesnt have the comment data available.
+            The <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipInputStream"/> class doesn't have the comment data available.
             </remarks>
         </member>
         <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.IsDirectory">
@@ -8112,6 +8159,27 @@
             <remarks>
             The <seealso cref="T:ICSharpCode.SharpZipLib.Zip.ZipNameTransform">Zip name transform</seealso> class is more flexible.
             </remarks>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions">
+            <summary>
+            General ZipEntry helper extensions
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.HasFlag(ICSharpCode.SharpZipLib.Zip.ZipEntry,ICSharpCode.SharpZipLib.Zip.GeneralBitFlags)">
+            <summary>
+            Efficiently check if a <see cref="T:ICSharpCode.SharpZipLib.Zip.GeneralBitFlags">flag</see> is set without enum un-/boxing
+            </summary>
+            <param name="entry"></param>
+            <param name="flag"></param>
+            <returns>Returns whether the flag was set</returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.SetFlag(ICSharpCode.SharpZipLib.Zip.ZipEntry,ICSharpCode.SharpZipLib.Zip.GeneralBitFlags,System.Boolean)">
+            <summary>
+            Efficiently set a <see cref="T:ICSharpCode.SharpZipLib.Zip.GeneralBitFlags">flag</see> without enum un-/boxing
+            </summary>
+            <param name="entry"></param>
+            <param name="flag"></param>
+            <param name="enabled">Whether the passed flag should be set (1) or cleared (0)</param>
         </member>
         <member name="T:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory">
             <summary>
@@ -10278,13 +10346,16 @@
             <value>A password for all encrypted <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipEntry">entries </see> in this <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipInputStream"/></value>
         </member>
         <member name="P:ICSharpCode.SharpZipLib.Zip.ZipInputStream.CanDecompressEntry">
-            <summary>
-            Gets a value indicating if there is a current entry and it can be decompressed
-            </summary>
-            <remarks>
-            The entry can only be decompressed if the library supports the zip features required to extract it.
-            See the <see cref="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.Version">ZipEntry Version</see> property for more details.
-            </remarks>
+             <summary>
+             Gets a value indicating if there is a current entry and it can be decompressed
+             </summary>
+             <remarks>
+             The entry can only be decompressed if the library supports the zip features required to extract it.
+             See the <see cref="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.Version">ZipEntry Version</see> property for more details.
+            
+             Since <see cref="T:ICSharpCode.SharpZipLib.Zip.ZipInputStream"/> uses the local headers for extraction, entries with no compression combined with the
+             <see cref="F:ICSharpCode.SharpZipLib.Zip.GeneralBitFlags.Descriptor"/> flag set, cannot be extracted as the end of the entry data cannot be deduced.
+             </remarks>
         </member>
         <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.IsEntryCompressionMethodSupported(ICSharpCode.SharpZipLib.Zip.ZipEntry)">
             <summary>
@@ -10294,7 +10365,7 @@
             Uses entry.CompressionMethodForHeader so that entries of type WinZipAES will be rejected. 
             </remarks>
             <param name="entry">the entry to check.</param>
-            <returns>true if the compression methiod is supported, false if not.</returns>
+            <returns>true if the compression method is supported, false if not.</returns>
         </member>
         <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.GetNextEntry">
             <summary>
@@ -10367,6 +10438,11 @@
             <returns>Returns the number of bytes actually read.</returns>
         </member>
         <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.ReadingNotSupported(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Handle attempts to read from this entry by throwing an exception
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.StoredDescriptorEntry(System.Byte[],System.Int32,System.Int32)">
             <summary>
             Handle attempts to read from this entry by throwing an exception
             </summary>
@@ -10627,6 +10703,12 @@
             Defaults to <see cref="T:ICSharpCode.SharpZipLib.Zip.PathTransformer"/>, set to null to disable transforms and use names as supplied.
             </summary>
         </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Password">
+            <summary>
+            Get/set the password used for encryption.
+            </summary>
+            <remarks>When set to null or if the password is empty no encryption is performed</remarks>
+        </member>
         <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteLeShort(System.Int32)">
             <summary>
             Write an unsigned short in little endian byte order.
@@ -10675,12 +10757,26 @@
             <summary>
             Closes the current entry, updating header and footer information as required
             </summary>
+            <exception cref="T:ICSharpCode.SharpZipLib.Zip.ZipException">
+            Invalid entry field values.
+            </exception>
             <exception cref="T:System.IO.IOException">
             An I/O error occurs.
             </exception>
             <exception cref="T:System.InvalidOperationException">
             No entry is active.
             </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.InitializePassword(System.String)">
+            <summary>
+            Initializes encryption keys based on given <paramref name="password"/>.
+            </summary>
+            <param name="password">The password.</param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.InitializeAESPassword(ICSharpCode.SharpZipLib.Zip.ZipEntry,System.String,System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Initializes encryption keys based on given password.
+            </summary>
         </member>
         <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Write(System.Byte[],System.Int32,System.Int32)">
             <summary>
@@ -10759,6 +10855,11 @@
             Position to patch size.
             </summary>
         </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.password">
+            <summary>
+            The password to use when encrypting archive entries.
+            </summary>
+        </member>
         <member name="T:ICSharpCode.SharpZipLib.Zip.ZipStrings">
             <summary>
             This static class contains functions for encoding and decoding zip file strings
@@ -10796,7 +10897,7 @@
             set the <see cref="P:ICSharpCode.SharpZipLib.Zip.ZipStrings.CodePage"/> to <see cref="P:ICSharpCode.SharpZipLib.Zip.ZipStrings.SystemDefaultCodePage"/>
             </summary>
             <remarks>
-            /// Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
+            Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
             But sometimes it yields the special value of 1 which is nicknamed <c>CodePageNoOEM</c> in <see cref="T:System.Text.Encoding"/> sources (might also mean <c>CP_OEMCP</c>, but Encoding puts it so).
             This was observed on Ukranian and Hindu systems.
             Given this value, <see cref="M:System.Text.Encoding.GetEncoding(System.Int32)"/> throws an <see cref="T:System.ArgumentException"/>.
