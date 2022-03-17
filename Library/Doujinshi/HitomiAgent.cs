@@ -75,6 +75,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             var json = this.GetGalleryInfoAsJson();
             return this.GetGalleryImageFiles(json).Select(token => this.GetGalleryImageView(token)).ToList();
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:명명 스타일", Justification = "<보류 중>")]
         public string url_from_url_from_hash(JToken imageFileJson, string dir, string ext, string @base)
         {
             return this.JintEngine.Invoke("url_from_url_from_hash", this.DownloadInput.Number, imageFileJson, dir, ext, @base).ToString();
