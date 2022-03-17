@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Giselle.Commons;
+using Giselle.Commons.Collections;
 using Giselle.Commons.Net;
 using Giselle.DoujinshiDownloader.Utils;
 using HtmlAgilityPack;
@@ -126,7 +128,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 {
                     GalleryUrl = parameter.Uri,
                     Title = title,
-                    ThumbnailUrl = thumbnailUrl
+                    ThumbnailUrls = { thumbnailUrl }
                 };
                 info.ParameterTypes.Add(this.Original);
 

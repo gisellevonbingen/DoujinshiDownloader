@@ -42,11 +42,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public abstract GalleryImagePath GetGalleryImagePath(Site site, DownloadInput input, GalleryImageView view, GalleryParameterValues values);
 
-        public virtual byte[] GetGalleryThumbnail(string thumbnailUrl)
+        public virtual byte[] GetGalleryThumbnail(Site site, DownloadInput input, string thumbnailUrl)
         {
-            var req = this.CreateRequestParameter();
-            req.Uri = thumbnailUrl;
-            req.Method = "GET";
+            var req = this.CreateThumbnailRequest(site, input, thumbnailUrl);
 
             using (var res = this.Explorer.Request(req))
             {
@@ -63,6 +61,15 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
             }
 
+        }
+
+        public virtual WebRequestParameter CreateThumbnailRequest(Site site, DownloadInput input, string thumbnailUrl)
+        {
+            var parameter = this.CreateRequestParameter();
+            parameter.Uri = thumbnailUrl;
+            parameter.Method = "GET";
+
+            return parameter;
         }
 
         public virtual WebRequestParameter CreateImageRequest(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)

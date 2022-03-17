@@ -2,6 +2,7 @@
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
+using Jint;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,11 @@ namespace Tester
         [STAThread]
         public static void Main()
         {
+            //var engine = new Engine();
+            //engine.SetValue("A", new Action<string>(Console.WriteLine));
+            //engine.Execute("HTMLImageElement = function(){};");
+            //engine.Execute("A('123')");
+
             using (var instance = new DoujinshiDownloader(new CommandLineOptions()))
             {
                 TestDownloadInputParse();
@@ -41,7 +47,21 @@ namespace Tester
                 var site = test.Method.Site;
                 var agent = test.Method.CreateAgent();
                 var info = agent.GetGalleryInfo(site, input);
-                var thumbnail = agent.GetGalleryThumbnail(info.ThumbnailUrl);
+                byte[] thumbnail = null;
+
+                foreach (var thunbnailUrl in info.ThumbnailUrls)
+                {
+                    try
+                    {
+                        thumbnail = string.IsNullOrEmpty(thunbnailUrl) ? null : agent.GetGalleryThumbnail(site, input, thunbnailUrl);
+                        break;
+                    }
+                    catch
+                    {
+
+                    }
+
+                }
 
                 var request = new DownloadRequest
                 {

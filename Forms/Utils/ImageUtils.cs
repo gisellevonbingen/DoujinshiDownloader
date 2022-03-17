@@ -17,9 +17,17 @@ namespace Giselle.DoujinshiDownloader.Utils
                 return null;
             }
 
-            using (var ms = new MemoryStream(bytes))
+            try
             {
-                return Image.FromStream(ms);
+                using (var ms = new MemoryStream(bytes))
+                {
+                    return Image.FromStream(ms);
+                }
+
+            }
+            catch
+            {
+                return null;
             }
 
         }

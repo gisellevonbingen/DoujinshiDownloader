@@ -366,7 +366,22 @@ namespace Giselle.DoujinshiDownloader.Forms
                 }
                 else
                 {
-                    var thumbnailData = this.DownloadThumbnail(agent, info.ThumbnailUrl);
+                    byte[] thumbnailData = null;
+
+                    foreach (var thubnailUrl in info.ThumbnailUrls)
+                    {
+                        try
+                        {
+                            thumbnailData = this.DownloadThumbnail(agent, site, downloadInput, thubnailUrl);
+                            break;
+                        }
+                        catch
+                        {
+
+                        }
+
+                    }
+
                     return GalleryValidation.CreateByInfo(method, downloadInput, agent, info, thumbnailData);
                 }
 
@@ -500,13 +515,13 @@ namespace Giselle.DoujinshiDownloader.Forms
             return map;
         }
 
-        private byte[] DownloadThumbnail(GalleryAgent agent, string thubnailUrl)
+        private byte[] DownloadThumbnail(GalleryAgent agent, Site site, DownloadInput input, string thubnailUrl)
         {
             if (string.IsNullOrWhiteSpace(thubnailUrl) == false)
             {
                 try
                 {
-                    return agent.GetGalleryThumbnail(thubnailUrl);
+                    return agent.GetGalleryThumbnail(site, input, thubnailUrl);
                 }
                 catch (Exception e)
                 {
