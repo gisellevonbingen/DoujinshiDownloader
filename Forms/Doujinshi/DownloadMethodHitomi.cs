@@ -15,9 +15,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override Site Site { get { return Site.HitomiGallery; } }
 
-        protected override GalleryAgent OnCreateAgent()
+        public override GalleryAgent CreateAgent(DownloadInput downloadInput, WebRequestProvider webRequestProvider)
         {
-            return new HitomiAgent();
+            return new HitomiAgent(this.Site, downloadInput, webRequestProvider);
         }
 
     }

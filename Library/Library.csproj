@@ -85,6 +85,7 @@
     <Compile Include="Doujinshi\HitomiAgent.cs" />
     <Compile Include="Doujinshi\ImageRequestCreateException.cs" />
     <Compile Include="Doujinshi\Site.cs" />
+    <Compile Include="Doujinshi\WebRequestProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ObjectUtils2.cs" />
     <Compile Include="Utils\StringUtils2.cs" />

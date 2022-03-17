@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.Commons;
+using Giselle.Commons.Net;
 using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.Drawing;
@@ -84,7 +86,6 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void VerifyThreading()
         {
-            var agent = new ExHentaiAgent();
             Exception exception = null;
 
             try
@@ -95,13 +96,15 @@ namespace Giselle.DoujinshiDownloader.Forms
                 ControlUtils.InvokeFNeeded(this, this.UpdateVerifyControl);
 
                 var account = this.ParseAccount();
-                var result = agent.CheckAccount(account);
+                var webRequestProvider = new WebRequestProvider() { Timeout = 0 };
+                var func = ExHentaiAgent.UnaryRequestParameter(webRequestProvider.CreateRequestParameter, account);
+                var result = ExHentaiAgent.CheckAccount(webRequestProvider.Explorer, func);
 
                 this.VerifySuccess = result;
 
                 if (result == true)
                 {
-                    this.ImageLimit = agent.GetImageLimit(account);
+                    this.ImageLimit = ExHentaiAgent.GetImageLimit(webRequestProvider.Explorer, func);
                 }
 
             }

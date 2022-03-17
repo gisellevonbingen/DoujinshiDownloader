@@ -10,41 +10,35 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public abstract class GalleryAgent
     {
-        public WebExplorer Explorer { get; }
-        public WebProxySettings Proxy { get; set; }
-        public int Timeout { get; set; } = 60 * 1000;
-        public int RetryCount { get; set; } = 2;
+        public Site Site { get; }
+        public DownloadInput DownloadInput { get; }
+        private readonly WebRequestProvider WebRequestProvider;
 
-        public GalleryAgent()
+        public GalleryAgent(Site site, DownloadInput downloadInput, WebRequestProvider webRequestProvider)
         {
-            this.Explorer = new WebExplorer();
-            this.Proxy = null;
-            this.Timeout = 0;
-            this.RetryCount = 0;
+            this.Site = site;
+            this.DownloadInput = downloadInput;
+            this.WebRequestProvider = webRequestProvider;
         }
+
+        public string GalleryUrl => this.Site.ToUrl(this.DownloadInput);
+
+        public WebExplorer Explorer => this.WebRequestProvider.Explorer;
 
         public virtual WebRequestParameter CreateRequestParameter()
         {
-            var req = new WebRequestParameter { Proxy = this.Proxy };
-            var timeout = this.Timeout;
-
-            if (timeout > 0)
-            {
-                req.Timeout = timeout;
-            }
-
-            return req;
+            return this.WebRequestProvider.CreateRequestParameter();
         }
 
-        public abstract GalleryInfo GetGalleryInfo(Site site, DownloadInput input);
+        public abstract GalleryInfo GetGalleryInfo();
 
-        public abstract List<GalleryImageView> GetGalleryImageViews(Site site, DownloadInput input, GalleryParameterValues values);
+        public abstract List<GalleryImageView> GetGalleryImageViews(GalleryParameterValues values);
 
-        public abstract GalleryImagePath GetGalleryImagePath(Site site, DownloadInput input, GalleryImageView view, GalleryParameterValues values);
+        public abstract GalleryImagePath GetGalleryImagePath(GalleryImageView view, GalleryParameterValues values);
 
-        public virtual byte[] GetGalleryThumbnail(Site site, DownloadInput input, string thumbnailUrl)
+        public virtual byte[] GetGalleryThumbnail(string thumbnailUrl)
         {
-            var req = this.CreateThumbnailRequest(site, input, thumbnailUrl);
+            var req = this.CreateThumbnailRequest(thumbnailUrl);
 
             using (var res = this.Explorer.Request(req))
             {
@@ -63,7 +57,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public virtual WebRequestParameter CreateThumbnailRequest(Site site, DownloadInput input, string thumbnailUrl)
+        public virtual WebRequestParameter CreateThumbnailRequest(string thumbnailUrl)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Uri = thumbnailUrl;
@@ -72,7 +66,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return parameter;
         }
 
-        public virtual WebRequestParameter CreateImageRequest(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)
+        public virtual WebRequestParameter CreateImageRequest(GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
@@ -81,9 +75,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return parameter;
         }
 
-        public abstract GalleryImagePath ReloadImagePath(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath prev, GalleryParameterValues values);
+        public abstract GalleryImagePath ReloadImagePath(GalleryImageView view, GalleryImagePath prev, GalleryParameterValues values);
 
-        public virtual void Validate(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath path, GalleryParameterValues values, byte[] bytes)
+        public virtual void Validate(GalleryImageView view, GalleryImagePath path, GalleryParameterValues values, byte[] bytes)
         {
 
         }

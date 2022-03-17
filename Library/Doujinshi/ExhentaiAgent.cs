@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Giselle.Commons;
-using Giselle.Commons.Collections;
 using Giselle.Commons.Net;
 using Giselle.DoujinshiDownloader.Utils;
 using HtmlAgilityPack;
@@ -16,36 +14,24 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class ExHentaiAgent : GalleryAgent
     {
-        public ExHentaiAccount Account { get; set; } = null;
-        public GalleryParameterType<bool> Original { get; } = new GalleryParameterType<bool>(Guid.NewGuid(), "Original");
-
-        public ExHentaiAgent()
+        public static Func<WebRequestParameter> UnaryRequestParameter(Func<WebRequestParameter> func, ExHentaiAccount account)
         {
-
+            return () => func().ConsumeOwn(o => SetCookie(o, account));
         }
 
-        public override WebRequestParameter CreateRequestParameter()
+        public static void SetCookie(WebRequestParameter parameter, ExHentaiAccount account)
         {
-            var account = this.Account;
-            return this.CreateRequestParameter(account);
-        }
-
-        public WebRequestParameter CreateRequestParameter(ExHentaiAccount account)
-        {
-            var parameter = base.CreateRequestParameter();
             var cookies = parameter.CookieContainer = new CookieContainer();
 
             if (account != null)
             {
-                this.SetCookie("e-hentai.org", cookies, account);
-                this.SetCookie("exhentai.org", cookies, account);
+                SetCookie(cookies, account, "e-hentai.org");
+                SetCookie(cookies, account, "exhentai.org");
             }
 
-
-            return parameter;
         }
 
-        public void SetCookie(string origin, CookieContainer cookies, ExHentaiAccount account)
+        public static void SetCookie(CookieContainer cookies, ExHentaiAccount account, string origin)
         {
             var uri = new Uri($"https://{origin}/");
             var cookieOrigin = $".{origin}";
@@ -53,13 +39,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             account?.PassHash.ConsumeOwn(v => cookies.Add(uri, new Cookie("ipb_pass_hash", v, "/", cookieOrigin)));
         }
 
-        public bool CheckAccount(ExHentaiAccount account)
+        public static bool CheckAccount(WebExplorer explorer, Func<WebRequestParameter> parameterProvider)
         {
-            var parameter = this.CreateRequestParameter(account);
+            var parameter = parameterProvider();
             parameter.Uri = "https://e-hentai.org/bounce_login.php?b=d&bt=1-1";
             parameter.Method = "GET";
 
-            using (var response = this.Explorer.Request(parameter))
+            using (var response = explorer.Request(parameter))
             {
                 var loc = response.Headers["location"];
                 return string.IsNullOrWhiteSpace(loc) == false;
@@ -67,13 +53,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public ImageLimit GetImageLimit(ExHentaiAccount account)
+        public static ImageLimit GetImageLimit(WebExplorer explorer, Func<WebRequestParameter> parameterProvider)
         {
-            var parameter = this.CreateRequestParameter(account);
+            var parameter = parameterProvider();
             parameter.Uri = "https://e-hentai.org/home.php";
             parameter.Method = "GET";
 
-            using (var response = this.Explorer.Request(parameter))
+            using (var response = explorer.Request(parameter))
             {
                 var document = response.ReadAsDocument();
                 var stuffboxDivNode = document.DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("stuffbox"));
@@ -91,10 +77,23 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override GalleryInfo GetGalleryInfo(Site site, DownloadInput input)
+        public ExHentaiAccount Account { get; }
+        public GalleryParameterType<bool> Original { get; } = new GalleryParameterType<bool>(Guid.NewGuid(), "Original");
+
+        public ExHentaiAgent(Site site, DownloadInput downloadInput, WebRequestProvider webRequestProvider, ExHentaiAccount account) : base(site, downloadInput, webRequestProvider)
+        {
+            this.Account = account != null ? new ExHentaiAccount(account) : null;
+        }
+
+        public override WebRequestParameter CreateRequestParameter()
+        {
+            return UnaryRequestParameter(base.CreateRequestParameter, this.Account)();
+        }
+
+        public override GalleryInfo GetGalleryInfo()
         {
             var parameter = this.CreateRequestParameter();
-            parameter.Uri = site.ToUrl(input);
+            parameter.Uri = this.GalleryUrl;
             parameter.Method = "GET";
 
             using (var response = this.Explorer.Request(parameter))
@@ -181,9 +180,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override List<GalleryImageView> GetGalleryImageViews(Site site, DownloadInput input, GalleryParameterValues values)
+        public override List<GalleryImageView> GetGalleryImageViews(GalleryParameterValues values)
         {
-            var galleryUrl = site.ToUrl(input);
+            var galleryUrl = this.GalleryUrl;
             int pageCount = this.GetGalleryPageCount(galleryUrl);
             var list = new List<GalleryImageView>();
 
@@ -195,7 +194,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return list;
         }
 
-        public override GalleryImagePath GetGalleryImagePath(Site site, DownloadInput input, GalleryImageView view, GalleryParameterValues values)
+        public override GalleryImagePath GetGalleryImagePath(GalleryImageView view, GalleryParameterValues values)
         {
             return this.GetGalleryImagePath(view.Url, values);
         }
@@ -261,12 +260,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override GalleryImagePath ReloadImagePath(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath prev, GalleryParameterValues values)
+        public override GalleryImagePath ReloadImagePath(GalleryImageView view, GalleryImagePath prev, GalleryParameterValues values)
         {
             return this.GetGalleryImagePath(prev.ReloadUrl, values);
         }
 
-        public override WebRequestParameter CreateImageRequest(Site site, DownloadInput input, GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)
+        public override WebRequestParameter CreateImageRequest(GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)
         {
             var uri = new Uri(path.ImageUrl);
             var fileName = uri.GetFileName();
@@ -276,7 +275,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 throw new ImageRequestCreateException("ImageLimit");
             }
 
-            return base.CreateImageRequest(site, input, view, path, values);
+            return base.CreateImageRequest(view, path, values);
         }
 
     }

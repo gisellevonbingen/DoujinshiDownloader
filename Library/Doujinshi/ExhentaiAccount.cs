@@ -18,10 +18,10 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public ExHentaiAccount(string memberId, string passHash)
+        public ExHentaiAccount(ExHentaiAccount other)
         {
-            this.MemberId = memberId;
-            this.PassHash = passHash;
+            this.MemberId = other.MemberId;
+            this.PassHash = other.PassHash;
         }
 
         public void Read(JToken token)

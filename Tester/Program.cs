@@ -45,15 +45,15 @@ namespace Tester
             {
                 var input = test.Input;
                 var site = test.Method.Site;
-                var agent = test.Method.CreateAgent();
-                var info = agent.GetGalleryInfo(site, input);
+                var agent = test.Method.CreateAgent(input, new WebRequestProvider());
+                var info = agent.GetGalleryInfo();
                 byte[] thumbnail = null;
 
                 foreach (var thunbnailUrl in info.ThumbnailUrls)
                 {
                     try
                     {
-                        thumbnail = string.IsNullOrEmpty(thunbnailUrl) ? null : agent.GetGalleryThumbnail(site, input, thunbnailUrl);
+                        thumbnail = string.IsNullOrEmpty(thunbnailUrl) ? null : agent.GetGalleryThumbnail(thunbnailUrl);
                         break;
                     }
                     catch
@@ -65,7 +65,7 @@ namespace Tester
 
                 var request = new DownloadRequest
                 {
-                    Validation = GalleryValidation.CreateByInfo(test.Method, input, agent, info, thumbnail),
+                    Validation = GalleryValidation.CreateByInfo(test.Method, agent, info, thumbnail),
                     FileName = PathUtils.FilterInvalids(info.Title)
                 };
 
