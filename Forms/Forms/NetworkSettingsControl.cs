@@ -127,6 +127,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:불필요한 값 할당", Justification = "<보류 중>")]
         protected override Dictionary<Control, Rectangle> GetPreferredBounds(Rectangle layoutBounds)
         {
             var map = base.GetPreferredBounds(layoutBounds);
