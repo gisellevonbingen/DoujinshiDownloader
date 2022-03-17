@@ -22,6 +22,11 @@ namespace Giselle.DoujinshiDownloader
 
         public static string Replace(string text, Dictionary<string, string> args)
         {
+            if (string.IsNullOrEmpty(text) == true)
+            {
+                return text;
+            }
+
             foreach (var pair in args)
             {
                 var key = pair.Key;
@@ -34,6 +39,11 @@ namespace Giselle.DoujinshiDownloader
 
         public static string Replace(string text, params string[] array)
         {
+            if (string.IsNullOrEmpty(text) == true)
+            {
+                return text;
+            }
+
             for (int i = 0; i < array.Length; i += 2)
             {
                 var key = array[i + 0];

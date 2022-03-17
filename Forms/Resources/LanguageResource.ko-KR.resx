@@ -330,6 +330,9 @@ E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
   <data name="Settings.Network.RetryCountUnit" xml:space="preserve">
     <value>회</value>
   </data>
+  <data name="Settings.Network.ServiceUnavailableSleep" xml:space="preserve">
+    <value>서버 혼잡시 지연 시간 {=Default}</value>
+  </data>
   <data name="Settings.Download.Title" xml:space="preserve">
     <value>다운로드</value>
   </data>

@@ -329,6 +329,9 @@ If Current Exceed Limit, Can't Bring Image</value>
   <data name="Settings.Network.RetryCountUnit" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Settings.Network.ServiceUnavailableSleep" xml:space="preserve">
+    <value>Delay when Server Busy {=Default}</value>
+  </data>
   <data name="Settings.Download.Title" xml:space="preserve">
     <value>Download</value>
   </data>

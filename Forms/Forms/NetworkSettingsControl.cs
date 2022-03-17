@@ -16,6 +16,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         private readonly SettingTrackBar TimeoutControl = null;
         private readonly SettingTrackBar ThreadCountControl = null;
         private readonly SettingTrackBar RetryCountControl = null;
+        private readonly SettingTrackBar ServiceUnavailableSleepControl = null;
 
         public NetworkSettingsControl()
         {
@@ -29,7 +30,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var timeoutControl = this.TimeoutControl = new SettingTrackBar();
             timeoutControl.Unit = SR.Get("Settings.Network.TimeoutUnit");
             timeoutControl.TextLabel.Text = SR.Get("Settings.Network.Timeout", "Default", SR.Replace(defaultValueTemplete, "Value", (defaultValues.Timeout / 1000).ToString("F1"), "Unit", timeoutControl.Unit));
-            timeoutControl.ValueConstructor += this.OnTimeCoutControlValueConstructor;
+            timeoutControl.ValueConstructor += this.OnTimeoutControlValueConstructor;
             var timeoutTrackBar = timeoutControl.TrackBar;
             timeoutTrackBar.Minimum = 10000;
             timeoutTrackBar.Maximum = 120000;
@@ -55,10 +56,28 @@ namespace Giselle.DoujinshiDownloader.Forms
             retryCountTrackBar.Maximum = 16;
             this.Controls.Add(retryCountControl);
 
+            var serviceUnavailableSleepControl = this.ServiceUnavailableSleepControl = new SettingTrackBar();
+            serviceUnavailableSleepControl.Unit = SR.Get("Settings.Network.TimeoutUnit");
+            serviceUnavailableSleepControl.TextLabel.Text = SR.Get("Settings.Network.ServiceUnavailableSleep", "Default", SR.Replace(defaultValueTemplete, "Value", (defaultValues.Timeout / 1000).ToString("F1"), "Unit", serviceUnavailableSleepControl.Unit));
+            serviceUnavailableSleepControl.ValueConstructor += this.OnTimeoutControlValueConstructor;
+            var serviceUnavailableSleepTrackBar = serviceUnavailableSleepControl.TrackBar;
+            serviceUnavailableSleepTrackBar.Minimum = 1000;
+            serviceUnavailableSleepTrackBar.Maximum = 60_000;
+            serviceUnavailableSleepTrackBar.TickFrequency = 1000;
+            serviceUnavailableSleepTrackBar.SmallChange = 100;
+            serviceUnavailableSleepTrackBar.LargeChange = 100;
+            serviceUnavailableSleepTrackBar.MinimumChange = 100;
+            this.Controls.Add(serviceUnavailableSleepControl);
+
             this.ResumeLayout(false);
         }
 
-        private void OnTimeCoutControlValueConstructor(object sender, SettingTrackBarValueConstructEventArgs e)
+        private void OnServiceUnavailableSleepControlValueConstructor(object sender, SettingTrackBarValueConstructEventArgs e)
+        {
+            e.ValueToString = (e.Value / 1000.0D).ToString("F1");
+        }
+
+        private void OnTimeoutControlValueConstructor(object sender, SettingTrackBarValueConstructEventArgs e)
         {
             e.ValueToString = (e.Value / 1000.0D).ToString("F1");
         }
@@ -74,6 +93,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.TimeoutControl.TrackBar.Value = network.Timeout;
             this.ThreadCountControl.TrackBar.Value = network.ThreadCount;
             this.RetryCountControl.TrackBar.Value = network.RetryCount;
+            this.ServiceUnavailableSleepControl.TrackBar.Value = network.ServiceUnavailableSleep;
         }
 
         public override void Apply(Configuration config)
@@ -82,6 +102,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             network.Timeout = this.TimeoutControl.TrackBar.Value;
             network.ThreadCount = this.ThreadCountControl.TrackBar.Value;
             network.RetryCount = this.RetryCountControl.TrackBar.Value;
+            network.ServiceUnavailableSleep = this.ServiceUnavailableSleepControl.TrackBar.Value;
         }
 
         protected override void UpdateControlsBoundsPreferred(Rectangle layoutBounds)
@@ -92,7 +113,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             {
                 this.TimeoutControl,
                 this.ThreadCountControl,
-                this.RetryCountControl
+                this.RetryCountControl,
+                this.ServiceUnavailableSleepControl,
             };
 
             var width = list.Max(l => l.Label.PreferredWidth);
@@ -119,7 +141,11 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var retryCountControl = this.RetryCountControl;
             var retryCountControlSize = new Size(layoutBounds.Width, 25);
-            map[retryCountControl] = threadCountControlBounds.PlaceByDirection(retryCountControlSize, PlaceDirection.Bottom);
+            var retryCountControlBounds = map[retryCountControl] = threadCountControlBounds.PlaceByDirection(retryCountControlSize, PlaceDirection.Bottom);
+
+            var serviceUnavailableSleepControl = this.ServiceUnavailableSleepControl;
+            var serviceUnavailableSleepControlSize = new Size(layoutBounds.Width, 25);
+            var serviceUnavailableSleepControlBounds = map[serviceUnavailableSleepControl] = retryCountControlBounds.PlaceByDirection(serviceUnavailableSleepControlSize, PlaceDirection.Bottom);
 
             return map;
         }

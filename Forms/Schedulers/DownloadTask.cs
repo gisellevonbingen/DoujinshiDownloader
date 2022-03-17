@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -400,6 +401,14 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     {
                         return e.Message;
                     }
+                    catch (HttpStatusCodeException e)
+                    {
+                        if (e.Code == HttpStatusCode.ServiceUnavailable)
+                        {
+                            Thread.Sleep(DoujinshiDownloader.Instance.Config.Values.Network.ServiceUnavailableSleep);
+                        }
+
+                    }
                     catch (TaskCancelingException)
                     {
                         throw;
@@ -458,6 +467,11 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                     using (var response = agent.Explorer.Request(downloadRequest, source))
                     {
+                        if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+                        {
+                            throw new HttpStatusCodeException(response.StatusCode);
+                        }
+
                         imageViewState.Length = response.ContentLength;
                         imageViewState.Position = 0L;
 
