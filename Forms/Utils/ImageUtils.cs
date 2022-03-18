@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ImageMagick;
 
 namespace Giselle.DoujinshiDownloader.Utils
 {
@@ -19,9 +20,9 @@ namespace Giselle.DoujinshiDownloader.Utils
 
             try
             {
-                using (var ms = new MemoryStream(bytes))
+                using (var image = new MagickImage(bytes))
                 {
-                    return Image.FromStream(ms);
+                    return image.ToBitmap();
                 }
 
             }

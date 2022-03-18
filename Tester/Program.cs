@@ -2,9 +2,12 @@
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
+using ImageMagick;
 using Jint;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -47,22 +50,7 @@ namespace Tester
                 var site = test.Method.Site;
                 var agent = test.Method.CreateAgent(input, new WebRequestProvider());
                 var info = agent.GetGalleryInfo();
-                byte[] thumbnail = null;
-
-                foreach (var thunbnailUrl in info.ThumbnailUrls)
-                {
-                    try
-                    {
-                        thumbnail = string.IsNullOrEmpty(thunbnailUrl) ? null : agent.GetGalleryThumbnail(thunbnailUrl);
-                        break;
-                    }
-                    catch
-                    {
-
-                    }
-
-                }
-
+                var thumbnail = info.GetFirstThumbnail(agent);
                 var request = new DownloadRequest
                 {
                     Validation = GalleryValidation.CreateByInfo(test.Method, agent, info, thumbnail),
