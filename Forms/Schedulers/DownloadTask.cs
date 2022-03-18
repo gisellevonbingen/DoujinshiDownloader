@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,8 +12,13 @@ using System.Threading.Tasks;
 using Giselle.Commons;
 using Giselle.Commons.Net;
 using Giselle.Commons.Threading;
+using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.DoujinshiDownloader.Utils;
+using ImageMagick;
+using ImageMagick.Defines;
+using ImageMagick.Formats;
+using ImageMagick.ImageOptimizers;
 
 namespace Giselle.DoujinshiDownloader.Schedulers
 {
@@ -388,6 +395,10 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         agent.Validate(imageView, imagePath, values, bytes);
                         this.OnImageDownload(new TaskImageDownloadEventArgs(this, viewState, imagePath, bytes, index, k));
 
+                        var pair = this.ConvertForWrite(fileName, bytes);
+                        fileName = pair.Item1;
+                        bytes = pair.Item2;
+
                         lock (this.DownloadFile)
                         {
                             this.DownloadFile.Write(fileName, bytes);
@@ -440,6 +451,59 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             }
 
             return "Unknown";
+        }
+
+        private (string, byte[]) ConvertForWrite(string fileName, byte[] bytes)
+        {
+            var config = DoujinshiDownloader.Instance.Config.Values.Content;
+            var multiFormat = config.MultiFrameConvertType;
+            var singleFormat = config.SingleFrameConvertType;
+
+            if (multiFormat == ImageConvertType.Original && singleFormat == ImageConvertType.Original)
+            {
+                return (fileName, bytes);
+            }
+
+            try
+            {
+                var r1 = MagickFormatInfo.Create(bytes).Format;
+
+                using (var image = new MagickImage(bytes))
+                {
+                    var format = MagickFormat.Unknown;
+
+                    if (image.AnimationDelay > 0)
+                    {
+                        format = multiFormat.Format;
+                    }
+                    else
+                    {
+                        format = singleFormat.Format;
+                    }
+
+                    if (format != MagickFormat.Unknown && format != image.FormatInfo.Format)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            using (var collection = new MagickImageCollection(bytes))
+                            {
+                                collection.Write(ms, format);
+                            }
+
+                            return (Path.ChangeExtension(fileName, format.ToString().ToLowerInvariant()), ms.ToArray());
+                        }
+
+                    }
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            return (fileName, bytes);
         }
 
         protected virtual void OnImageDownload(TaskImageDownloadEventArgs e)

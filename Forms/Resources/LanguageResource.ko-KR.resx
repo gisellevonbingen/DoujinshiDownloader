@@ -342,6 +342,12 @@ E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
   <data name="Settings.Download.DownloadToArchive" xml:space="preserve">
     <value>압축파일로 다운로드 (*.zip)</value>
   </data>
+  <data name="Settings.Download.SingleFrameConvertType" xml:space="preserve">
+    <value>일반 이미지 형식</value>
+  </data>
+  <data name="Settings.Download.MultiFrameConvertType" xml:space="preserve">
+    <value>애니메이션 이미지 형식</value>
+  </data>
   <data name="Settings.Download.DirectoryTextBox" xml:space="preserve">
     <value>다운로드 폴더</value>
   </data>
@@ -428,5 +434,8 @@ E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
   </data>
   <data name="Downlaod.State.Completed.Fails" xml:space="preserve">
     <value> ({=ExceptionCount}개 파일 다운로드 실패)</value>
+  </data>
+  <data name="ImageConvertType.Original" xml:space="preserve">
+    <value>원본 (변환하지 않음)</value>
   </data>
 </root>

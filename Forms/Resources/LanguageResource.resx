@@ -341,6 +341,12 @@ If Current Exceed Limit, Can't Bring Image</value>
   <data name="Settings.Download.DownloadToArchive" xml:space="preserve">
     <value>Downalod To Archive File (*.zip)</value>
   </data>
+  <data name="Settings.Download.SingleFrameConvertType" xml:space="preserve">
+    <value>General Image Format</value>
+  </data>
+  <data name="Settings.Download.MultiFrameConvertType" xml:space="preserve">
+    <value>Animated Image Format</value>
+  </data>
   <data name="Settings.Download.DirectoryTextBox" xml:space="preserve">
     <value>Directory</value>
   </data>
@@ -427,5 +433,8 @@ Would You Like To Continue?</value>
   </data>
   <data name="Downlaod.State.Completed.Fails" xml:space="preserve">
     <value> (Fail Files : {=ExceptionCount})</value>
+  </data>
+  <data name="ImageConvertType.Original" xml:space="preserve">
+    <value>Original (Not Convert)</value>
   </data>
 </root>

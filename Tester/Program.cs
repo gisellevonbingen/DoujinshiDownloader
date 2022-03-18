@@ -27,6 +27,7 @@ namespace Tester
 
             using (var instance = new DoujinshiDownloader(new CommandLineOptions()))
             {
+                instance.Config.Load();
                 TestDownloadInputParse();
                 TestDownload();
             }
@@ -37,10 +38,10 @@ namespace Tester
         {
             var tests = new List<DownloadTest>
             {
-                new DownloadTest(new DownloadInput(1651862), DownloadMethod.Hitomi), //WEBP, AVIF
-                new DownloadTest(new DownloadInput(1846070), DownloadMethod.Hitomi), //WEBP, AVIF
-                new DownloadTest(new DownloadInput(1474824), DownloadMethod.Hitomi), //JPG
-                new DownloadTest(new DownloadInput(1490664), DownloadMethod.Hitomi), //JPG
+                new DownloadTest(new DownloadInput(1651862), DownloadMethod.Hitomi),
+                new DownloadTest(new DownloadInput(1846070), DownloadMethod.Hitomi),
+                new DownloadTest(new DownloadInput(1474824), DownloadMethod.Hitomi),
+                new DownloadTest(new DownloadInput(1490664), DownloadMethod.Hitomi),
                 new DownloadTest(new DownloadInput(1836951), DownloadMethod.Hitomi) //GIF
             };
 

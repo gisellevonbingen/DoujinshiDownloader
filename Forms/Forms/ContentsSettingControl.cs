@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.Commons;
 using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Drawing;
@@ -18,6 +19,8 @@ namespace Giselle.DoujinshiDownloader.Forms
     {
         private readonly CheckBox CompleteAutoRemoveCheckBox = null;
         private readonly CheckBox DownloadToArchiveCheckBox = null;
+        private readonly LabeledComboBox SingleFrameConvertTypeComboBox = null;
+        private readonly LabeledComboBox MultiFrameConvertTypeComboBox = null;
         private readonly LabeledTextBox DirectoryTextBox = null;
         private readonly Button DirectoryButton = null;
         private readonly Label DirectoryCommentLabel = null;
@@ -38,6 +41,25 @@ namespace Giselle.DoujinshiDownloader.Forms
             downloadToArchiveCheckBox.Text = SR.Get("Settings.Download.DownloadToArchive");
             this.Controls.Add(downloadToArchiveCheckBox);
 
+            var singleFrameConvertTypeComboBox = this.SingleFrameConvertTypeComboBox = new LabeledComboBox();
+            singleFrameConvertTypeComboBox.Label.Text = SR.Get("Settings.Download.SingleFrameConvertType");
+            singleFrameConvertTypeComboBox.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            singleFrameConvertTypeComboBox.ComboBox.Items.Add(new ImageConvertTypeItem(ImageConvertType.Original));
+            //singleFrameConvertTypeComboBox.ComboBox.Items.Add(new ImageConvertTypeItem(ImageConvertType.Avif));
+            singleFrameConvertTypeComboBox.ComboBox.Items.Add(new ImageConvertTypeItem(ImageConvertType.WebP));
+            singleFrameConvertTypeComboBox.ComboBox.Items.Add(new ImageConvertTypeItem(ImageConvertType.Png));
+            singleFrameConvertTypeComboBox.ComboBox.Items.Add(new ImageConvertTypeItem(ImageConvertType.Jpg));
+            this.Controls.Add(singleFrameConvertTypeComboBox);
+
+            var multiFrameConvertTypeComboBox = this.MultiFrameConvertTypeComboBox = new LabeledComboBox();
+            multiFrameConvertTypeComboBox.Label.Text = SR.Get("Settings.Download.MultiFrameConvertType");
+            multiFrameConvertTypeComboBox.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            multiFrameConvertTypeComboBox.ComboBox.Items.Add(new ImageConvertTypeItem(ImageConvertType.Original));
+            //multiFrameConvertTypeComboBox.ComboBox.Items.Add(new ImageConvertTypeItem(ImageConvertType.Avif));
+            multiFrameConvertTypeComboBox.ComboBox.Items.Add(new ImageConvertTypeItem(ImageConvertType.WebP));
+            multiFrameConvertTypeComboBox.ComboBox.Items.Add(new ImageConvertTypeItem(ImageConvertType.Gif));
+            this.Controls.Add(multiFrameConvertTypeComboBox);
+
             var directoryTextBox = this.DirectoryTextBox = new LabeledTextBox();
             directoryTextBox.Label.Text = SR.Get("Settings.Download.DirectoryTextBox");
             directoryTextBox.TextBox.TextChanged += this.OnDirectoryTextBoxTextChanged;
@@ -55,6 +77,14 @@ namespace Giselle.DoujinshiDownloader.Forms
             directoryCommentLabel.Text = SR.Get("Settings.Download.DirectoryWarning");
             directoryCommentLabel.TextAlign = ContentAlignment.MiddleLeft;
             this.Controls.Add(directoryCommentLabel);
+
+            var labels = new List<Label>() { singleFrameConvertTypeComboBox.Label, multiFrameConvertTypeComboBox.Label };
+            var labelsMaxWidth = labels.Max(l => l.PreferredWidth);
+
+            foreach (var label in labels)
+            {
+                label.Width = labelsMaxWidth;
+            }
 
             this.ResumeLayout(false);
         }
@@ -95,11 +125,19 @@ namespace Giselle.DoujinshiDownloader.Forms
             var downloadToArchiveCheckBoxSize = completeAutoRemoveCheckBoxBounds.Size;
             var downloadToArchiveCheckBoxBounds = map[downloadToArchiveCheckBox] = completeAutoRemoveCheckBoxBounds.PlaceByDirection(downloadToArchiveCheckBoxSize, PlaceDirection.Bottom, 0);
 
+            var singleFrameConvertTypeComboBox = this.SingleFrameConvertTypeComboBox;
+            var singleFrameConvertTypeComboBoxSize = completeAutoRemoveCheckBoxBounds.Size.DeriveHeight(28);
+            var singleFrameConvertTypeComboBoxBounds = map[singleFrameConvertTypeComboBox] = downloadToArchiveCheckBoxBounds.PlaceByDirection(singleFrameConvertTypeComboBoxSize, PlaceDirection.Bottom, 0);
+
+            var multiFrameConvertTypeComboBox = this.MultiFrameConvertTypeComboBox;
+            var multiFrameConvertTypeComboBoxSize = singleFrameConvertTypeComboBoxSize;
+            var multiFrameConvertTypeComboBoxBounds = map[multiFrameConvertTypeComboBox] = singleFrameConvertTypeComboBoxBounds.PlaceByDirection(multiFrameConvertTypeComboBoxSize, PlaceDirection.Bottom, 5);
+
             var directoryButtonWidth = 40;
             var directoryButtonLeft = layoutBounds.Right - directoryButtonWidth;
 
             var directoryButton = this.DirectoryButton;
-            var directoryButtonBounds = map[directoryButton] = new Rectangle(directoryButtonLeft, downloadToArchiveCheckBoxBounds.Bottom + 5, directoryButtonWidth, 25);
+            var directoryButtonBounds = map[directoryButton] = new Rectangle(directoryButtonLeft, multiFrameConvertTypeComboBoxBounds.Bottom + 5, directoryButtonWidth, 25);
 
             var directoryTextBox = this.DirectoryTextBox;
             var directoryTextBoxBounds = map[directoryTextBox] = Rectangle.FromLTRB(layoutBounds.Left, directoryButtonBounds.Top, directoryButtonLeft - margin, directoryButtonBounds.Bottom);
@@ -132,6 +170,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.DirectoryTextBox.TextBox.Text = content.DownloadDirectory;
             this.CompleteAutoRemoveCheckBox.Checked = content.DownloadCompleteAutoRemove;
             this.DownloadToArchiveCheckBox.Checked = content.DownloadToArchive;
+            this.SingleFrameConvertTypeComboBox.ComboBox.SelectItem(content.SingleFrameConvertType);
+            this.MultiFrameConvertTypeComboBox.ComboBox.SelectItem(content.MultiFrameConvertType);
         }
 
         public override void Apply(Configuration config)
@@ -140,6 +180,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             content.DownloadDirectory = this.DirectoryTextBox.TextBox.Text;
             content.DownloadCompleteAutoRemove = this.CompleteAutoRemoveCheckBox.Checked;
             content.DownloadToArchive = this.DownloadToArchiveCheckBox.Checked;
+            content.SingleFrameConvertType = this.SingleFrameConvertTypeComboBox.ComboBox.GetSelectedItem<ImageConvertType>();
+            content.MultiFrameConvertType = this.MultiFrameConvertTypeComboBox.ComboBox.GetSelectedItem<ImageConvertType>();
         }
 
     }

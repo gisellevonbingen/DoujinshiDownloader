@@ -98,6 +98,7 @@
     <Compile Include="Configs\ConfigurationManager.cs" />
     <Compile Include="Configs\AgentSettings.cs" />
     <Compile Include="Configs\ContentSettings.cs" />
+    <Compile Include="Configs\ImageConvertType.cs" />
     <Compile Include="Configs\NetworkSettings.cs" />
     <Compile Include="Configs\NotifyMessageRules.cs" />
     <Compile Include="Configs\ProgramSettings.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Forms\DownloadDetailListItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\ImageConvertTypeItem.cs" />
     <Compile Include="Forms\ProgramSettingsControl.cs">
       <SubType>Component</SubType>
     </Compile>
