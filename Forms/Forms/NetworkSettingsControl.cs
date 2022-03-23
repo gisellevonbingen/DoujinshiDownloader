@@ -25,7 +25,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var defaultValues = new NetworkSettings();
 
             this.Text = SR.Get("Settings.Network.Title");
-            var defaultValueTemplete = SR.Get("Settings.Network.DefaultValueTemplete");
+            var defaultValueTemplete = $"{Environment.NewLine}{SR.Get("Settings.Network.DefaultValueTemplete")}";
 
             var timeoutControl = this.TimeoutControl = new SettingTrackBar();
             timeoutControl.Unit = SR.Get("Settings.Network.TimeoutUnit");
@@ -133,19 +133,19 @@ namespace Giselle.DoujinshiDownloader.Forms
             var map = base.GetPreferredBounds(layoutBounds);
 
             var timeoutControl = this.TimeoutControl;
-            var timeoutControlSize = new Size(layoutBounds.Width, 25);
+            var timeoutControlSize = new Size(layoutBounds.Width, 40);
             var timeoutControlBounds = map[timeoutControl] = new Rectangle(layoutBounds.Location, timeoutControlSize);
 
             var threadCountControl = this.ThreadCountControl;
-            var threadCountControlSize = new Size(layoutBounds.Width, 25);
+            var threadCountControlSize = new Size(layoutBounds.Width, 40);
             var threadCountControlBounds = map[threadCountControl] = timeoutControlBounds.PlaceByDirection(threadCountControlSize, PlaceDirection.Bottom);
 
             var retryCountControl = this.RetryCountControl;
-            var retryCountControlSize = new Size(layoutBounds.Width, 25);
+            var retryCountControlSize = new Size(layoutBounds.Width, 40);
             var retryCountControlBounds = map[retryCountControl] = threadCountControlBounds.PlaceByDirection(retryCountControlSize, PlaceDirection.Bottom);
 
             var serviceUnavailableSleepControl = this.ServiceUnavailableSleepControl;
-            var serviceUnavailableSleepControlSize = new Size(layoutBounds.Width, 25);
+            var serviceUnavailableSleepControlSize = new Size(layoutBounds.Width, 40);
             var serviceUnavailableSleepControlBounds = map[serviceUnavailableSleepControl] = retryCountControlBounds.PlaceByDirection(serviceUnavailableSleepControlSize, PlaceDirection.Bottom);
 
             return map;
