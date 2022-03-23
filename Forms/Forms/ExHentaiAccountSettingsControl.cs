@@ -119,7 +119,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                 try
                 {
-                    ControlUtils.InvokeFNeeded(this, this.UpdateVerifyControl);
+                    this.InvokeFNeeded(this.UpdateVerifyControl);
                 }
                 catch (Exception)
                 {
