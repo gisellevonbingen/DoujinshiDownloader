@@ -203,6 +203,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             base.OnShown(e);
 
+            this.AddButton.Enabled = false;
             this.InputControl.TextBox.Focus();
         }
 
@@ -253,6 +254,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             try
             {
                 var downloadSelectGroupBox = this.DownloadSelectGroupBox;
+                var success = false;
 
                 ControlUtils.InvokeFNeeded(this, () =>
                 {
@@ -268,12 +270,11 @@ namespace Giselle.DoujinshiDownloader.Forms
                 if (DownloadInput.TryParse(input, out downloadInput) == false)
                 {
                     this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Invalid"), true);
-
                 }
                 else
                 {
                     this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Verifying"), false);
-                    this.VerifyDownloadInput(downloadInput, galleryValidation =>
+                    success = this.VerifyDownloadInput(downloadInput, galleryValidation =>
                     {
                         ControlUtils.InvokeFNeeded(this, () =>
                         {
@@ -282,22 +283,30 @@ namespace Giselle.DoujinshiDownloader.Forms
 
                     });
 
-                    ControlUtils.InvokeFNeeded(this, () =>
+                    if (success == true)
                     {
-                        this.UpdateGalleryInfoControls();
+                        ControlUtils.InvokeFNeeded(this, () =>
+                        {
+                            this.UpdateGalleryInfoControls();
 
-                        this.AddButton.Select();
-                        this.AddButton.Focus();
-                    });
+                            this.AddButton.Select();
+                            this.AddButton.Focus();
+                        });
 
-                    this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Verified"), false);
+                        this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.Verified"), false);
+                    }
+                    else
+                    {
+                        this.UpdateVerifyMessageLabel(SR.Get("NewDownload.Verify.VerifyFailed"), true);
+                    }
+
                 }
 
                 ControlUtils.InvokeFNeeded(this, () =>
                 {
                     inputTextBox.Enabled = true;
                     verifyButton.Enabled = true;
-                    addButton.Enabled = true;
+                    addButton.Enabled = success;
                     downloadSelectGroupBox.Enabled = true;
                     downloadSelectGroupBox.Focus();
                 });
@@ -326,9 +335,9 @@ namespace Giselle.DoujinshiDownloader.Forms
             };
         }
 
-        private void VerifyDownloadInput(DownloadInput downloadInput, Action<GalleryValidation> action)
+        private bool VerifyDownloadInput(DownloadInput downloadInput, Action<GalleryValidation> action)
         {
-            var tasks = new List<Task>();
+            var tasks = new List<Task<GalleryValidation>>();
 
             foreach (var method in DownloadMethod.Knowns)
             {
@@ -343,12 +352,41 @@ namespace Giselle.DoujinshiDownloader.Forms
                 {
                     var galleryValidation = this.VerifyGallery(parameter);
                     action(galleryValidation);
+                    return galleryValidation;
                 });
 
                 tasks.Add(task);
             }
 
-            Task.WaitAny(tasks.ToArray());
+            while (true)
+            {
+                var copy = tasks.ToArray();
+                Task.WaitAny(copy);
+
+                foreach (var task in copy)
+                {
+                    if (task.IsCompleted == false)
+                    {
+                        continue;
+                    }
+                    else if (task.Result.IsError == true)
+                    {
+                        tasks.Remove(task);
+                    }
+                    else
+                    {
+                        return true;
+                    }
+
+                }
+
+                if (copy.Length == 0)
+                {
+                    return false;
+                }
+
+            }
+
         }
 
         private GalleryValidation VerifyGallery(AgentGetGelleryInfosParameter parameter)

@@ -194,6 +194,9 @@
   <data name="NewDownload.Verify.Verified" xml:space="preserve">
     <value>확인 완료</value>
   </data>
+  <data name="NewDownload.Verify.VerifyFailed" xml:space="preserve">
+    <value>확인 실패</value>
+  </data>
   <data name="NewDownload.Add" xml:space="preserve">
     <value>추가</value>
   </data>

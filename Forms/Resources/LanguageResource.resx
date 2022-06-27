@@ -194,6 +194,9 @@ Are You Sure You Want To Quit?</value>
   <data name="NewDownload.Verify.Verified" xml:space="preserve">
     <value>Verified</value>
   </data>
+  <data name="NewDownload.Verify.VerifyFailed" xml:space="preserve">
+    <value>Verify Failed</value>
+  </data>
   <data name="NewDownload.Add" xml:space="preserve">
     <value>Add</value>
   </data>
