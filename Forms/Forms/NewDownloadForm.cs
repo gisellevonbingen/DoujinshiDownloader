@@ -369,13 +369,13 @@ namespace Giselle.DoujinshiDownloader.Forms
                     {
                         continue;
                     }
-                    else if (task.Result.IsError == true)
+                    else if (task.Result.IsError == false)
                     {
-                        tasks.Remove(task);
+                        return true;
                     }
                     else
                     {
-                        return true;
+                        tasks.Remove(task);
                     }
 
                 }
