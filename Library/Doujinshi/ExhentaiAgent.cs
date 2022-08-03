@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using Giselle.Commons;
@@ -14,6 +15,10 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 {
     public class ExHentaiAgent : GalleryAgent
     {
+        public static Regex ImageLimitRegex { get; } = new Regex("You are currently at (?'current'\\d*) towards a limit of (?'limit'\\d*)\\.");
+        public static Regex UrlRegex { get; } = new Regex("url\\((?'url'.*)\\)");
+        public static Regex NlRegex { get; } = new Regex("nl\\('(?'A'.*)'\\)");
+
         public static Func<WebRequestParameter> UnaryRequestParameter(Func<WebRequestParameter> func, ExHentaiAccount account)
         {
             return () => func().ConsumeOwn(o => SetCookie(o, account));
@@ -64,12 +69,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 var document = response.ReadAsDocument();
                 var stuffboxDivNode = document.DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("stuffbox"));
                 var homeboxDivNode = stuffboxDivNode.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("class", string.Empty).Equals("homebox"));
-                var cuts = homeboxDivNode.InnerText.Cut("You are currently at ", " towards a limit of ", ".");
+                var matches = ImageLimitRegex.Match(homeboxDivNode.InnerText);
 
                 var imageLimit = new ImageLimit
                 {
-                    Current = NumberUtils.ToInt(cuts[0]),
-                    Limit = NumberUtils.ToInt(cuts[1]),
+                    Current = matches.Groups["current"].Value.ToInt(),
+                    Limit = matches.Groups["limit"].Value.ToInt(),
                 };
 
                 return imageLimit;
@@ -121,7 +126,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 var gd1Elements = gleftElements.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gd1")).ChildNodes;
                 var thumbnailElement = gd1Elements.FirstOrDefault(n => n.Name.Equals("div"));
                 var style = thumbnailElement.GetAttributeValue("style", string.Empty);
-                var thumbnailUrl = style.Substring("url(", ")");
+                var thumbnailUrl = UrlRegex.Match(style).Groups["url"].Value;
 
                 var info = new GalleryInfo
                 {
@@ -225,7 +230,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         {
             var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i6"));
             var loadfailElement = subDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("loadfail"));
-            var functionArgs = loadfailElement.GetAttributeValue("onclick", string.Empty).Substring("nl('", "')");
+            var functionArgs = NlRegex.Match(loadfailElement.GetAttributeValue("onclick", string.Empty)).Groups["nl"].Value;
 
             return $"{viewUrl}?nl={functionArgs}";
         }

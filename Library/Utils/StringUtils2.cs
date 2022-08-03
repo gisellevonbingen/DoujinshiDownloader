@@ -8,22 +8,6 @@ namespace Giselle.DoujinshiDownloader.Utils
 {
     public static class StringUtils2
     {
-        public static string[] Cut(this string text, params string[] keywords)
-        {
-            var startIndex = 0;
-            var result = new string[keywords.Length - 1];
-
-            for (int i = 0; i < keywords.Length - 1;i ++)
-            {
-                var prev = keywords[i + 0];
-                var next = keywords[i + 1];
-
-                result[i] = Substring(text, prev, next, startIndex, out startIndex);
-            }
-
-            return result;
-        }
-
         public static string Substring(this string text, string prefix, string suffix)
         {
             return Substring(text, prefix, suffix, 0);
