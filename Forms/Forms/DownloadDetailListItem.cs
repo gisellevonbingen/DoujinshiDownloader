@@ -63,7 +63,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var viewState = this.ImageViewState;
             var state = viewState.State;
 
-            var lines = new List<string>() { $"{this.Index} : {viewState.View.FileName}" };
+            var lines = new List<string>() { $"{this.Index} : {viewState.View.FileName ?? viewState.View.Url}" };
             var stateToString = $"{SR.Get($"Download.Detail.State.{state}")}";
 
             if (viewState.Length > 0)
