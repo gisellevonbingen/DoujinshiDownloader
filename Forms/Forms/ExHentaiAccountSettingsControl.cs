@@ -6,8 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.Commons;
-using Giselle.Commons.Net;
 using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Doujinshi;
 using Giselle.Drawing;

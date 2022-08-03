@@ -1,17 +1,13 @@
-﻿using Giselle.DoujinshiDownloader;
-using Giselle.DoujinshiDownloader.Doujinshi;
-using Giselle.DoujinshiDownloader.Schedulers;
-using Giselle.DoujinshiDownloader.Utils;
-using ImageMagick;
-using Jint;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Giselle.DoujinshiDownloader;
+using Giselle.DoujinshiDownloader.Doujinshi;
+using Giselle.DoujinshiDownloader.Schedulers;
+using Giselle.DoujinshiDownloader.Utils;
 
 namespace Tester
 {
