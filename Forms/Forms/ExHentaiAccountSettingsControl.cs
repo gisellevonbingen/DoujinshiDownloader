@@ -69,6 +69,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             var accountInformationGroupBox = this.AccountInfoGroupBox = new AccountInfoGroupBox();
             this.Controls.Add(accountInformationGroupBox);
 
+            this.ResetButton.Visible = false;
+
             this.KeyDown += this.OnControlKeyDown;
             this.AccountInfoGroupBox.Bind(null);
 

@@ -254,6 +254,9 @@
   <data name="Settings.Cancel" xml:space="preserve">
     <value>취소</value>
   </data>
+  <data name="Settings.Reset" xml:space="preserve">
+    <value>재설정</value>
+  </data>
   <data name="Settings.Program.Title" xml:space="preserve">
     <value>프로그램</value>
   </data>

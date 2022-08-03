@@ -254,6 +254,9 @@ Are You Sure You Want To Quit?</value>
   <data name="Settings.Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Settings.Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="Settings.Program.Title" xml:space="preserve">
     <value>Program</value>
   </data>
