@@ -17,7 +17,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
     {
         public static Regex ImageLimitRegex { get; } = new Regex("You are currently at (?'current'\\d*) towards a limit of (?'limit'\\d*)\\.");
         public static Regex UrlRegex { get; } = new Regex("url\\((?'url'.*)\\)");
-        public static Regex NlRegex { get; } = new Regex("nl\\('(?'A'.*)'\\)");
+        public static Regex NlRegex { get; } = new Regex("nl\\('(?'nl'.*)'\\)");
 
         public static Func<WebRequestParameter> UnaryRequestParameter(Func<WebRequestParameter> func, ExHentaiAccount account)
         {
