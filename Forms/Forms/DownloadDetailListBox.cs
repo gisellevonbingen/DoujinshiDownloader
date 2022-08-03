@@ -42,8 +42,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var scrollGenerator = this.ScrollGenerator = new Control() { Bounds = new Rectangle() };
             panel.Controls.Add(scrollGenerator);
 
-            this.UpdateTimer = new Timer();
-            this.UpdateTimer.Interval = 50;
+            this.UpdateTimer = new Timer { Interval = 50 };
             this.UpdateTimer.Tick += this.OnUpdateTimerTick;
             this.UpdateTimer.Start();
 

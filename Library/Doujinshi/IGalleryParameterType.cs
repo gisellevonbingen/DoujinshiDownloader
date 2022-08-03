@@ -32,7 +32,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         bool IGalleryParameterType.Available(object value)
         {
-            return value is T t ? this.Available(t) : false;
+            return value is T t && this.Available(t);
         }
 
         public override int GetHashCode()
@@ -42,7 +42,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override bool Equals(object obj)
         {
-            return obj is GalleryParameterType<T> other ? this.Equals(other) : false;
+            return obj is GalleryParameterType<T> other && this.Equals(other);
         }
 
         public bool Equals(GalleryParameterType<T> other)

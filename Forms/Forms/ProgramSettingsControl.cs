@@ -71,8 +71,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             foreach (var property in properties)
             {
-                var checkBox = new CheckBox();
-                checkBox.Text = SR.Get(languagePrefix + "." + property.Name);
+                var checkBox = new CheckBox { Text = SR.Get(languagePrefix + "." + property.Name) };
                 this.Controls.Add(checkBox);
                 map[property] = checkBox;
             }
