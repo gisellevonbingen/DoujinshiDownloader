@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -35,6 +36,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private readonly object VerifyInputThreadLock = new object();
         private Thread VerifyInputThread = null;
+        private readonly Dictionary<DownloadMethod, Image> ThumbnailCaches = new Dictionary<DownloadMethod, Image>();
+
 
         public DownloadRequest Request { get; private set; }
 
@@ -110,6 +113,31 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public bool ContinueChecked { get => this.ContinueCheckBox.Checked; set => this.ContinueCheckBox.Checked = value; }
 
+        private void ClearThumbnailCaches()
+        {
+            foreach (var pair in this.ThumbnailCaches)
+            {
+                pair.Value.DisposeQuietly();
+            }
+
+            this.ThumbnailCaches.Clear();
+        }
+
+        private Image CacheThumbnail(GalleryValidation galleryValidation)
+        {
+            if (this.ThumbnailCaches.TryGetValue(galleryValidation.Method, out var cached) == true)
+            {
+                return cached;
+            }
+            else
+            {
+                cached = ImageUtils.FromBytes(galleryValidation.ThumbnailData);
+                this.ThumbnailCaches[galleryValidation.Method] = cached;
+                return cached;
+            }
+
+        }
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Down)
@@ -152,7 +180,7 @@ namespace Giselle.DoujinshiDownloader.Forms
         {
             base.Dispose(disposing);
 
-            this.ThumbnailControl.Image.DisposeQuietly();
+            this.ClearThumbnailCaches();
         }
 
         private void OnAddButtonClick(object sender, EventArgs e)
@@ -265,6 +293,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                     downloadSelectGroupBox.Clear();
                     downloadSelectGroupBox.FillVerifing();
                     this.UpdateGalleryInfoControls();
+                    this.ClearThumbnailCaches();
                 });
 
                 if (DownloadInput.TryParse(input, out downloadInput) == false)
@@ -439,32 +468,22 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private void UpdateGalleryInfoControls()
         {
-            var titleLabel = this.TitleLabel;
-            titleLabel.Text = string.Empty;
-
-            var thumbnailControl = this.ThumbnailControl;
-            thumbnailControl.Image.DisposeQuietly();
-            thumbnailControl.Image = null;
+            string title = string.Empty;
+            Image thumbnail = null;
 
             var galleryValidation = this.DownloadSelectGroupBox.SelectedGallery;
 
             if (galleryValidation != null)
             {
-                var info = galleryValidation.Info;
-
-                if (info != null)
-                {
-                    this.UpdateGalleryInfoControlsBounds();
-                    titleLabel.Text = info.Title;
-
-                    var image = ImageUtils.FromBytes(galleryValidation.ThumbnailData);
-                    thumbnailControl.Image = image;
-
-                    this.UpdateGalleryInfoControlsBounds();
-                }
-
+                title = galleryValidation.Info?.Title;
+                thumbnail = this.CacheThumbnail(galleryValidation);
             }
 
+            this.UpdateGalleryInfoControlsBounds();
+            this.TitleLabel.Text = title;
+            this.ThumbnailControl.Image = thumbnail;
+
+            this.UpdateGalleryInfoControlsBounds();
         }
 
         protected override void UpdateControlsBoundsPreferred(Size size)
