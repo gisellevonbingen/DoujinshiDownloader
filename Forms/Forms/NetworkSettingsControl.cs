@@ -59,7 +59,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var serviceUnavailableSleepControl = this.ServiceUnavailableSleepControl = new SettingTrackBar();
             serviceUnavailableSleepControl.Unit = SR.Get("Settings.Network.TimeoutUnit");
             serviceUnavailableSleepControl.TextLabel.Text = SR.Get("Settings.Network.ServiceUnavailableSleep", "Default", SR.Replace(defaultValueTemplete, "Value", (defaultValues.Timeout / 1000).ToString("F1"), "Unit", serviceUnavailableSleepControl.Unit));
-            serviceUnavailableSleepControl.ValueConstructor += this.OnTimeoutControlValueConstructor;
+            serviceUnavailableSleepControl.ValueConstructor += this.OnServiceUnavailableSleepControlValueConstructor;
             var serviceUnavailableSleepTrackBar = serviceUnavailableSleepControl.TrackBar;
             serviceUnavailableSleepTrackBar.Minimum = 1000;
             serviceUnavailableSleepTrackBar.Maximum = 60_000;
