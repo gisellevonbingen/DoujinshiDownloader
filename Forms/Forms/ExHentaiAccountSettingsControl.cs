@@ -42,14 +42,12 @@ namespace Giselle.DoujinshiDownloader.Forms
             memberIdControl.Label.Text = "MemberId";
             memberIdControl.Label.TextAlign = ContentAlignment.MiddleRight;
             memberIdControl.TextBox.KeyDown += this.OnControlKeyDown;
-            memberIdControl.TextBox.Font = fm[10, FontStyle.Regular];
             this.Controls.Add(memberIdControl);
 
             var passHashControl = this.PassHashControl = new LabeledTextBox();
             passHashControl.Label.Text = "PassHash";
             passHashControl.Label.TextAlign = ContentAlignment.MiddleRight;
             passHashControl.TextBox.KeyDown += this.OnControlKeyDown;
-            passHashControl.TextBox.Font = fm[10, FontStyle.Regular];
             this.Controls.Add(passHashControl);
 
             var verifyButton = this.VerifyButton = new Button();
@@ -231,7 +229,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var verifyButtonWidth = 120;
             var verifyButtonLeft = layoutBounds.Width - verifyButtonWidth;
-            var labeledControlSize = new Size(verifyButtonLeft - margin, 25);
+            var labeledControlSize = new Size(verifyButtonLeft - margin, 29);
 
             var memberIdControl = this.MemberIdControl;
             var memberIdControlLocation = new Point(layoutBounds.Left, layoutBounds.Top);
