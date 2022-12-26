@@ -77,7 +77,17 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             try
             {
                 this.Disposing = true;
-                this.Cancel();
+
+                if (this.Cancellable == true)
+                {
+                    this.Cancel();
+                }
+                else
+                {
+                    this.Thread.JoinNotCurrent();
+                    this.Thread = null;
+                }
+
                 this.DownloadFile.DisposeQuietly();
                 this.DisposeCancelSources(false);
             }
@@ -143,6 +153,16 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         public bool Running => this.Thread != null;
 
+        public bool Cancellable
+        {
+            get
+            {
+                var state = this.State;
+                return state.HasFlag(TaskState.Canceling) == false && state.HasFlag(TaskState.Completed) == false;
+            }
+
+        }
+
         public void WaitForComplete()
         {
             Thread thread = null;
@@ -203,10 +223,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 this.UpdateState(TaskState.Completed | TaskState.Excepted);
 
                 DoujinshiDownloader.Instance.ShowCrashMessageBox(e);
-            }
-            finally
-            {
-                this.Dispose();
             }
 
         }
