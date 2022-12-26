@@ -126,8 +126,6 @@ namespace Giselle.DoujinshiDownloader.Hooks
 
             try
             {
-                Console.WriteLine(commandline);
-
                 using (var process = Process.Start(new ProcessStartInfo("cmd.exe", $"/c \"{commandline}\"")
                 {
                     UseShellExecute = false,
