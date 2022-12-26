@@ -22,6 +22,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this.Stream = new ZipOutputStream(this.BaseStream);
         }
 
+        public override bool Exist => File.Exists(this.FilePath);
+
         public override void Write(string fileName, byte[] bytes)
         {
             var zipEntry = new ZipEntry(fileName);

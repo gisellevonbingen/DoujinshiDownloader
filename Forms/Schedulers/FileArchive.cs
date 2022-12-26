@@ -10,6 +10,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
     {
         public abstract string FilePath { get; }
 
+        public abstract bool Exist { get; }
+
         public FileArchive()
         {
 

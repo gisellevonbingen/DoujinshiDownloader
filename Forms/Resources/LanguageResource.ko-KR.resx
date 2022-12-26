@@ -427,8 +427,11 @@ E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
   <data name="Download.OpenDirectory" xml:space="preserve">
     <value>폴더 열기</value>
   </data>
+  <data name="Download.OpenDirectory.NotCreate" xml:space="preserve">
+    <value>다운로드가 아직 시작되지 않았습니다</value>
+  </data>
   <data name="Download.OpenDirectory.NotExist" xml:space="preserve">
-    <value>다운로드 폴더가 아직 생성되지 않았습니다</value>
+    <value>폴더/파일을 찾을 수 없습니다, 삭제되었거나 이름이 변경된 것 같습니다</value>
   </data>
   <data name="Download.Remove" xml:space="preserve">
     <value>제거</value>

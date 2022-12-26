@@ -426,8 +426,11 @@ If Current Exceed Limit, Can't Bring Image</value>
   <data name="Download.OpenDirectory" xml:space="preserve">
     <value>Open</value>
   </data>
+  <data name="Download.OpenDirectory.NotCreate" xml:space="preserve">
+    <value>Download Not Started</value>
+  </data>
   <data name="Download.OpenDirectory.NotExist" xml:space="preserve">
-    <value>Directory Not Created Yet</value>
+    <value>Directory/File Not Found, Maybe Remove or Renamed</value>
   </data>
   <data name="Download.Remove" xml:space="preserve">
     <value>Remove</value>

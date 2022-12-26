@@ -19,6 +19,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         public override string FilePath => this.Directory;
 
+        public override bool Exist => System.IO.Directory.Exists(this.FilePath);
+
         public override void Write(string fileName, byte[] bytes)
         {
             var filePath = Path.Combine(this.Directory, fileName);

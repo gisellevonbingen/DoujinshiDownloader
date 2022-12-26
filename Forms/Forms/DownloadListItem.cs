@@ -210,11 +210,15 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             if (file == null)
             {
-                MessageBox.Show(this, SR.Get("Download.OpenDirectory.NotExist"), SR.Get("Download.OpenDirectory"), MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(this, SR.Get("Download.OpenDirectory.NotCreate"), SR.Get("Download.OpenDirectory"), MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
+            else if (file.Exist == true)
+            {
+                ExplorerUtils.Open(file.FilePath);
             }
             else
             {
-                ExplorerUtils.Open(file.FilePath);
+                MessageBox.Show(this, SR.Get("Download.OpenDirectory.NotExist"), SR.Get("Download.OpenDirectory"), MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
         }
