@@ -360,6 +360,33 @@ If Current Exceed Limit, Can't Bring Image</value>
     <value>※ Supports Both Relative, Absolute Paths
 ※ Some Directory Require Administrator Privileges</value>
   </data>
+  <data name="Settings.Hook.Title" xml:space="preserve">
+    <value>Event Hook</value>
+  </data>
+  <data name="Settings.Hook.WaitForExit" xml:space="preserve">
+    <value>Wait for execute complete</value>
+  </data>
+  <data name="Settings.Hook.List" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="Settings.Hook.Commandline" xml:space="preserve">
+    <value>Commandline to execute</value>
+  </data>
+  <data name="Settings.Hook.Macro" xml:space="preserve">
+    <value>Macro</value>
+  </data>
+  <data name="SelectMacro.Title" xml:space="preserve">
+    <value>Select Macro</value>
+  </data>
+  <data name="SelectMacro.Input" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="SelectMacro.Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SelectMacro.Insert" xml:space="preserve">
+    <value>Insert</value>
+  </data>
   <data name="Download.Detail" xml:space="preserve">
     <value>Detail</value>
   </data>
@@ -412,7 +439,7 @@ If Current Exceed Limit, Can't Bring Image</value>
     <value>Cancel Download For Remove From List
 Would You Like To Continue?</value>
   </data>
-	<data name="Download.Remove.Dialog.Text" xml:space="preserve">
+  <data name="Download.Remove.Dialog.Text" xml:space="preserve">
     <value>Remove Download From List
 Would You Like To Continue?</value>
   </data>
@@ -442,5 +469,68 @@ Would You Like To Continue?</value>
   </data>
   <data name="ImageConvertType.Original" xml:space="preserve">
     <value>Original (Not Convert)</value>
+  </data>
+  <data name="Hook.Download.Start.Name" xml:space="preserve">
+    <value>Download Started</value>
+  </data>
+  <data name="Hook.Download.Cancelled.Name" xml:space="preserve">
+    <value>Download Cancelled</value>
+  </data>
+  <data name="Hook.Download.Excepted.Name" xml:space="preserve">
+    <value>Download Excepted</value>
+  </data>
+  <data name="Hook.Download.Success.Name" xml:space="preserve">
+    <value>Download Success</value>
+  </data>
+  <data name="Hook.Download.Complete.Name" xml:space="preserve">
+    <value>Download Complete</value>
+  </data>
+  <data name="Macro.Program.Directory.Name" xml:space="preserve">
+    <value>Program Directory</value>
+  </data>
+  <data name="Macro.Program.Directory.Desc" xml:space="preserve">
+    <value>Program running directory
+Current: ${Program.Directory}</value>
+  </data>
+  <data name="Macro.Download.Directory.Name" xml:space="preserve">
+    <value>Download Directory</value>
+  </data>
+  <data name="Macro.Download.Directory.Desc" xml:space="preserve">
+    <value>Configued 'Download Directory'
+Current: ${Download.Directory}</value>
+  </data>
+  <data name="Macro.Download.Path.Name" xml:space="preserve">
+    <value>Download Path</value>
+  </data>
+  <data name="Macro.Download.Path.Desc" xml:space="preserve">
+    <value>Downloading directory or zip file path
+e.g.1.) C:/Download/GalleryName1
+e.g.2.) D:/Download/GalleryName2.zip</value>
+  </data>
+  <data name="Macro.Download.ArchiveName.Name" xml:space="preserve">
+    <value>Download Archive Name</value>
+  </data>
+  <data name="Macro.Download.ArchiveName.Desc" xml:space="preserve">
+    <value>Downloading directory name or zip file name with extension
+e.g.1.) GalleryName1
+e.g.2.) GalleryName2.zip</value>
+  </data>
+  <data name="Macro.Download.ArchiveName2.Name" xml:space="preserve">
+    <value>Download Archive Name 2</value>
+  </data>
+  <data name="Macro.Download.ArchiveName2.Desc" xml:space="preserve">
+    <value>Downloading directory name or zip file name without extension
+It will be same with gallery name
+e.g.1.) GalleryName1
+e.g.2.) GalleryName2</value>
+  </data>
+  <data name="Macro.Download.Result.Name" xml:space="preserve">
+    <value>Download Result</value>
+  </data>
+  <data name="Macro.Download.Result.Desc" xml:space="preserve">
+    <value>Download result as belows
+1. {=Cancelled}
+2. {=Excepted}
+3. {=Success}</value>
   </data>
 </root>

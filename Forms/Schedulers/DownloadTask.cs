@@ -34,6 +34,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         private readonly object StateLock = new object();
 
         public Exception Exception { get; private set; }
+        public string DownloadDirectory { get; private set; }
         public FileArchive DownloadFile { get; private set; }
         public ImageViewStates ImageViewStates { get; private set; }
 
@@ -221,6 +222,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             var downloadToArchive = config.Content.DownloadToArchive;
             var downloadDirectory = config.Content.DownloadDirectory;
+            this.DownloadDirectory = downloadDirectory;
             Directory.CreateDirectory(downloadDirectory);
 
             var downloadPath = PathUtils.GetPath(downloadDirectory, PathUtils.FilterInvalids(request.FileName));
@@ -262,6 +264,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 thread.JoinNotCurrent();
             }
 
+            this.DownloadFile.DisposeQuietly();
         }
 
         private void DisposeCancelSources(bool cancel)

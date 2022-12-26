@@ -6,7 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Giselle.DoujinshiDownloader.Hooks;
 using Giselle.DoujinshiDownloader.Schedulers;
+using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Forms;
 
 namespace Giselle.DoujinshiDownloader.Forms
@@ -117,8 +119,12 @@ namespace Giselle.DoujinshiDownloader.Forms
             var task = sender as DownloadTask;
             var state = task.State;
 
+            var hookManager = DoujinshiDownloader.Instance.HookManager;
+            hookManager.FireHookDownload(task);
+
             if (state.HasFlag(TaskState.Completed) == true)
             {
+                hookManager.FireHookDownload(task, Hook.DownloadComplete);
                 task.StateChanged -= this.OnTaskStateChanged;
 
                 if (state.HasFlag(TaskState.Cancelled) == false && state.HasFlag(TaskState.Excepted) == false)

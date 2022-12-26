@@ -98,6 +98,7 @@
     <Compile Include="Configs\ConfigurationManager.cs" />
     <Compile Include="Configs\AgentSettings.cs" />
     <Compile Include="Configs\ContentSettings.cs" />
+    <Compile Include="Configs\HookSettings.cs" />
     <Compile Include="Configs\ImageConvertType.cs" />
     <Compile Include="Configs\NetworkSettings.cs" />
     <Compile Include="Configs\NotifyMessageRules.cs" />
@@ -126,7 +127,13 @@
     <Compile Include="Forms\DownloadDetailListItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\HookSettingsControls.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\ImageConvertTypeItem.cs" />
+    <Compile Include="Forms\MacroSelectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\ProgramSettingsControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -136,6 +143,11 @@
     <Compile Include="Forms\SettingControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Hooks\Hook.cs" />
+    <Compile Include="Hooks\HookCategory.cs" />
+    <Compile Include="Hooks\HookExecuteException.cs" />
+    <Compile Include="Hooks\HookManager.cs" />
+    <Compile Include="Hooks\Macro.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="NotifyIconManager.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
