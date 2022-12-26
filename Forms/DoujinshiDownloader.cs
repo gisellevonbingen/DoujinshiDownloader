@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Giselle.Commons;
 using Giselle.DoujinshiDownloader.Configs;
 using Giselle.DoujinshiDownloader.Forms;
+using Giselle.DoujinshiDownloader.Hooks;
 using Giselle.DoujinshiDownloader.Schedulers;
 using Giselle.DoujinshiDownloader.Utils;
 using Giselle.Forms;
@@ -73,6 +74,7 @@ namespace Giselle.DoujinshiDownloader
         public ConfigurationManager Config { get; }
         public NotifyIconManager NotifyIconManager { get; }
         public DownloadScheduler DownloadScheduler { get; }
+        public HookManager HookManager { get; }
 
         public MainForm MainForm { get; private set; }
         public event EventHandler MainFormVisibleChanged;
@@ -93,6 +95,7 @@ namespace Giselle.DoujinshiDownloader
             this.Config = new ConfigurationManager(PathUtils.GetPath("Configuration.json"));
             this.NotifyIconManager = new NotifyIconManager();
             this.DownloadScheduler = new DownloadScheduler();
+            this.HookManager = new HookManager();
 
             this.MainForm = null;
         }

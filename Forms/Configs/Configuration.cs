@@ -16,6 +16,7 @@ namespace Giselle.DoujinshiDownloader.Configs
         public AgentSettings Agent { get; } = new AgentSettings();
         public NetworkSettings Network { get; } = new NetworkSettings();
         public ContentSettings Content { get; } = new ContentSettings();
+        public HookSettings Hook { get; } = new HookSettings();
 
         public Configuration()
         {
@@ -44,6 +45,7 @@ namespace Giselle.DoujinshiDownloader.Configs
                 this.Agent.Read(json.Value<JObject>("Agent") ?? new JObject());
                 this.Network.Read(json.Value<JObject>("Network") ?? new JObject());
                 this.Content.Read(json.Value<JObject>("Content") ?? new JObject());
+                this.Hook.Read(json.Value<JObject>("Hook") ?? new JObject());
             }
 
         }
@@ -56,6 +58,7 @@ namespace Giselle.DoujinshiDownloader.Configs
             this.Agent.Write(json["Agent"] = new JObject());
             this.Network.Write(json["Network"] = new JObject());
             this.Content.Write(json["Content"] = new JObject());
+            this.Hook.Write(json["Hook"] = new JObject());
         }
 
     }

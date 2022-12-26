@@ -41,7 +41,8 @@ namespace Giselle.DoujinshiDownloader.Forms
                 new ProgramSettingsControl(),
                 new ExHentaiAccountSettingsControl(),
                 new NetworkSettingsControl(),
-                new ContentsSettingControl()
+                new ContentsSettingControl(),
+                new HookSettingsControls(),
             };
 
             foreach (var control in this.SettingControls)

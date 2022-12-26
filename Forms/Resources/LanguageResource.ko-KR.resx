@@ -361,6 +361,33 @@ E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
     <value>※ 상대 경로, 절대 경로 모두 지원합니다
 ※ 일부 폴더는 실행 시 관리자 권한이 필요합니다</value>
   </data>
+  <data name="Settings.Hook.Title" xml:space="preserve">
+    <value>이벤트 훅</value>
+  </data>
+  <data name="Settings.Hook.WaitForExit" xml:space="preserve">
+    <value>실행이 끝날 때 까지 대기</value>
+  </data>
+  <data name="Settings.Hook.List" xml:space="preserve">
+    <value>이벤트</value>
+  </data>
+  <data name="Settings.Hook.Commandline" xml:space="preserve">
+    <value>실행할 명령줄</value>
+  </data>
+  <data name="Settings.Hook.Macro" xml:space="preserve">
+    <value>매크로</value>
+  </data>
+  <data name="SelectMacro.Title" xml:space="preserve">
+    <value>매크로 선택</value>
+  </data>
+  <data name="SelectMacro.Input" xml:space="preserve">
+    <value>입력</value>
+  </data>
+  <data name="SelectMacro.Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="SelectMacro.Insert" xml:space="preserve">
+    <value>삽입</value>
+  </data>
   <data name="Download.Detail" xml:space="preserve">
     <value>상세 보기</value>
   </data>
@@ -443,5 +470,68 @@ E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
   </data>
   <data name="ImageConvertType.Original" xml:space="preserve">
     <value>원본 (변환하지 않음)</value>
+  </data>
+  <data name="Hook.Download.Start.Name" xml:space="preserve">
+    <value>다운로드 시작시</value>
+  </data>
+  <data name="Hook.Download.Cancelled.Name" xml:space="preserve">
+    <value>다운로드 취소시</value>
+  </data>
+  <data name="Hook.Download.Excepted.Name" xml:space="preserve">
+    <value>다운로드 에러시</value>
+  </data>
+  <data name="Hook.Download.Success.Name" xml:space="preserve">
+    <value>다운로드 성공시</value>
+  </data>
+  <data name="Hook.Download.Complete.Name" xml:space="preserve">
+    <value>다운로드 완료시</value>
+  </data>
+  <data name="Macro.Program.Directory.Name" xml:space="preserve">
+    <value>프로그램 폴더</value>
+  </data>
+  <data name="Macro.Program.Directory.Desc" xml:space="preserve">
+    <value>프로그램 실행 폴더
+현재: ${Program.Directory}</value>
+  </data>
+  <data name="Macro.Download.Directory.Name" xml:space="preserve">
+    <value>다운로드 폴더</value>
+  </data>
+  <data name="Macro.Download.Directory.Desc" xml:space="preserve">
+    <value>설정했던 '다운로드 폴더'
+현재: ${Download.Directory}</value>
+  </data>
+  <data name="Macro.Download.Path.Name" xml:space="preserve">
+    <value>다운로드 경로</value>
+  </data>
+  <data name="Macro.Download.Path.Desc" xml:space="preserve">
+    <value>다운로드된 폴더 혹은 압축파일의 경로
+예시 1.) C:/Download/GalleryName1
+예시 2.) D:/Download/GalleryName2.zip</value>
+  </data>
+  <data name="Macro.Download.ArchiveName.Name" xml:space="preserve">
+    <value>다운로드 폴더/파일 이름</value>
+  </data>
+  <data name="Macro.Download.ArchiveName.Desc" xml:space="preserve">
+    <value>다운로드된 폴더 이름 및 압축파일의 이름 (확장자 포함)
+예시 1.) GalleryName1
+예시 2.) GalleryName2.zip</value>
+  </data>
+  <data name="Macro.Download.ArchiveName2.Name" xml:space="preserve">
+    <value>다운로드 폴더/파일 이름 (확장자 없음)</value>
+  </data>
+  <data name="Macro.Download.ArchiveName2.Desc" xml:space="preserve">
+    <value>다운로드된 폴더 이름 및 압축파일의 이름 (확장자 없음)
+갤러리 이름과 동일합니다
+예시 1.) GalleryName1
+예시 2.) GalleryName2</value>
+  </data>
+  <data name="Macro.Download.Result.Name" xml:space="preserve">
+    <value>다운로드 결과</value>
+  </data>
+  <data name="Macro.Download.Result.Desc" xml:space="preserve">
+    <value>다운로드 결과 (아래 참고)
+1. {=Cancelled}
+2. {=Excepted}
+3. {=Success}</value>
   </data>
 </root>
