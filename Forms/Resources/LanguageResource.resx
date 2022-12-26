@@ -364,13 +364,13 @@ If Current Exceed Limit, Can't Bring Image</value>
     <value>Event Hook</value>
   </data>
   <data name="Settings.Hook.WaitForExit" xml:space="preserve">
-    <value>Wait for execute complete</value>
+    <value>Wait For Execute Complete</value>
   </data>
   <data name="Settings.Hook.List" xml:space="preserve">
     <value>Events</value>
   </data>
   <data name="Settings.Hook.Commandline" xml:space="preserve">
-    <value>Commandline to execute</value>
+    <value>Commandline To Execute</value>
   </data>
   <data name="Settings.Hook.Macro" xml:space="preserve">
     <value>Macro</value>
