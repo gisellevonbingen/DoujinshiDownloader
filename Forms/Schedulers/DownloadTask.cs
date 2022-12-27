@@ -182,13 +182,13 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         public void Cancel()
         {
-            if (this.CancelRequested == true)
-            {
-                return;
-            }
-
             lock (this.OperationLock)
             {
+                if (this.CancelRequested == true)
+                {
+                    return;
+                }
+
                 this.UpdateState(TaskState.Canceling);
                 this.DisposeCancelSources(true);
 
@@ -205,17 +205,18 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             try
             {
                 this.Prepare();
-
                 this.UpdateState(TaskState.Running);
 
-                this.Download();
+                try
+                {
+                    this.Download();
+                }
+                finally
+                {
+                    this.DownloadFile.DisposeQuietly();
+                }
 
-                this.ThrowIfCancelRequested();
                 this.UpdateState(TaskState.Completed);
-            }
-            catch (TaskCancelingException)
-            {
-
             }
             catch (Exception e)
             {
