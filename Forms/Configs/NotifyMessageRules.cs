@@ -11,7 +11,7 @@ namespace Giselle.DoujinshiDownloader.Configs
     public class NotifyMessageRules : IJsonObject
     {
         public bool HideMainForm { get; set; } = true;
-        public bool DownlaodComplete { get; set; } = true;
+        public bool DownloadComplete { get; set; } = true;
 
         public NotifyMessageRules()
         {
@@ -21,13 +21,13 @@ namespace Giselle.DoujinshiDownloader.Configs
         public void Read(JToken json)
         {
             this.HideMainForm = json.Value<bool?>("HideMainForm") ?? this.HideMainForm;
-            this.DownlaodComplete = json.Value<bool?>("DownlaodComplete") ?? this.DownlaodComplete;
+            this.DownloadComplete = json.Value<bool?>("DownlaodComplete") ?? this.DownloadComplete;
         }
 
         public void Write(JToken json)
         {
             json["HideMainForm"] = this.HideMainForm;
-            json["DownlaodComplete"] = this.DownlaodComplete;
+            json["DownlaodComplete"] = this.DownloadComplete;
         }
 
     }

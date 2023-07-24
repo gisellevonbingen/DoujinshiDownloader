@@ -269,7 +269,7 @@
   <data name="Settings.Program.NotifyMessageRules.HideMainForm" xml:space="preserve">
     <value>창이 숨겨질 때</value>
   </data>
-  <data name="Settings.Program.NotifyMessageRules.DownlaodComplete" xml:space="preserve">
+  <data name="Settings.Program.NotifyMessageRules.DownloadComplete" xml:space="preserve">
     <value>다운로드 완료</value>
   </data>
   <data name="Settings.Program.UserInterfaceRule" xml:space="preserve">
@@ -447,28 +447,28 @@ E-Hentai/ExHentai 서버를 통해 이미지를 가져올 때 마다,
     <value>다운로드 목록에서 제거합니다
 계속하시겠습니까?</value>
   </data>
-  <data name="Downlaod.State.NotStarted" xml:space="preserve">
+  <data name="Download.State.NotStarted" xml:space="preserve">
     <value>다운로드 준비 중</value>
   </data>
-  <data name="Downlaod.State.Starting" xml:space="preserve">
+  <data name="Download.State.Starting" xml:space="preserve">
     <value>다운로드 시작 중</value>
   </data>
-  <data name="Downlaod.State.Running" xml:space="preserve">
+  <data name="Download.State.Running" xml:space="preserve">
     <value>다운로드 중 {=Percent}% ({=Index}/{=Count})</value>
   </data>
-  <data name="Downlaod.State.Canceling" xml:space="preserve">
+  <data name="Download.State.Canceling" xml:space="preserve">
     <value>다운로드 취소 중</value>
   </data>
-  <data name="Downlaod.State.Cancelled" xml:space="preserve">
+  <data name="Download.State.Cancelled" xml:space="preserve">
     <value>다운로드 취소 됨</value>
   </data>
-  <data name="Downlaod.State.Excepted" xml:space="preserve">
+  <data name="Download.State.Excepted" xml:space="preserve">
     <value>예외 발생</value>
   </data>
-  <data name="Downlaod.State.Completed" xml:space="preserve">
+  <data name="Download.State.Completed" xml:space="preserve">
     <value>다운로드 완료</value>
   </data>
-  <data name="Downlaod.State.Completed.Fails" xml:space="preserve">
+  <data name="Download.State.Completed.Fails" xml:space="preserve">
     <value> ({=ExceptionCount}개 파일 다운로드 실패)</value>
   </data>
   <data name="ImageConvertType.Original" xml:space="preserve">

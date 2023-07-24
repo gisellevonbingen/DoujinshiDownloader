@@ -131,7 +131,7 @@ namespace Giselle.DoujinshiDownloader.Forms
                 {
                     var config = DoujinshiDownloader.Instance.Config.Values.Program;
 
-                    if (config.NotifyMessageRules.DownlaodComplete == true)
+                    if (config.NotifyMessageRules.DownloadComplete == true)
                     {
                         ControlUtils.InvokeFNeeded(this, () =>
                         {

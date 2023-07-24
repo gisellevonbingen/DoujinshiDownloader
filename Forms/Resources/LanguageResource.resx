@@ -171,7 +171,7 @@ Are You Sure You Want To Quit?</value>
     <value>Settings</value>
   </data>
   <data name="MainMenu.DownloadDirectory" xml:space="preserve">
-    <value>Open Downlaod Directory</value>
+    <value>Open Download Directory</value>
   </data>
   <data name="MainMenu.NewDownloadButton" xml:space="preserve">
     <value>New Download</value>
@@ -264,13 +264,13 @@ Are You Sure You Want To Quit?</value>
     <value>Allow Running In Background</value>
   </data>
   <data name="Settings.Program.AllowNotifyMessage" xml:space="preserve">
-    <value>Allow Notify Message</value>
+    <value>Allow Notifications</value>
   </data>
   <data name="Settings.Program.NotifyMessageRules.HideMainForm" xml:space="preserve">
-    <value>When Main Form Hide</value>
+    <value>When Main Window Hidden</value>
   </data>
-  <data name="Settings.Program.NotifyMessageRules.DownlaodComplete" xml:space="preserve">
-    <value>Download Complete</value>
+  <data name="Settings.Program.NotifyMessageRules.DownloadComplete" xml:space="preserve">
+    <value>On Download Completion</value>
   </data>
   <data name="Settings.Program.UserInterfaceRule" xml:space="preserve">
     <value>User Interface</value>
@@ -279,7 +279,7 @@ Are You Sure You Want To Quit?</value>
     <value>Confirm Before Exit Program</value>
   </data>
   <data name="Settings.Program.UserInterfaceRules.ConfirmBeforeRemoveDownload" xml:space="preserve">
-    <value>Confirm Before Cancel/Remvoe Download</value>
+    <value>Confirm Before Cancel/Remove Download</value>
   </data>
   <data name="Settings.ExHentaiAccount.Title" xml:space="preserve">
     <value>E-Hentai/ExHentai Account</value>
@@ -357,8 +357,8 @@ If Current Exceed Limit, Can't Bring Image</value>
     <value>Directory</value>
   </data>
   <data name="Settings.Download.DirectoryWarning" xml:space="preserve">
-    <value>※ Supports Both Relative, Absolute Paths
-※ Some Directory Require Administrator Privileges</value>
+    <value>※ Supports Both Relative and Absolute Paths
+※ Some Directories Require Administrator Privileges</value>
   </data>
   <data name="Settings.Hook.Title" xml:space="preserve">
     <value>Event Hook</value>
@@ -446,32 +446,32 @@ Would You Like To Continue?</value>
     <value>Remove Download From List
 Would You Like To Continue?</value>
   </data>
-  <data name="Downlaod.State.NotStarted" xml:space="preserve">
+  <data name="Download.State.NotStarted" xml:space="preserve">
     <value>Ready</value>
   </data>
-  <data name="Downlaod.State.Starting" xml:space="preserve">
+  <data name="Download.State.Starting" xml:space="preserve">
     <value>Starting</value>
   </data>
-  <data name="Downlaod.State.Running" xml:space="preserve">
+  <data name="Download.State.Running" xml:space="preserve">
     <value>Downloading {=Percent}% ({=Index}/{=Count})</value>
   </data>
-  <data name="Downlaod.State.Canceling" xml:space="preserve">
+  <data name="Download.State.Canceling" xml:space="preserve">
     <value>Canceling</value>
   </data>
-  <data name="Downlaod.State.Cancelled" xml:space="preserve">
+  <data name="Download.State.Cancelled" xml:space="preserve">
     <value>Cancelled</value>
   </data>
-  <data name="Downlaod.State.Excepted" xml:space="preserve">
+  <data name="Download.State.Excepted" xml:space="preserve">
     <value>Unexpected Excepted</value>
   </data>
-  <data name="Downlaod.State.Completed" xml:space="preserve">
+  <data name="Download.State.Completed" xml:space="preserve">
     <value>Complete</value>
   </data>
-  <data name="Downlaod.State.Completed.Fails" xml:space="preserve">
+  <data name="Download.State.Completed.Fails" xml:space="preserve">
     <value> (Fail Files : {=ExceptionCount})</value>
   </data>
   <data name="ImageConvertType.Original" xml:space="preserve">
-    <value>Original (Not Convert)</value>
+    <value>Original (Don't Convert)</value>
   </data>
   <data name="Hook.Download.Start.Name" xml:space="preserve">
     <value>Download Started</value>
