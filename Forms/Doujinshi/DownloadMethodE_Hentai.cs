@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
-    public class DownloadMethodE_Hentai : DownloadMethod
+    public class DownloadMethodE_Hentai : DownloadMethod<ExHentaiAgent>
     {
         public DownloadMethodE_Hentai(string name) : base(name)
         {
@@ -15,9 +15,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override Site Site { get { return Site.E_Hentai; } }
 
-        public override GalleryAgent CreateAgent(DownloadInput downloadInput, WebRequestProvider webRequestProvider)
+        public override ExHentaiAgent CreateAgent(DownloadInput downloadInput, WebRequestProvider webRequestProvider)
         {
-            return new ExHentaiAgent(this.Site, downloadInput, webRequestProvider, null);
+            return new ExHentaiAgent(this.Site, downloadInput, webRequestProvider);
         }
 
     }

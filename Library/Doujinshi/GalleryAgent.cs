@@ -32,9 +32,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public abstract GalleryInfo GetGalleryInfo();
 
-        public abstract List<GalleryImageView> GetGalleryImageViews(GalleryParameterValues values);
+        public abstract List<GalleryImageView> GetGalleryImageViews();
 
-        public abstract GalleryImagePath GetGalleryImagePath(GalleryImageView view, GalleryParameterValues values);
+        public abstract GalleryImagePath GetGalleryImagePath(GalleryImageView view);
 
         public virtual byte[] GetGalleryThumbnail(string thumbnailUrl)
         {
@@ -66,7 +66,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return parameter;
         }
 
-        public virtual WebRequestParameter CreateImageRequest(GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)
+        public virtual WebRequestParameter CreateImageRequest(GalleryImageView view, GalleryImagePath path)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Method = "GET";
@@ -75,9 +75,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return parameter;
         }
 
-        public abstract GalleryImagePath ReloadImagePath(GalleryImageView view, GalleryImagePath prev, GalleryParameterValues values);
+        public abstract GalleryImagePath ReloadImagePath(GalleryImageView view, GalleryImagePath prev);
 
-        public virtual void Validate(GalleryImageView view, GalleryImagePath path, GalleryParameterValues values, byte[] bytes)
+        public virtual void Validate(GalleryImageView view, GalleryImagePath path, byte[] bytes)
         {
 
         }

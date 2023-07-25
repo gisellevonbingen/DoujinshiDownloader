@@ -235,7 +235,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             var request = this.Request;
             var agent = request.Validation.Agent;
-            var galleryValues = request.GalleryParameterValues;
 
             var downloadToArchive = config.Content.DownloadToArchive;
             var downloadDirectory = config.Content.DownloadDirectory;
@@ -253,7 +252,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                 this.DownloadFile = new FileArchiveDirectory(downloadPath);
             }
 
-            var galleryImageViews = agent.GetGalleryImageViews(galleryValues);
+            var galleryImageViews = agent.GetGalleryImageViews();
             var imageViewStates = this.ImageViewStates = new ImageViewStates(galleryImageViews);
             this.Count = imageViewStates.Count;
             this.Index = 0;
@@ -307,9 +306,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         private void DownloadThreading()
         {
-            var request = this.Request;
-            var values = request.GalleryParameterValues;
-
             while (true)
             {
                 var index = 0;
@@ -333,7 +329,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     imageViewState.State = ViewState.Downloading;
                     this.OnProgressed(new TaskProgressingEventArgs(imageViewState));
 
-                    var exceptionMessage = this.Download(index, imageViewState, values);
+                    var exceptionMessage = this.Download(index, imageViewState);
                     imageViewState.State = string.IsNullOrWhiteSpace(exceptionMessage) ? ViewState.Success : ViewState.Exception;
                     imageViewState.ExceptionMessage = exceptionMessage;
                 }
@@ -383,11 +379,11 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         }
 
-        private string Download(int index, ImageViewState viewState, GalleryParameterValues values)
+        private string Download(int index, ImageViewState viewState)
         {
             var agent = this.Agent;
             var imageView = viewState.View;
-            var imagePath = agent.GetGalleryImagePath(imageView, values);
+            var imagePath = agent.GetGalleryImagePath(imageView);
 
             if (imagePath.ImageUrl == null)
             {
@@ -405,8 +401,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     {
                         this.ThrowIfCancelRequested();
 
-                        var bytes = this.Download(agent, viewState, imagePath, values);
-                        agent.Validate(imageView, imagePath, values, bytes);
+                        var bytes = this.Download(agent, viewState, imagePath);
+                        agent.Validate(imageView, imagePath, bytes);
                         this.OnImageDownload(new TaskImageDownloadEventArgs(this, viewState, imagePath, bytes, index, k));
 
                         var pair = this.ConvertForWrite(fileName, bytes);
@@ -453,7 +449,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         {
                             if (string.IsNullOrWhiteSpace(imagePath.ReloadUrl) == false)
                             {
-                                imagePath = agent.ReloadImagePath(imageView, imagePath, values);
+                                imagePath = agent.ReloadImagePath(imageView, imagePath);
                             }
 
                         }
@@ -525,7 +521,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             this.ImageDownload?.Invoke(this, e);
         }
 
-        private byte[] Download(GalleryAgent agent, ImageViewState imageViewState, GalleryImagePath imagePath, GalleryParameterValues values)
+        private byte[] Download(GalleryAgent agent, ImageViewState imageViewState, GalleryImagePath imagePath)
         {
             using (var source = new CancellationTokenSource())
             {
@@ -539,7 +535,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         cancelSources.Add(source);
                     }
 
-                    var downloadRequest = agent.CreateImageRequest(imageViewState.View, imagePath, values);
+                    var downloadRequest = agent.CreateImageRequest(imageViewState.View, imagePath);
 
                     using (var response = agent.Explorer.Request(downloadRequest, source))
                     {

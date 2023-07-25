@@ -111,6 +111,7 @@
     <Compile Include="Doujinshi\DownloadMethodExHentai.cs" />
     <Compile Include="Doujinshi\DownloadMethodE_Hentai.cs" />
     <Compile Include="Doujinshi\DownloadMethodHitomi.cs" />
+    <Compile Include="Doujinshi\DownloadOption.cs" />
     <Compile Include="Doujinshi\GalleryValidation.cs" />
     <Compile Include="Forms\AccountInfoGroupBox.cs">
       <SubType>Component</SubType>

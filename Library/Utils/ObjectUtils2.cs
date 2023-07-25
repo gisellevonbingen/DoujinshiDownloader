@@ -8,7 +8,7 @@ namespace Giselle.DoujinshiDownloader.Utils
 {
     public static class ObjectUtils2
     {
-        public static T AddAndGet<T>(this ICollection<T> list, T value)
+        public static T2 AddAndGet<T, T2>(this ICollection<T> list, T2 value) where T2 : T
         {
             list.Add(value);
 

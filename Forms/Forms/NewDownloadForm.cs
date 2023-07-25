@@ -36,7 +36,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private readonly object VerifyInputThreadLock = new object();
         private Thread VerifyInputThread = null;
-        private readonly Dictionary<DownloadMethod, Image> ThumbnailCaches = new Dictionary<DownloadMethod, Image>();
+        private readonly Dictionary<IDownloadMethod, Image> ThumbnailCaches = new Dictionary<IDownloadMethod, Image>();
 
 
         public DownloadRequest Request { get; private set; }
@@ -566,7 +566,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private class AgentGetGelleryInfosParameter
         {
-            public DownloadMethod Method { get; set; }
+            public IDownloadMethod Method { get; set; }
             public GalleryAgent Agent { get; set; }
             public DownloadInput DownloadInput { get; set; }
         }

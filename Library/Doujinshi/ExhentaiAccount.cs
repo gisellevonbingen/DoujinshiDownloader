@@ -24,6 +24,11 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             this.PassHash = other.PassHash;
         }
 
+        public virtual ExHentaiAccount Clone()
+        {
+            return new ExHentaiAccount(this);
+        }
+
         public void Read(JToken token)
         {
             this.MemberId = token.Value<string>("MemberId");

@@ -41,7 +41,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             this.JintEngine.Execute(script);
         }
 
-        public override GalleryImagePath GetGalleryImagePath(GalleryImageView view, GalleryParameterValues values)
+        public override GalleryImagePath GetGalleryImagePath(GalleryImageView view)
         {
             return new GalleryImagePath() { ImageUrl = view.Url };
         }
@@ -54,9 +54,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return request;
         }
 
-        public override WebRequestParameter CreateImageRequest(GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)
+        public override WebRequestParameter CreateImageRequest(GalleryImageView view, GalleryImagePath path)
         {
-            var request = base.CreateImageRequest(view, path, values);
+            var request = base.CreateImageRequest(view, path);
             request.Referer = Site.HitomiReader.ToUrl(this.DownloadInput);
 
             return request;
@@ -69,7 +69,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             this.JintEngine.Execute(common);
         }
 
-        public override List<GalleryImageView> GetGalleryImageViews(GalleryParameterValues values)
+        public override List<GalleryImageView> GetGalleryImageViews()
         {
             this.InstallLtn();
             var json = this.GetGalleryInfoAsJson();
@@ -182,13 +182,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return info;
         }
 
-        public override GalleryImagePath ReloadImagePath(GalleryImageView _view, GalleryImagePath prev, GalleryParameterValues values)
+        public override GalleryImagePath ReloadImagePath(GalleryImageView _view, GalleryImagePath prev)
         {
             if (_view is HitomiGalleryImageView view)
             {
                 this.InstallLtn();
                 var newView = this.GetGalleryImageView(view.ImageFile);
-                return this.GetGalleryImagePath(newView, values);
+                return this.GetGalleryImagePath(newView);
             }
             else
             {

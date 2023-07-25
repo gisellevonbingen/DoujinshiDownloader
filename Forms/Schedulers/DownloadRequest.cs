@@ -10,7 +10,6 @@ namespace Giselle.DoujinshiDownloader.Schedulers
     public class DownloadRequest
     {
         public GalleryValidation Validation { get; set; } = null;
-        public GalleryParameterValues GalleryParameterValues { get; } = new GalleryParameterValues();
         public string FileName { get; set; } = null;
 
         public DownloadRequest()

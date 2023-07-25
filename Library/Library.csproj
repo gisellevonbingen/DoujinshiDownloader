@@ -88,8 +88,6 @@
     <Compile Include="Doujinshi\ExHentaiAgent.cs" />
     <Compile Include="Doujinshi\GalleryImageView.cs" />
     <Compile Include="Doujinshi\HitomiGalleryImageView.cs" />
-    <Compile Include="Doujinshi\IGalleryParameterType.cs" />
-    <Compile Include="Doujinshi\GalleryParameterValues.cs" />
     <Compile Include="Doujinshi\HitomiImageFile.cs" />
     <Compile Include="Doujinshi\ImageLimit.cs" />
     <Compile Include="Doujinshi\GalleryAgent.cs" />

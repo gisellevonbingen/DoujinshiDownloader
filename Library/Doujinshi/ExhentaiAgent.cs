@@ -82,12 +82,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public ExHentaiAccount Account { get; }
-        public GalleryParameterType<bool> Original { get; } = new GalleryParameterType<bool>(Guid.NewGuid(), "Original");
+        public ExHentaiAccount Account { get; set; } = null;
+        public bool Original { get; set; } = false;
 
-        public ExHentaiAgent(Site site, DownloadInput downloadInput, WebRequestProvider webRequestProvider, ExHentaiAccount account) : base(site, downloadInput, webRequestProvider)
+        public ExHentaiAgent(Site site, DownloadInput downloadInput, WebRequestProvider webRequestProvider) : base(site, downloadInput, webRequestProvider)
         {
-            this.Account = account != null ? new ExHentaiAccount(account) : null;
+
         }
 
         public override WebRequestParameter CreateRequestParameter()
@@ -128,15 +128,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 var style = thumbnailElement.GetAttributeValue("style", string.Empty);
                 var thumbnailUrl = UrlRegex.Match(style).Groups["url"].Value;
 
-                var info = new GalleryInfo
+                return new GalleryInfo
                 {
                     GalleryUrl = parameter.Uri,
                     Title = title,
                     ThumbnailUrls = { thumbnailUrl }
                 };
-                info.ParameterTypes.Add(this.Original);
 
-                return info;
             }
 
         }
@@ -161,7 +159,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public List<GalleryImageView> GetGalleryImageViews(string url, int page)
         {
             var parameter = this.CreateRequestParameter();
-            parameter.Uri = url + "?p=" + page;
+            parameter.Uri = $"{url}?p={page}";
             parameter.Method = "GET";
 
             using (var response = this.Explorer.Request(parameter))
@@ -185,7 +183,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override List<GalleryImageView> GetGalleryImageViews(GalleryParameterValues values)
+        public override List<GalleryImageView> GetGalleryImageViews()
         {
             var galleryUrl = this.GalleryUrl;
             int pageCount = this.GetGalleryPageCount(galleryUrl);
@@ -199,12 +197,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return list;
         }
 
-        public override GalleryImagePath GetGalleryImagePath(GalleryImageView view, GalleryParameterValues values)
+        public override GalleryImagePath GetGalleryImagePath(GalleryImageView view)
         {
-            return this.GetGalleryImagePath(view.Url, values);
+            return this.GetGalleryImagePath(view.Url);
         }
 
-        private GalleryImagePath GetGalleryImagePath(string viewUrl, GalleryParameterValues values)
+        private GalleryImagePath GetGalleryImagePath(string viewUrl)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Uri = viewUrl;
@@ -217,7 +215,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
                 var image = new GalleryImagePath
                 {
-                    ImageUrl = this.GetGalleryImageUrl(mainDivElement, values),
+                    ImageUrl = this.GetGalleryImageUrl(mainDivElement),
                     ReloadUrl = this.GetGalleryReloadUrl(viewUrl, mainDivElement)
                 };
 
@@ -235,9 +233,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return $"{viewUrl}?nl={functionArgs}";
         }
 
-        public string GetGalleryImageUrl(HtmlNode mainDivElement, GalleryParameterValues values)
+        public string GetGalleryImageUrl(HtmlNode mainDivElement)
         {
-            if (values?.Get(this.Original, false) == true)
+            if (this.Original == true)
             {
                 var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i7"));
                 string url2 = HttpUtility.HtmlDecode(subDivElement?.ChildNodes["a"]?.GetAttributeValue("href", null));
@@ -265,12 +263,12 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public override GalleryImagePath ReloadImagePath(GalleryImageView view, GalleryImagePath prev, GalleryParameterValues values)
+        public override GalleryImagePath ReloadImagePath(GalleryImageView view, GalleryImagePath prev)
         {
-            return this.GetGalleryImagePath(prev.ReloadUrl, values);
+            return this.GetGalleryImagePath(prev.ReloadUrl);
         }
 
-        public override WebRequestParameter CreateImageRequest(GalleryImageView view, GalleryImagePath path, GalleryParameterValues values)
+        public override WebRequestParameter CreateImageRequest(GalleryImageView view, GalleryImagePath path)
         {
             var uri = new Uri(path.ImageUrl);
             var fileName = uri.GetFileName();
@@ -280,7 +278,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 throw new ImageRequestCreateException("ImageLimit");
             }
 
-            return base.CreateImageRequest(view, path, values);
+            return base.CreateImageRequest(view, path);
         }
 
     }
