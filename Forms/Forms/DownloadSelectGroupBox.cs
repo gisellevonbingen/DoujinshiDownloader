@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,6 +20,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         private readonly Label NoneLabel;
         private readonly List<RadioButton> RadioButtons;
+        private readonly Dictionary<RadioButton, List<Control>> OptionControls;
+        private readonly Dictionary<Control, Func<object>> OptionValueFuncs;
 
         private RadioButton _SelectedRadioButton;
         public RadioButton SelectedRadioButton { get => this._SelectedRadioButton; set { this._SelectedRadioButton = value; this.OnSelectedGalleryChanged(EventArgs.Empty); } }
@@ -35,6 +38,8 @@ namespace Giselle.DoujinshiDownloader.Forms
             this.Controls.Add(noneLabel);
 
             this.RadioButtons = new List<RadioButton>();
+            this.OptionControls = new Dictionary<RadioButton, List<Control>>();
+            this.OptionValueFuncs = new Dictionary<Control, Func<object>>();
 
             this.ResumeLayout(false);
 
@@ -94,6 +99,23 @@ namespace Giselle.DoujinshiDownloader.Forms
         public RadioButton[] GetRadioButtons() => this.RadioButtons.ToArray();
 
         public GalleryValidation SelectedGallery => this.SelectedRadioButton?.Tag as GalleryValidation;
+
+        public Dictionary<IDownloadOption, object> GetSelectedGalleryOptions()
+        {
+            var radioButton = this.SelectedRadioButton;
+            var options = new Dictionary<IDownloadOption, object>();
+
+            if (radioButton != null)
+            {
+                foreach (var optionControl in this.OptionControls[radioButton])
+                {
+                    options[optionControl.Tag as IDownloadOption] = this.OptionValueFuncs[optionControl]();
+                }
+
+            }
+
+            return options;
+        }
 
         protected virtual void OnSelectedGalleryChanged(EventArgs e)
         {
@@ -188,11 +210,48 @@ namespace Giselle.DoujinshiDownloader.Forms
             button.Enabled = enabling;
             button.Tag = validation;
 
+            if (this.OptionControls.TryGetValue(button, out var optionControls) == false)
+            {
+                this.OptionControls[button] = optionControls = new List<Control>();
+
+                foreach (var option in validation.Method.Options)
+                {
+                    var optionTuple = this.CreateOptionControl(option);
+                    var optionControl = optionTuple.Item1;
+
+                    if (optionControl != null)
+                    {
+                        optionControl.Tag = option;
+                        optionControl.Text = $"{SR.Get($"DownloadSelect.Option.{validation.Method.Name}.{option.Name}")}";
+                        optionControls.Add(optionControl);
+                        this.Controls.Add(optionControl);
+                        this.OptionValueFuncs[optionControl] = optionTuple.Item2;
+                    }
+
+                }
+
+                this.UpdateOptionControlsEnabled(button);
+            }
+
             this.OnGalleryListChanged(new EventArgs());
 
             if (this.SelectedGallery == null && enabling == true)
             {
                 button.Checked = true;
+            }
+
+        }
+
+        private Tuple<Control, Func<object>> CreateOptionControl(IDownloadOption option)
+        {
+            if (option.DefaultValue is bool boolean)
+            {
+                var checkBox = new CheckBox() { Checked = boolean };
+                return Tuple.Create<Control, Func<object>>(checkBox, () => checkBox.Checked);
+            }
+            else
+            {
+                return null;
             }
 
         }
@@ -204,6 +263,17 @@ namespace Giselle.DoujinshiDownloader.Forms
             if (radioButton.Checked == true)
             {
                 this.SelectedRadioButton = radioButton;
+
+            }
+
+            this.UpdateOptionControlsEnabled(radioButton);
+        }
+
+        private void UpdateOptionControlsEnabled(RadioButton radioButton)
+        {
+            foreach (var optionControl in this.OptionControls[radioButton])
+            {
+                optionControl.Enabled = radioButton.Checked;
             }
 
         }
@@ -213,31 +283,29 @@ namespace Giselle.DoujinshiDownloader.Forms
             var map = base.GetPreferredBounds(layoutBounds);
 
             var buttons = this.RadioButtons;
+            var radioHeight = 25;
 
             lock (buttons)
             {
-                var height = 25;
-
                 if (buttons.Count == 0)
                 {
                     var noneLabel = this.NoneLabel;
-                    map[noneLabel] = new Rectangle(layoutBounds.Left, layoutBounds.Top, layoutBounds.Width, height);
+                    map[noneLabel] = new Rectangle(layoutBounds.Left, layoutBounds.Top, layoutBounds.Width, radioHeight);
                 }
                 else
                 {
-                    for (int i = 0; i < buttons.Count; i++)
+                    var top = layoutBounds.Top;
+
+                    for (var i = 0; i < buttons.Count; i++)
                     {
                         var button = buttons[i];
+                        map[button] = new Rectangle(layoutBounds.Left, top, layoutBounds.Width, radioHeight);
+                        top = map[button].Bottom;
 
-                        if (i == 0)
+                        foreach (var optionControl in this.OptionControls[button])
                         {
-                            map[button] = new Rectangle(layoutBounds.Left, layoutBounds.Top, layoutBounds.Width, height);
-                        }
-                        else
-                        {
-                            var prev = map[buttons[i - 1]];
-                            map[button] = new Rectangle(prev.Left, prev.Bottom, prev.Width, prev.Height);
-
+                            map[optionControl] = new Rectangle(layoutBounds.Left + 10, top, layoutBounds.Width - 10, radioHeight);
+                            top = map[optionControl].Bottom;
                         }
 
                     }

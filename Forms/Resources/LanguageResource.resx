@@ -221,6 +221,9 @@ Are You Sure You Want To Quit?</value>
   <data name="DownloadSelect.Site.ExHentai" xml:space="preserve">
     <value>ExHentai</value>
   </data>
+  <data name="DownloadSelect.Option.ExHentai.Original" xml:space="preserve">
+    <value>Download as Original File</value>
+  </data>
   <data name="DownloadSelect.Verify.Verifing" xml:space="preserve">
     <value>Verifing</value>
   </data>

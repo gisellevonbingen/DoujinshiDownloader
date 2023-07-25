@@ -202,6 +202,9 @@ namespace Giselle.DoujinshiDownloader.Forms
                 request.Validation = selectedGallery;
                 request.FileName = PathUtils.FilterInvalids(selectedGallery.Info.Title);
 
+                var options = downloadSelectGroupBox.GetSelectedGalleryOptions();
+                selectedGallery.Method.ApplyOptions(selectedGallery.Agent, options);
+
                 this.DialogResult = DialogResult.OK;
             }
 

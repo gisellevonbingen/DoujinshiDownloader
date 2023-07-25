@@ -110,12 +110,12 @@ namespace Tester
 
         }
 
-        public class DownloadTest : Tuple<DownloadInput, DownloadMethod>
+        public class DownloadTest : Tuple<DownloadInput, IDownloadMethod>
         {
             public DownloadInput Input => this.Item1;
-            public DownloadMethod Method => this.Item2;
+            public IDownloadMethod Method => this.Item2;
 
-            public DownloadTest(DownloadInput input, DownloadMethod method) : base(input, method)
+            public DownloadTest(DownloadInput input, IDownloadMethod method) : base(input, method)
             {
 
             }

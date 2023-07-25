@@ -156,6 +156,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\LanguageResource.ko-KR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LanguageResource.ko-KR.resx</DependentUpon>
+    </Compile>
     <Compile Include="Schedulers\HttpStatusCodeException.cs" />
     <Compile Include="Schedulers\ImageViewState.cs" />
     <Compile Include="Schedulers\ImageViewStates.cs" />
