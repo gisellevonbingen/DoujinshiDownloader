@@ -227,7 +227,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public string GetGalleryReloadUrl(string viewUrl, HtmlNode mainDivElement)
         {
             var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i6"));
-            var loadfailElement = subDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("loadfail"));
+            var loadfailElement = subDivElement.DescendantsAndSelf().FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("loadfail"));
             var functionArgs = NlRegex.Match(loadfailElement.GetAttributeValue("onclick", string.Empty)).Groups["nl"].Value;
 
             return $"{viewUrl}?nl={functionArgs}";
