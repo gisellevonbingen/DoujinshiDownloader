@@ -491,7 +491,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                         format = singleFormat.Format;
                     }
 
-                    if (format != MagickFormat.Unknown && format != image.FormatInfo.Format)
+                    if (format != MagickFormat.Unknown && format != image.Format)
                     {
                         using (var ms = new MemoryStream())
                         {
