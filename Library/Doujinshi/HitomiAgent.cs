@@ -66,6 +66,11 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         {
             var common = this.GetLtnCommon();
             common = common.Replace("$.ajax", "ajax");
+            this.JintEngine.Execute("location = {}");
+            this.JintEngine.Execute("location.hostname = 'dev.hitomi.la'");
+            this.JintEngine.Execute("window = {}");
+            this.JintEngine.Execute("window.location = {}");
+            this.JintEngine.Execute("window.location.href = ''");
             this.JintEngine.Execute(common);
         }
 
