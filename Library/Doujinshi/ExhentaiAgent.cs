@@ -164,15 +164,15 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
             using (var response = this.Explorer.Request(parameter))
             {
-                var gdtDivElement = response.ReadAsDocument().DocumentNode.ChildNodes["html"].ChildNodes["body"].ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gdt"));
-                var gdtmElements = gdtDivElement.ChildNodes.Where(n => n.GetAttributeValue("class", string.Empty).Equals("gdtm"));
+                var gdtDivElement = response.ReadAsDocument().DocumentNode.SelectSingleNode("/html/body").ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gdt"));
+                var gdtmElements = gdtDivElement.ChildNodes.Where(n => n.Name.Equals("a"));
                 var list = new List<GalleryImageView>();
 
                 foreach (var element in gdtmElements)
                 {
                     var view = new GalleryImageView()
                     {
-                        Url = element.ChildNodes["div"].ChildNodes["a"].GetAttributeValue("href", null)
+                        Url = element.GetAttributeValue("href", null)
                     };
 
                     list.Add(view);
