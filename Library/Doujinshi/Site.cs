@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Giselle.Commons.Collections;
 
 namespace Giselle.DoujinshiDownloader.Doujinshi
 {
@@ -46,10 +47,9 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public string ToUrl(DownloadInput input)
         {
-            var list = new List<string>() { this.Prefix, this.SelectDownloadInput(input), this.Suffix };
             var builder = new StringBuilder();
 
-            foreach (var str in list)
+            foreach (var str in new[] { this.Prefix, this.SelectDownloadInput(input), this.Suffix })
             {
                 if (str != null)
                 {

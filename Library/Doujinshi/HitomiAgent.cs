@@ -87,17 +87,14 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             return this.JintEngine.Invoke("url_from_url_from_hash", this.DownloadInput.Number, imageFileJson, dir, ext, @base).ToString();
         }
 
-        public List<string> GetSmallImagePath(JToken imageFileJson)
+        public IEnumerable<string> GetSmallImagePath(JToken imageFileJson)
         {
             this.InstallLtn();
 
             var @base = "tn";
-            return new List<string>
-            {
-                this.url_from_url_from_hash(imageFileJson, "avifbigtn", "avif", @base),
-                this.url_from_url_from_hash(imageFileJson, "avifsmallbigtn", "avif", @base),
-                this.url_from_url_from_hash(imageFileJson, "webpbigtn", "webp", @base)
-            };
+            yield return this.url_from_url_from_hash(imageFileJson, "avifbigtn", "avif", @base);
+            yield return this.url_from_url_from_hash(imageFileJson, "avifsmallbigtn", "avif", @base);
+            yield return this.url_from_url_from_hash(imageFileJson, "webpbigtn", "webp", @base);
         }
 
         private GalleryImageView GetGalleryImageView(JToken imageFileJson)
@@ -181,7 +178,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             {
                 GalleryUrl = this.GalleryUrl,
                 Title = json.Value<string>("title"),
-                ThumbnailUrls = this.GetSmallImagePath(this.GetGalleryImageFiles(json).FirstOrDefault())
+                ThumbnailUrls = this.GetSmallImagePath(this.GetGalleryImageFiles(json).FirstOrDefault()).ToArray(),
             };
 
             return info;

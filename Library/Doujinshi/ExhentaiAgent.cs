@@ -132,7 +132,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
                 {
                     GalleryUrl = parameter.Uri,
                     Title = title,
-                    ThumbnailUrls = { thumbnailUrl }
+                    ThumbnailUrls = new[] { thumbnailUrl },
                 };
 
             }
