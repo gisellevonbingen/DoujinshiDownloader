@@ -74,11 +74,11 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             this.JintEngine.Execute(common);
         }
 
-        public override List<GalleryImageView> GetGalleryImageViews()
+        public override IEnumerable<GalleryImageView> GetGalleryImageViews()
         {
             this.InstallLtn();
             var json = this.GetGalleryInfoAsJson();
-            return this.GetGalleryImageFiles(json).Select(token => this.GetGalleryImageView(token)).ToList();
+            return this.GetGalleryImageFiles(json).Select(token => this.GetGalleryImageView(token));
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:명명 스타일", Justification = "<보류 중>")]

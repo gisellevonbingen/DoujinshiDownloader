@@ -156,7 +156,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public List<GalleryImageView> GetGalleryImageViews(string url, int page)
+        public IEnumerable<GalleryImageView> GetGalleryImageViews(string url, int page)
         {
             var parameter = this.CreateRequestParameter();
             parameter.Uri = $"{url}?p={page}";
@@ -166,35 +166,34 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             {
                 var gdtDivElement = response.ReadAsDocument().DocumentNode.SelectSingleNode("/html/body").ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("gdt"));
                 var gdtmElements = gdtDivElement.ChildNodes.Where(n => n.Name.Equals("a"));
-                var list = new List<GalleryImageView>();
 
                 foreach (var element in gdtmElements)
                 {
-                    var view = new GalleryImageView()
+                    yield return new GalleryImageView()
                     {
                         Url = element.GetAttributeValue("href", null)
                     };
 
-                    list.Add(view);
                 }
 
-                return list;
             }
 
         }
 
-        public override List<GalleryImageView> GetGalleryImageViews()
+        public override IEnumerable<GalleryImageView> GetGalleryImageViews()
         {
             var galleryUrl = this.GalleryUrl;
-            int pageCount = this.GetGalleryPageCount(galleryUrl);
-            var list = new List<GalleryImageView>();
+            var pageCount = this.GetGalleryPageCount(galleryUrl);
 
-            for (int i = 0; i < pageCount; i++)
+            for (var i = 0; i < pageCount; i++)
             {
-                list.AddRange(this.GetGalleryImageViews(galleryUrl, i));
+                foreach (var view in this.GetGalleryImageViews(galleryUrl, i))
+                {
+                    yield return view;
+                }
+
             }
 
-            return list;
         }
 
         public override GalleryImagePath GetGalleryImagePath(GalleryImageView view)

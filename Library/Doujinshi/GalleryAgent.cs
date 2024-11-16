@@ -32,7 +32,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public abstract GalleryInfo GetGalleryInfo();
 
-        public abstract List<GalleryImageView> GetGalleryImageViews();
+        public abstract IEnumerable<GalleryImageView> GetGalleryImageViews();
 
         public abstract GalleryImagePath GetGalleryImagePath(GalleryImageView view);
 
