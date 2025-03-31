@@ -73,15 +73,20 @@ namespace Giselle.DoujinshiDownloader.Forms
                 var perecent = viewState.Position / (viewState.Length / 100.0F);
                 lines.Add($"{stateToString}, {position} / {length} ({perecent:F2}%)");
             }
+            else if (viewState.Error != null)
+            {
+                if (viewState.Error != null)
+                {
+                    lines.Add($"{stateToString}, {SR.Get("Download.Detail.Exception." + viewState.Error.Message)}");
+                }
+
+                lines.Add($" {SR.Get("Download.Detail.ClickToDetail")}");
+            }
             else
             {
                 lines.Add(stateToString);
             }
 
-            if (viewState.Error != null)
-            {
-                lines.Add($" : {SR.Get("Download.Detail.Exception." + viewState.Error)}");
-            }
 
             this.Text = string.Join(Environment.NewLine, lines);
             this.ForeColor = (state == ViewState.Exception) ? Color.Red : Color.Black;

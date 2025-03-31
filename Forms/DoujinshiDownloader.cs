@@ -144,16 +144,19 @@ namespace Giselle.DoujinshiDownloader
 
         public void ShowCrashMessageBox(Exception exception)
         {
-            Console.WriteLine(exception);
+            this.ShowCrashMessageBox($"{string.Concat(exception)}{Environment.NewLine}{exception?.StackTrace}");
+        }
 
-            var file = this.DumpCrashMessage(exception);
+        public void ShowCrashMessageBox(string message)
+        {
+            var file = this.DumpCrashMessage(message);
             var mainForm = this.MainForm;
 
             if (mainForm != null)
             {
                 ControlUtils.InvokeFNeeded(this.MainForm, () =>
                 {
-                    using (var form = new CrashReportForm(file, exception))
+                    using (var form = new CrashReportForm(file, message))
                     {
                         form.ShowDialog();
                     }
@@ -163,7 +166,7 @@ namespace Giselle.DoujinshiDownloader
             }
             else
             {
-                using (var form = new CrashReportForm(file, exception))
+                using (var form = new CrashReportForm(file, message))
                 {
                     form.ShowDialog();
                 }
@@ -185,17 +188,17 @@ namespace Giselle.DoujinshiDownloader
             return directory;
         }
 
-        public string DumpCrashMessage(Exception exception)
+        public string DumpCrashMessage(string message)
         {
             try
             {
-                Console.WriteLine(exception);
+                Console.WriteLine(message);
                 var directory = this.GetCrashReportsDirectory();
 
                 var dateTime = DateTime.Now;
                 var file = PathUtils.GetFilePathNotDuplicate(PathUtils.GetPath(directory, dateTime.ToString("yyyy_MM_dd HH_mm_ss_fff") + ".log"));
 
-                File.WriteAllText(file, string.Concat(exception));
+                File.WriteAllText(file, message);
 
                 return file;
             }

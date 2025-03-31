@@ -44,6 +44,8 @@ namespace Giselle.DoujinshiDownloader.Schedulers
             return count;
         }
 
+        public int IndexOf(ImageViewState state) => this.Views.IndexOf(state);
+
         public IEnumerator<ImageViewState> GetEnumerator()
         {
             return this.Views.GetEnumerator();

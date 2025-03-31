@@ -32,6 +32,7 @@ namespace Giselle.DoujinshiDownloader.Forms
             var controls = this.Controls;
 
             var listBox = this.ListBox = new DownloadDetailListBox();
+            listBox.ItemDoubleClicked += this.OnListBoxItemDoubleClicked;
             controls.Add(listBox);
 
             var closeButton = this.CloseButton = new Button();
@@ -64,6 +65,27 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             this.Padding = new Padding(0);
             this.ClientSize = new Size(400, 420);
+        }
+
+        private void OnListBoxItemDoubleClicked(object sender, ImageViewState state)
+        {
+            if (state.Error == null)
+            {
+                return;
+            }
+
+            var builder = new StringBuilder();
+            builder.AppendLine($"Gallery URL: {this.Task.Request.Validation.Info.GalleryUrl}");
+            builder.AppendLine($"Image Index: {this.Task.ImageViewStates.IndexOf(state) + 1}");
+            builder.AppendLine($"Image URL: {state.View.Url}");
+            builder.AppendLine($"Error: {state.Error.Message}");
+
+            if (state.Error.Exception != null)
+            {
+                builder.AppendLine(string.Concat(state.Error.Exception));
+            }
+
+            DoujinshiDownloader.Instance.ShowCrashMessageBox(builder.ToString());
         }
 
         private void OnTaskProgressed(object sender, TaskProgressingEventArgs e)

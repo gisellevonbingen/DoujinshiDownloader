@@ -396,6 +396,9 @@ If Current Exceed Limit, Can't Bring Image</value>
   <data name="Download.Detail.Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="Download.Detail.ClickToDetail" xml:space="preserve">
+    <value>Double Click To Detail</value>
+  </data>
   <data name="Download.Detail.State.StandBy" xml:space="preserve">
     <value>Ready</value>
   </data>

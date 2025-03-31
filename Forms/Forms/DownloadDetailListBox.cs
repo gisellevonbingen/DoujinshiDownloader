@@ -25,6 +25,8 @@ namespace Giselle.DoujinshiDownloader.Forms
 
         public Timer UpdateTimer { get; }
 
+        public event EventHandler<ImageViewState> ItemDoubleClicked;
+
         public DownloadDetailListBox()
         {
             this.Items = new List<DownloadDetailListItem>();
@@ -130,21 +132,12 @@ namespace Giselle.DoujinshiDownloader.Forms
                 return;
             }
 
-            var state = item.ImageViewState;
-            var builder = new StringBuilder(state.View.Url);
+            this.OnItemDoubleClicked(item.ImageViewState);
+        }
 
-            if (state.Error != null)
-            {
-                builder.AppendLine().Append(state.Error.Message);
-
-                if (state.Error.Exception != null)
-                {
-                    builder.AppendLine().Append(state.Error.Exception);
-                }
-
-            }
-
-            Clipboard.SetText(builder.ToString(), TextDataFormat.Text);
+        protected virtual void OnItemDoubleClicked(ImageViewState state)
+        {
+            this.ItemDoubleClicked?.Invoke(this, state);
         }
 
         private void OnPanelPaint(object sender, PaintEventArgs e)

@@ -21,7 +21,7 @@ namespace Giselle.DoujinshiDownloader
 
         private readonly TextBox LogTextBox = null;
 
-        public CrashReportForm(string dumpFile, Exception exception)
+        public CrashReportForm(string dumpFile, string message)
         {
             this.DumpFile = dumpFile;
 
@@ -58,7 +58,7 @@ namespace Giselle.DoujinshiDownloader
             logTextBox.WordWrap = false;
             logTextBox.ReadOnly = true;
             logTextBox.Multiline = true;
-            logTextBox.Text = string.Concat(exception) + Environment.NewLine + exception?.StackTrace + Environment.NewLine;
+            logTextBox.Text = message;
             this.Controls.Add(logTextBox);
 
             this.ResumeLayout(false);

@@ -418,13 +418,17 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     }
                     catch (ImageRequestCreateException e)
                     {
-                        return new ImageViewError() { Message = e.Message, Exception = e };
+                        return new ImageViewError() { Message = "Unknown", Exception = e };
                     }
                     catch (HttpStatusCodeException e)
                     {
                         if (e.Code == HttpStatusCode.ServiceUnavailable)
                         {
                             Thread.Sleep(config.ServiceUnavailableSleep);
+                        }
+                        else
+                        {
+                            return new ImageViewError() { Message = "Unknown", Exception = e };
                         }
 
                     }
