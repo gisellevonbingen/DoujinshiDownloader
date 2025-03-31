@@ -125,11 +125,26 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var item = this.Items.Where(i => i.Visible).FirstOrDefault(i => i.Bounds.Contains(mouseLocation));
 
-            if (item != null)
+            if (item == null)
             {
-                Clipboard.SetText(item.ImageViewState.View.Url, TextDataFormat.Text);
+                return;
             }
 
+            var state = item.ImageViewState;
+            var builder = new StringBuilder(state.View.Url);
+
+            if (state.Error != null)
+            {
+                builder.AppendLine().Append(state.Error.Message);
+
+                if (state.Error.Exception != null)
+                {
+                    builder.AppendLine().Append(state.Error.Exception);
+                }
+
+            }
+
+            Clipboard.SetText(builder.ToString(), TextDataFormat.Text);
         }
 
         private void OnPanelPaint(object sender, PaintEventArgs e)

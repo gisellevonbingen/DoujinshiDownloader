@@ -178,6 +178,7 @@
       <DependentUpon>LanguageResource.ko-KR.resx</DependentUpon>
     </Compile>
     <Compile Include="Schedulers\HttpStatusCodeException.cs" />
+    <Compile Include="Schedulers\ImageViewError.cs" />
     <Compile Include="Schedulers\ImageViewState.cs" />
     <Compile Include="Schedulers\ImageViewStates.cs" />
     <Compile Include="Schedulers\TaskCancelingException.cs" />

@@ -78,12 +78,10 @@ namespace Giselle.DoujinshiDownloader.Forms
                 lines.Add(stateToString);
             }
 
-            if (viewState.ExceptionMessage != null)
+            if (viewState.Error != null)
             {
-                var detailMessage = viewState.ExceptionMessage.ConsumeSelect(v => $" : {SR.Get("Download.Detail.Exception." + v)}");
-                lines.Add($"{detailMessage}");
+                lines.Add($" : {SR.Get("Download.Detail.Exception." + viewState.Error)}");
             }
-
 
             this.Text = string.Join(Environment.NewLine, lines);
             this.ForeColor = (state == ViewState.Exception) ? Color.Red : Color.Black;

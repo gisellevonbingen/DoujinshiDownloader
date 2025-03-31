@@ -329,9 +329,9 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     imageViewState.State = ViewState.Downloading;
                     this.OnProgressed(new TaskProgressingEventArgs(imageViewState));
 
-                    var exceptionMessage = this.Download(index, imageViewState);
-                    imageViewState.State = string.IsNullOrWhiteSpace(exceptionMessage) ? ViewState.Success : ViewState.Exception;
-                    imageViewState.ExceptionMessage = exceptionMessage;
+                    var imageViewResult = this.Download(index, imageViewState);
+                    imageViewState.State = imageViewResult == null ? ViewState.Success : ViewState.Exception;
+                    imageViewState.Error = imageViewResult;
                 }
                 catch (TaskCancelingException)
                 {
@@ -347,7 +347,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     Console.WriteLine(e);
 
                     imageViewState.State = ViewState.Exception;
-                    imageViewState.ExceptionMessage = e.GetType().Name + " : " + e.Message;
+                    imageViewState.Error = new ImageViewError() { Message = "Unknown", Exception = e };
                 }
 
                 lock (this.IndexLock)
@@ -379,7 +379,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
         }
 
-        private string Download(int index, ImageViewState viewState)
+        private ImageViewError Download(int index, ImageViewState viewState)
         {
             var agent = this.Agent;
             var imageView = viewState.View;
@@ -387,7 +387,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             if (imagePath.ImageUrl == null)
             {
-                return "RequestNotCreate";
+                return new ImageViewError() { Message = "RequestNotCreate" };
             }
             else
             {
@@ -418,7 +418,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
                     }
                     catch (ImageRequestCreateException e)
                     {
-                        return e.Message;
+                        return new ImageViewError() { Message = e.Message, Exception = e };
                     }
                     catch (HttpStatusCodeException e)
                     {
@@ -443,7 +443,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
                         if (k + 1 == retryCount)
                         {
-                            return "Network";
+                            return new ImageViewError() { Message = "Network", Exception = e };
                         }
                         else
                         {
@@ -460,7 +460,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
 
             }
 
-            return "Unknown";
+            return new ImageViewError() { Message = "Unknown" };
         }
 
         private (string, byte[]) ConvertForWrite(string fileName, byte[] bytes)

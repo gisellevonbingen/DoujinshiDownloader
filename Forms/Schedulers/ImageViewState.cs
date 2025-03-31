@@ -11,7 +11,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
     {
         public GalleryImageView View { get; set; }
         public ViewState State { get; set; }
-        public string ExceptionMessage { get; set; }
+        public ImageViewError Error { get; set; }
         public long Length { get; set; }
         public long Position { get; set; }
 
@@ -19,7 +19,7 @@ namespace Giselle.DoujinshiDownloader.Schedulers
         {
             this.View = null;
             this.State = ViewState.StandBy;
-            this.ExceptionMessage = null;
+            this.Error = null;
         }
 
     }
