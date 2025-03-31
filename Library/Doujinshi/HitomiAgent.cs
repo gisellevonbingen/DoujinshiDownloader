@@ -76,7 +76,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         public override IEnumerable<GalleryImageView> GetGalleryImageViews()
         {
-            this.InstallLtn();
             var json = this.GetGalleryInfoAsJson();
             return this.GetGalleryImageFiles(json).Select(token => this.GetGalleryImageView(token));
         }
@@ -108,13 +107,13 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
             {
                 subpath1 = "webp";
                 ext = ".webp";
-                @base = "a";
+                @base = null;
             }
             else
             {
                 subpath1 = "avif";
                 ext = ".avif";
-                @base = "a";
+                @base = null;
             }
 
             var url = this.url_from_url_from_hash(imageFileJson, subpath1, null, @base);
@@ -136,7 +135,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         public JObject GetGalleryInfoAsJson()
         {
             var galleryParameter = this.CreateRequestParameter();
-            galleryParameter.Uri = $"https://ltn.hitomi.la/galleries/{this.DownloadInput.Number}.js";
+            galleryParameter.Uri = $"https://ltn.gold-usergeneratedcontent.net/galleries/{this.DownloadInput.Number}.js";
             galleryParameter.Referer = Site.HitomiReader.ToUrl(this.DownloadInput);
             galleryParameter.Method = "GET";
 
@@ -169,7 +168,7 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
 
         }
 
-        public string GetLtnCommon() => this.GetAsString("https://ltn.hitomi.la/common.js");
+        public string GetLtnCommon() => this.GetAsString("https://ltn.gold-usergeneratedcontent.net/common.js");
 
         public override GalleryInfo GetGalleryInfo()
         {
@@ -188,7 +187,6 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         {
             if (_view is HitomiGalleryImageView view)
             {
-                this.InstallLtn();
                 var newView = this.GetGalleryImageView(view.ImageFile);
                 return this.GetGalleryImagePath(newView);
             }
