@@ -236,8 +236,8 @@ namespace Giselle.DoujinshiDownloader.Doujinshi
         {
             if (this.Original == true)
             {
-                var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i7"));
-                string url2 = HttpUtility.HtmlDecode(subDivElement?.ChildNodes["a"]?.GetAttributeValue("href", null));
+                var subDivElement = mainDivElement.ChildNodes.FirstOrDefault(n => n.GetAttributeValue("id", string.Empty).Equals("i6"));
+                string url2 = HttpUtility.HtmlDecode(subDivElement?.ChildNodes[2].ChildNodes["a"]?.GetAttributeValue("href", null));
 
                 if (url2 == null)
                 {
