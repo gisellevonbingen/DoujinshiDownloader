@@ -50,7 +50,7 @@ namespace Giselle.DoujinshiDownloader.Forms
 
             var retryCountControl = this.RetryCountControl = new SettingTrackBar();
             retryCountControl.Unit = SR.Get("Settings.Network.RetryCountUnit");
-            retryCountControl.TextLabel.Text = SR.Get("Settings.Network.RetryCount", "Default", SR.Replace(defaultValueTemplete, "Value", defaultValues.ThreadCount.ToString(), "Unit", retryCountControl.Unit));
+            retryCountControl.TextLabel.Text = SR.Get("Settings.Network.RetryCount", "Default", SR.Replace(defaultValueTemplete, "Value", defaultValues.RetryCount.ToString(), "Unit", retryCountControl.Unit));
             var retryCountTrackBar = retryCountControl.TrackBar;
             retryCountTrackBar.Minimum = 0;
             retryCountTrackBar.Maximum = 16;
